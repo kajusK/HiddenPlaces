@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+{{_('Username')}}: {{ current_user.username }}<br/>
+{{_('Email')}}: {{ current_user.email }}<br/>
+{{_('Created')}}: {{ current_user.date_created }}<br/>
+{{_('Last login')}}: {{ current_user.last_login }}<br/>
+{{_('Active')}}: {{ current_user.active }}<br/>
+<br/>
+<br/>
+
+<a href="{{url_for('user.logout')}}">{{_('Logout')}}</a>
+{% endblock %}

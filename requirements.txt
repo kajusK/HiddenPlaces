@@ -1,0 +1,10 @@
+flask
+flask-wtf
+email-validator
+flask-sqlalchemy
+flask-babel
+flask-login
+flask-bcrypt
+environs
+is_safe_url
+gunicorn
