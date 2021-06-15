@@ -51,4 +51,3 @@ def login_default_user(client):
     login(client, user1['name'], user1['pass'])
     yield
     logout(client)
-

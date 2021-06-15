@@ -1,5 +1,7 @@
 # Hidden Places web database
 
+![trunk](https://drone.dev.deadbadger.cz/api/badges/kajus/HiddenPlaces/status.svg)
+
 This project is supposed to provide a database of various interesting object
 in a web app form, e.g.
 * abandoned mining objects

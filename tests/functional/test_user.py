@@ -42,21 +42,21 @@ def test_login_next(client):
     login(client, user1['name'], user1['pass'])
     assert request.path == '/'
     # already logged in redirect
-    client.get('/user/login?next=/user', follow_redirects=True)
+    client.get('/user/login?next=%2Fuser', follow_redirects=True)
     assert request.path == '/user/'
     client.get('/user/login', follow_redirects=True)
     assert request.path == '/'
     logout(client)
 
-    login(client, user1['name'], user1['pass'], next='/user')
+    login(client, user1['name'], user1['pass'], next='%2Fuser')
     assert request.path == '/user/'
     logout(client)
 
     # invalid next
-    login(client, user1['name'], user1['pass'], next='https://google.com')
+    login(client, user1['name'], user1['pass'], next='https%3A%2F%2Fgoogle.com')
     assert request.path == '/'
     logout(client)
-    res = login(client, user1['name'], user1['pass'], next='foo/bar')
+    res = login(client, user1['name'], user1['pass'], next='foo%2Fbar')
     assert res.status_code == 404
     logout(client)
 

@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3
 
 WORKDIR /project
 ADD --chown=1000:1000 app /project/app
