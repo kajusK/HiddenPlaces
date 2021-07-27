@@ -13,5 +13,5 @@ def error_500(error):
 
 
 def unhandled_exception(e):
-    app.logger.error('Unhandled Exception: {e}')
+    app.logger.error(f'Unhandled Exception: {e}')
     return render_template('500.html'), 500
