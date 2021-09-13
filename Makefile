@@ -1,9 +1,12 @@
-.PHONY: build run lint tests coverage
+.PHONY: build run lint tests coverage run_docker
 
 app_name = hidden_places
 
 build:
 	@docker build -t $(app_name) .
+
+run_docker:
+	@docker run -d -p 8080:80 --name $(app_name) $(app_name)
 
 run:
 	python run.py
