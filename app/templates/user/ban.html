@@ -1,0 +1,42 @@
+{% extends '_private.html' %}
+{% from '_helpers.html' import render_label %}
+
+{% block content %}
+<div class="card">
+    <h4 class="card-header">
+        {{ _('Ban') }} {{ user.first_name }} {{ user.last_name }}
+    </h4>
+    <div class="card-body">
+        <form method="POST" action="" role="form">
+            {{ form.csrf_token }}
+
+            <div class="form-group">
+                {{ render_label(form.reason, 'pencil') }}
+                {{ form.reason(class_="form-control", placeholder=_('Why are you banning this guy?')) }}
+            </div>
+
+            <div class="form-group">
+                {{ render_label(form.days, 'calendar-day') }}
+                {{ form.days(class_="form-control", placeholder=_('Amount of days to ban for.')) }}
+            </div>
+
+            <div class="d-flex justify-content-between align-items-end">
+                <div>
+                    {{ render_label(form.permanent, 'shield', 'form-label') }}<br>
+                    <div class="btn-group" role="group">
+                        {% for subfield in form.permanent %}
+                            {{ subfield(class_="btn-check") }}
+                            {{ subfield.label(class_="btn btn-outline-danger") }}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="mt-2 text-end">
+                    {{ form.submit(class="btn btn-success") }}
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

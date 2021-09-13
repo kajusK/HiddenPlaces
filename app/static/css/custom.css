@@ -1,0 +1,59 @@
+html, body {
+    height: 100%;
+}
+body {
+    background-color: #f5f5f5;
+}
+
+.content-card {
+    margin-bottom: 1em;
+}
+
+.form-group {
+    margin-bottom: 0.5em;
+}
+
+.btn-menu {
+    display: inline-flex;
+    text-decoration: none;
+    align-items: center;
+    padding: .25rem .5rem;
+    color: rgba(0, 0, 0, .75);
+}
+
+.btn-menu:hover,
+.btn-menu:focus {
+    background-color: #d2d8f4;
+}
+
+.btn-toggle::before {
+    width: 1.25em;
+    line-height: 0;
+    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+    transition: transform .35s ease;
+    transform-origin: .5em 50%;
+}
+
+.btn-toggle[aria-expanded="true"]::before {
+    transform: rotate(90deg);
+}
+
+div.dropdown>.btn.show+.dropdown-menu {
+    animation: dropdownAnimation 400ms;
+    transform-origin: top center;
+}
+
+@keyframes dropdownAnimation {
+    0% {
+      opacity: 0;
+      z-index: 1000;
+      transform: rotateX(-90deg);
+    }
+    50% {
+      transform: rotateX(-20deg);
+    }
+    100% {
+      opacity: 1;
+      transform: rotateX(0deg);
+    }
+  }

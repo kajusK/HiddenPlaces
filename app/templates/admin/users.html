@@ -1,0 +1,49 @@
+{% extends '_private.html' %}
+{% from '_helpers.html' import render_pagination, card_count, link_button %}
+
+{% block content %}
+<div class="row">
+    {{ card_count(_('Users'), users | length, 'person', 'text-success') }}
+    {{ card_count(_('Admins'), users | length, 'gear', 'text-warning') }}
+    {{ card_count(_('Moderators'), users | length, 'chat-left-text', 'text-primary') }}
+    {{ card_count(_('Bans'), 0, 'exclamation-triangle', 'text-danger') }}
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>{{ _('Users') }}</h3>
+    </div>
+    <div class="card-body pb-0">
+        <table class="table">
+            <thead class="bg-light">
+                <tr>
+                    <th scope="col">{{ _('Name') }}</th>
+                    <th scope="col">{{ _('Invited by') }}</th>
+                    <th scope="col">{{ _('Roles') }}</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class="align-middle">
+        {% for user in users %}
+                <tr>
+                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                    <td><a href="#">Someone Somename</a></td>
+                    <td>
+                        <span class="badge bg-secondary">Admin</span>
+                        <span class="badge bg-secondary">Moderator</span>
+                    </td>
+                    <td class="text-end">
+                        {{ link_button(_('Show'), url_for('user.profile', id=user.id), 'eye', 'success') }}
+                        {{ link_button(_('Role'), url_for('user.profile', id=user.id), 'unlock', 'warning') }}
+                        {{ link_button(_('Ban'), url_for('user.profile', id=user.id), 'exclamation-triangle', 'danger') }}
+                    </td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+
+        {{ render_pagination() }}
+    </div>
+</div>
+
+{% endblock %}

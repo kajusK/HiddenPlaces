@@ -1,0 +1,30 @@
+{% extends '_private.html' %}
+{% from "_helpers.html" import render_label, render_submit %}
+
+{% block content %}
+<div class="card content-card">
+    <div class="card-header">Some User: Some subject</div>
+
+    <div class="list-group list-group-flush">
+        <div class="list-group-item">
+            <form class="form" method="POST" action="" role="form">
+                {{ form.csrf_token }}
+                {{ form.message(placeholder=_('Message'), class_="form-control") }}
+                <div class="text-end mt-2">
+                    {{ form.submit(class="btn btn-success") }}
+                </div>
+            </form>
+        </div>
+
+        {% for message in msgs %}
+        <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between">
+                <strong>{{ message.user.first_name }} {{ message.user.last_name }}</strong>
+                <small>{{ message.date.date() }}</small>
+            </div>
+            <p class="mb-0">{{ message.text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

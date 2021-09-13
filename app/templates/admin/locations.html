@@ -1,0 +1,48 @@
+{% extends '_private.html' %}
+{% from '_helpers.html' import render_pagination, card_count, link_button %}
+
+{% block content %}
+<div class="row">
+    {{ card_count(_('Locations'), locations | length, 'geo-alt', 'text-success') }}
+    {{ card_count(_('Published'), locations | length, 'people', 'text-warning') }}
+    {{ card_count(_('Private'), 0, 'shield', 'text-primary') }}
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>{{ _('Locations') }}</h3>
+    </div>
+    <div class="card-body pb-0">
+        <table class="table">
+            <thead class="bg-light">
+                <tr>
+                    <th scope="col">{{ _('Name') }}</th>
+                    <th scope="col">{{ _('Owner') }}</th>
+                    <th scope="col">{{ _('Created') }}</th>
+                    <th scope="col">{{ _('State') }}</th>
+                    <th scope="col">{{ _('Type') }}</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class="align-middle">
+        {% for location in locations %}
+                <tr>
+                    <td>{{ location.name }}</td>
+                    <td><a href="{{ url_for('user.profile', id=location.owner.id) }}">{{ location.owner.first_name}} {{ location.owner.last_name }}</a></td>
+                    <td>{{ location.created_on.date() }}</td>
+                    <td class="text-success">Published</td>
+                    <td>Mine</td>
+                    <td class="text-end">
+                        {{ link_button(_('Show'), url_for('location.show', id=location.id), 'eye', 'success') }}
+                        {{ link_button(_('Edit'), url_for('location.edit', id=location.id), 'pencil', 'warning') }}
+                    </td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+
+        {{ render_pagination() }}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends '_private.html' %}
+{% from '_helpers.html' import render_pagination, card_count, link_button %}
+
+{% block content %}
+<div class="row">
+    {{ card_count(_('Failed'), 0, 'shield', 'text-danger') }}
+    {{ card_count(_('Unique IPs'), 0, 'share', 'text-success') }}
+    {{ card_count(_('Today'), 0, 'clock', 'text-success') }}
+    {{ card_count(_('Monthly'), 0, 'calendar', 'text-success') }}
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>{{ _('Logins') }}</h3>
+    </div>
+    <div class="card-body pb-0">
+        <table class="table">
+            <thead class="bg-light">
+                <tr>
+                    <th scope="col">{{ _('Time') }}</th>
+                    <th scope="col">{{ _('IP') }}</th>
+                    <th scope="col">{{ _('Email') }}</th>
+                    <th scope="col">{{ _('Device') }}</th>
+                    <th scope="col">{{ _('Result') }}</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle">
+                <tr class="table-success">
+                    <td>21-2-2021 17:52:15</td>
+                    <td>192.168.1.1</td>
+                    <td><a href="#">mee@too.com</a></td>
+                    <td>Android/Firefox</td>
+                    <td>Success</td>
+                </tr>
+                <tr class="table-warning">
+                    <td>21-2-2021 19:21:11</td>
+                    <td>192.168.1.1</td>
+                    <td><a href="#">mee@too.com</a></td>
+                    <td>Android/Firefox</td>
+                    <td>Invalid password</td>
+                </tr>
+                <tr class="table-danger">
+                    <td>21-2-2021 19:21:11</td>
+                    <td>192.168.1.1</td>
+                    <td>invalid@email.com</td>
+                    <td>Android/Firefox</td>
+                    <td>Invalid email</td>
+                </tr>
+            </tbody>
+        </table>
+
+        {{ render_pagination() }}
+    </div>
+</div>
+
+{% endblock %}

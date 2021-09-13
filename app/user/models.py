@@ -5,13 +5,15 @@ from flask_login import UserMixin
 
 
 class User(DBItem, UserMixin):
-    username = db.Column(db.String(20), unique=True, nullable=False)
+    first_name = db.Column(db.String(20), nullable=False)
+    last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
-    # hashed password
+    # hashed password / TODO rename with hash
     password = db.Column(db.LargeBinary(128), nullable=False)
-    date_created = db.Column(db.DateTime(), default=db.func.now())
+    date_created = db.Column(db.DateTime(), default=datetime.utcnow)
     last_login = db.Column(db.DateTime(), default=datetime.fromtimestamp(0))
     active = db.Column(db.Boolean(), default=True)
+    about = db.Column(db.String(), default="")
 
     def __init__(self, username, email, password=None, **kwargs):
         """Create instance."""
@@ -27,6 +29,6 @@ class User(DBItem, UserMixin):
     def check_password(self, password):
         ret = bcrypt.check_password_hash(self.password, password)
         if ret:
-            self.last_login = db.func.now()
+            self.last_login = datetime.utcnow()
             self.commit()
         return ret

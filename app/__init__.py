@@ -1,7 +1,7 @@
 import logging
 from flask import Flask, request, redirect, url_for, flash
-from app.extensions import db, login_manager, bcrypt, babel
-from app import errors, user, public
+from app.extensions import db, login_manager, bcrypt, babel, misaka
+from app import errors, user, location, admin, page, message
 from app.user.models import User
 from flask import current_app as app
 
@@ -24,15 +24,23 @@ def create_app(config_object='app.settings', config_override={}):
     login_manager.init_app(app)
     bcrypt.init_app(app)
     babel.init_app(app)
+    misaka.init_app(app)
 
     # register routes
     app.register_blueprint(user.routes.blueprint)
-    app.register_blueprint(public.routes.blueprint)
+    app.register_blueprint(location.routes.blueprint)
+    app.register_blueprint(admin.routes.blueprint)
+    app.register_blueprint(page.routes.blueprint)
+    app.register_blueprint(message.routes.blueprint)
 
     # register error handlers
     app.register_error_handler(404, errors.error_404)
     app.register_error_handler(500, errors.error_500)
     app.register_error_handler(Exception, errors.unhandled_exception)
+
+    # modify jinja2 environment
+    app.jinja_env.trim_blocks = True
+    app.jinja_env.lstrip_blocks = True
 
     return app
 

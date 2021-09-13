@@ -1,0 +1,25 @@
+{% extends '_private.html' %}
+{% from "_helpers.html" import render_label, render_submit %}
+
+{% block content %}
+<div class="card content-card">
+    <h2 class="card-header">{{ _('Edit page') }} {{ page_name }}</h2>
+    <div class="card-body">
+        <form method="POST" action="" role="form" method="POST">
+            {{ form.csrf_token }}
+
+            <div class="form-group">
+                {{ render_label(form.text, 'pencil') }}
+                {{ form.text(class_="form-control", style="min-height: 30em", placeholder=_('Page content')) }}
+                <div class="form-text">
+                    {{ _('Supports markdown formatting, check the ') }}<a href="https://www.markdownguide.org/basic-syntax/">{{ _('syntax') }}</a>
+                </div>
+            </div>
+
+            <div class='text-end mt-2'>
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

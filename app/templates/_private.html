@@ -1,0 +1,59 @@
+{% extends "_base.html" %}
+{% from "_helpers.html" import dropdown_link %}
+
+{% block wrapper %}
+<nav class="navbar bg-light p-2">
+    <button class="btn d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleMenu">
+        <i class="bi bi-list h4"></i>
+    </button>
+    <a href="{{ url_for('location.browse') }}" class="link-dark text-decoration-none h3 justify-content-center align-items-center d-none d-md-flex">
+        <img class="mr-2" style="height: 40px" src="{{ url_for('static', filename='images/favicon.ico') }}" alt="">
+        {{ _('HiddenPlaces') }}
+    </a>
+
+    <div class="ms-auto d-flex">
+        <div class="dropdown">
+            <button type="button" class="btn position-relative me-3" id="dropdownAlerts" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-bell h4"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    99+
+                </span>
+            </button>
+            <div class="dropdown-menu shadow dropdown-menu-end" aria-labelledby="dropdownAlerts">
+                {{ dropdown_link(_("Unreaded messages"), 'envelope', url_for('message.list'), '12') }}
+                {{ dropdown_link(_("Latest changes"), 'journal-check', '#', '12') }}
+                {{ dropdown_link(_("New locations"), 'geo-alt', url_for('admin.locations'), '12') }}
+                {{ dropdown_link(_("New invitations"), 'person', url_for('admin.invitations'), '12') }}
+                {{ dropdown_link(_("Failed logins"), 'exclamation-octagon', url_for('admin.logins'), '12') }}
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button href="#" class="btn" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person h4"></i>
+                <strong>{{ current_user.first_name }} {{ current_user.last_name }}</strong>
+            </button>
+
+            <ul class="dropdown-menu shadow dropdown-menu-end" aria-labelledby="dropdownUser">
+                {{ dropdown_link(_("Messages"), 'envelope', url_for('message.list'), '12') }}
+                {{ dropdown_link(_("Profile"), 'person', url_for('user.profile')) }}
+                {{ dropdown_link(_("Change password"), 'key', url_for('user.change_password')) }}
+                <li><hr class="dropdown-divider"></li>
+                {{ dropdown_link(_("Invite new user"), 'people', url_for('user.invite')) }}
+                <li><hr class="dropdown-divider"></li>
+                {{ dropdown_link(_("Log out"), 'door-open', url_for('user.logout')) }}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="row m-0 p-0">
+    <div class="col-sm-12 col-md-2 p-0">
+        {% include '_menu.html' %}
+    </div>
+    <div class="col-sm-12 col-md-10 p-3">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

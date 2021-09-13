@@ -13,7 +13,7 @@ class DBItem(db.Model):
 
     @classmethod
     def get_by_id(cls, id):
-        return cls.query.filter_by(id=id).first()
+        return cls.query.get(id)
 
     def delete(self):
         db.session.delete(self)

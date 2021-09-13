@@ -1,0 +1,32 @@
+{% extends '_private.html' %}
+{% from '_helpers.html' import render_label %}
+
+{% block content %}
+<div class="card">
+    <h4 class="card-header">
+        {{ _('Invite new user') }}
+    </h4>
+    <div class="card-body">
+        <form method="POST" action="" role="form">
+            {{ form.csrf_token }}
+
+            <div class="form-group">
+                {{ render_label(form.name, 'person') }}
+                {{ form.name(class_="form-control", placeholder=_('Real name of the person invited')) }}
+            </div>
+            <div class="form-group">
+                {{ render_label(form.email, 'envelope') }}
+                {{ form.email(class_="form-control", placeholder='name@example.com') }}
+            </div>
+            <div class="form-group">
+                {{ render_label(form.reason, 'pencil') }}
+                {{ form.reason(class_="form-control", placeholder=_('Why are you inviting this guy?')) }}
+            </div>
+            <div class="mt-2 text-end">
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

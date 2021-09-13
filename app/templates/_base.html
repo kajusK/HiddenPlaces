@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta name="robots" content="noindex,nofollow,noarchive"/>
+
+    <title>{% if title %}{{ title }} - {% endif %}{{_('Hidden places')}}</title>
+    <meta name="description" content="{{ _('Database of underground and abandoned places') }}"/>
+    <meta name="author" content="Jakub Kaderka">
+    <meta name="copyright" content="Jakub Kaderka">
+
+    <meta name="theme-color" content="#7952b3">
+
+    <!-- Android  -->
+    <meta name="application-name" content="{{ _('Hidden places') }}"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+
+    <!-- iOS -->
+    <meta name="apple-mobile-web-app-title" content="{{ _('Hidden places') }}"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dselect.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/icons/bootstrap-icons.css') }}">
+    <link rel="shortcut icon" type="image/jpg" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
+
+    <!--
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    -->
+</head>
+<body>
+    <div class='container-fluid h-100 p-0 m-0'>
+        <header>
+            {% set messages = get_flashed_messages(with_categories=True) %}
+            {% for category, msg in messages %}
+            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                {{ msg }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </header>
+
+        {% block wrapper %}
+        {% endblock %}
+    </div>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dselect.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+</body>
+</html>

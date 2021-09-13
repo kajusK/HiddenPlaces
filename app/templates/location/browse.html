@@ -1,0 +1,31 @@
+{% extends '_private.html' %}
+{% from '_helpers.html' import render_pagination %}
+
+{% block content %}
+{% if locations | length == 0 %}
+<div class="text-center">
+    <h1>{{ _('No locations are here yet, add some') }}</h1>
+</div>
+{% else %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+{% for location in locations %}
+    <div class="col">
+        <div class="card h-100 shadow">
+            <a href="{{ url_for('location.show', id=location.id) }}">
+                <img src="{{ url_for('static', filename='images/favicon.ico') }}" class="card-img-top" alt="Location title image">
+            </a>
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a href="{{ url_for('location.show', id=location.id) }}" class="text-decoration-none link-dark">{{ location.name }}</a>
+                </h4>
+                <p class="card-text text-muted">{{ location.description }}</p>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+{{ render_pagination() }}
+{% endif %}
+
+{% endblock %}

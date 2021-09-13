@@ -1,0 +1,57 @@
+{% extends '_private.html' %}
+{% from '_helpers.html' import link_button %}
+
+{%- macro render_edit_list(name, placeholder, data) -%}
+<div class="card content-card">
+    <h3 class="card-header">{{ name }}</h3>
+    <div class="card-body">
+        <ul class="list-group list-group-flush">
+            {% for item in data %}
+            <li class="list-group-item d-flex align-items-center py-1">
+                <div class="me-auto fs-5">
+                    {{ item }}
+                </div>
+                <div>
+                    {{ link_button('', '#', 'x', 'danger btn-sm') }}
+                </div>
+            </li>
+            {% endfor %}
+
+            <li class="list-group-item">
+                <form action="" class="d-flex">
+                    <input type="text" class="form-control" placeholder="{{ placeholder }}"></input>
+                    <button type="submit" class="ms-3 btn btn-success">{{ _('Add') }}</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+{%- endmacro -%}
+
+{% block content %}
+<h2>{{ _('Settings') }}</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        {{ render_edit_list(_('Location types'), _('New location type'), ['Mine', 'Shaft']) }}
+        {{ render_edit_list(_('Material types'), _('Material type'), ['Iron', 'Gold', 'Slate']) }}
+        {{ render_edit_list(_('Location state'), _('Location state'), ['Demolished', 'Accessible', 'Guarded']) }}
+    </div>
+    <div class="col-md-6">
+        {{ render_edit_list(_('Country'), _('Country'), ['Česko', 'Polsko', '...']) }}
+        {{ render_edit_list(_('Area'), _('Area'), ['Jihomoravský', 'Olomoucký', '...']) }}
+    </div>
+</div>
+
+<div class="card card-content">
+    <h3 class="card-header">{{ _('Generic') }}</h3>
+    <div class="card-body">
+        <!--
+            - records per page
+            - allow inivitations
+            -
+        -->
+    </div>
+</div>
+
+{% endblock %}

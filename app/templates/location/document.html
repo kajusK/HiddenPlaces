@@ -1,0 +1,41 @@
+{% extends "_private.html" %}
+{% from '_helpers.html' import render_label %}
+
+{% block content %}
+
+<div class="card">
+    <h4 class="card-header">
+        {{ _('Add document for') }} {{ location.name }}
+    </h4>
+    <div class="card-body">
+        <form method="POST" action="" role="form" class="row">
+            {{ form.csrf_token }}
+
+            <div class="form-group">
+                {{ render_label(form.name, 'pencil') }}
+                {{ form.name(class_="form-control", placeholder=_('Document name')) }}
+            </div>
+
+            <div class="form-group">
+                {{ render_label(form.description, 'card-text', 'form-label') }}
+                {{ form.description(class_="form-control", placeholder=_('Short description of the document')) }}
+            </div>
+
+            <div class="form-group">
+                {{ render_label(form.source, 'person', 'form-label') }}
+                {{ form.source(class_="form-control", placeholder=_('Source of the document')) }}
+            </div>
+
+            <div class="form-group">
+                {{ render_label(form.file, 'file-earmark-text', 'form-label') }}
+                {{ form.file(class_="form-control") }}
+            </div>
+
+            <div class="form-group text-end">
+                <a href="{{ url_for('location.show', id=location.id)  }}" class="btn btn-danger">{{ _('Cancel') }}</a>
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

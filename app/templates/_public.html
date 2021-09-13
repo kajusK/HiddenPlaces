@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block wrapper %}
+<div class="container-fluid row justify-content-center h-100">
+    <div class="text-center" style="width: 330px; margin: auto">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <footer class="text-center fixed-bottom">
+        <p class="mt-5 mb-3 text-muted">&copy; Jakub Kaderka 2021</p>
+    </footer>
+</div>
+{% endblock %}

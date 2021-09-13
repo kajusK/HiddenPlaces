@@ -1,0 +1,33 @@
+<div class="card content-card">
+    <div class="card-header">
+        {{ _('Visits') }}
+    </div>
+
+    <div class="list-group list-group-flush">
+        <div class="list-group-item">
+            <form class="form" method="POST" action="" role="form">
+                {{ form.csrf_token }}
+                {{ form.comment(placeholder=_('How was your visit?'), class_="form-control") }}
+                <div class="d-flex justify-content-between mt-2">
+                    <div class="row">
+                        {{ form.date.label(class_="col-auto col-form-label") }}
+                        <div class="col-auto">
+                            {{ form.date(placeholder=_('1.12.2020'), class_="form-control") }}
+                        </div>
+                    </div>
+                    {{ form.submit(class_="btn btn-success mt-2") }}
+                </div>
+            </form>
+        </div>
+
+        {% for visit in location.visits %}
+        <a href="{{ url_for('user.profile', id=visit.user_id) }}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <strong class="mb-1">{{ visit.user.first_name }} {{ visit.user.last_name }}</strong>
+                <small>{{ visit.visited_on }}</small>
+            </div>
+            <p class="mb-0">{{ visit.comment }}</p>
+        </a>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,45 @@
+{% extends '_private.html' %}
+{% from '_helpers.html' import render_pagination, card_count, link_button %}
+
+{% block content %}
+<div class="row">
+    {{ card_count(_('Waiting'), 0, 'shield', 'text-warning') }}
+    {{ card_count(_('Approved'), 0, 'check-lg', 'text-success') }}
+    {{ card_count(_('Denied'), 0, 'x-lg', 'text-danger') }}
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>{{ _('Invitations') }}</h3>
+    </div>
+    <div class="card-body pb-0">
+        <table class="table">
+            <thead class="bg-light">
+                <tr>
+                    <th scope="col">{{ _('Created') }}</th>
+                    <th scope="col">{{ _('Inviter') }}</th>
+                    <th scope="col">{{ _('State') }}</th>
+                    <th scope="col">{{ _('Description') }}</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class="align-middle">
+                <tr>
+                    <td>21-2-2021</td>
+                    <td><a href="#">People Inviter</a></td>
+                    <!-- link to registered user, waiting to register, approved, expired, aborted -->
+                    <td class="text-warning">Waiting to register</td>
+                    <td>Some very long text with all the unimportant crap about the user I invited, I don't know who he is and why I should talk to him at all</td>
+                    <td class="text-end">
+                        {{ link_button(_('Approve'), '#', 'check-lg', 'warning') }}
+                        {{ link_button(_('Deny'), '#', 'x-lg', 'danger') }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        {{ render_pagination() }}
+    </div>
+</div>
+
+{% endblock %}

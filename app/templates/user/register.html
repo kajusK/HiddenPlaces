@@ -1,28 +1,51 @@
-{% extends "base.html" %}
+{% extends "_public.html" %}
+{% from "_helpers.html" import render_floating_field as render_field, render_submit %}
+
 {% block content %}
-<div class="container-narrow">
-  <h1 class="mt-5">Register</h1>
-    <br/>
-    <form id="registerForm" class="form form-register" method="POST" action="" role="form">
-           {{ form.csrf_token }}
-            <div class="form-group">
-                {{form.username.label}}
-                {{form.username(placeholder=_('Username'), class_="form-control")}}
+{% if form.errors|length == 0 %}
+<script>
+    window.onload = function(){
+        var modal = new bootstrap.Modal(document.getElementById('rulesModal'))
+        modal.show()
+    }
+</script>
+{% endif %}
+
+<div class="modal fade" id="rulesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="rulesModalTitle">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" if="rulesModalTitle">{{ _('Page rules') }}</h5>
             </div>
-            <div class="form-group">
-                {{form.email.label}}
-                {{form.email(placeholder=_('Email'), class_="form-control")}}
+            <div class="modal-body">
+                Some page rules - TODO
             </div>
-            <div class="form-group">
-                {{form.password.label}}
-                {{form.password(placeholder=_('Password'), class_="form-control")}}
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                    {{ _('Understood') }}
+                </button>
             </div>
-            <div class="form-group">
-                {{form.confirm.label}}
-                {{form.confirm(placeholder=_('Password (again)'), class_="form-control")}}
-            </div>
-            <p><input class="btn btn-primary" type="submit" value="{{_('Register')}}"></p>
-    </form>
-    <a href="{{ url_for('user.login') }}">{{_('LogIn')}}</a>
+        </div>
+    </div>
 </div>
+
+<form method="POST" action="" role="form">
+    <img class="mb-2" src="{{ url_for('static', filename='images/favicon.ico') }}" alt="">
+    <h1 class="mb-3 fw-bold">{{ _('Hidden places') }}</h1>
+    <h3 class="mb-3 fw-bold">{{ _('Register new user') }}</h3>
+
+    {{ form.csrf_token }}
+
+    {{ render_field(form.first_name, placeholder=_('First name')) }}
+    {{ render_field(form.last_name, placeholder=_('Last name')) }}
+    {{ render_field(form.email, placeholder='name@example.com', class="mb-4") }}
+    {{ render_field(form.password, placeholder=_('Password')) }}
+    {{ render_field(form.confirm, placeholder=_('Password (again)')) }}
+    {% set rules_btn = '<a data-bs-toggle="modal" href="#rulesModal" role="button">' | safe %}
+    {% set rules_btn = rules_btn+_('Page rules')+'</a>' | safe %}
+    {{ render_field(form.rules_agree, label=_('I will follow the ')+rules_btn) }}
+    {{ render_submit(form.submit, class="mb-3 w-100 btn-lg") }}
+
+    <a href="{{ url_for('user.login') }}">{{_('Log In')}}</a>
+</form>
 {% endblock %}

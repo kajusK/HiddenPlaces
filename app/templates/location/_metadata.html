@@ -1,0 +1,16 @@
+<div class="card content-card">
+    <div class="card-header">
+        {{ _('Metadata') }}
+    </div>
+    <img class="card-img-top" src="{{ url_for('static', filename='images/favicon.ico') }}" alt="Location photo">
+    <div class="card-body">
+        {{ _('Created') }}: {{ location.created_on }}<br>
+        {{ _('Last updated') }}: {{ location.modified_on }}<br>
+        {{ _('Maintainer') }}: <a href="{{ url_for('user.profile', id=location.owner_id) }}">{{ location.owner.first_name }} {{ location.owner.last_name }}</a><br>
+        {{ _('Approved by') }}: Meeeeee<br>
+        <hr>
+        {{ _('Materials') }}: <a href="#" class="badge bg-secondary text-decoration-none">Gold</a> <a href="#" class="badge bg-secondary text-decoration-none">Iron</a> <br>
+        {{ _('Abandoned') }}: {{ 'Unknown' if 0 else '123' }} <br>
+        {{ _('Length') }}: {{ 'Unknown' if 0 else '1250' }} m <br>
+    </div>
+</div>

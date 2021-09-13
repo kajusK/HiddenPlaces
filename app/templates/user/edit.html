@@ -1,0 +1,30 @@
+{% extends '_private.html' %}
+
+{% block content %}
+<div class="card">
+    <h4 class="card-header">
+        {{ _('Edit profile of') }} {{ current_user.first_name }} {{ current_user.last_name }}
+    </h4>
+    <div class="card-body">
+        <form method="POST" action="" role="form">
+            {{ form.csrf_token }}
+            <div class="mb-2">
+                {{ _('Supports markdown formatting, check the ') }}<a href="https://www.markdownguide.org/basic-syntax/">{{ _('syntax') }}</a>
+            </div>
+
+            {{ form.about(class_="form-control", style="min-height: 20em", placeholder=_('Write something about yourself')) }}
+            <div class="row mt-2">
+                {{ form.photo.label(class_="col-form-label col-auto") }}
+                <div class="col-auto">
+                    {{ form.photo(class="form-control") }}
+                </div>
+            </div>
+            <div class="mt-2 text-end">
+                <a href="{{ url_for('user.profile') }}" class="btn btn-danger">{{ _('Cancel') }}</a>
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

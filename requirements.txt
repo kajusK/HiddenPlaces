@@ -4,8 +4,11 @@ Flask-SQLAlchemy
 Flask-Babel
 Flask-Login
 Flask-Bcrypt
+Flask-Misaka
+flask-migrate
 SQLAlchemy
 gunicorn
 environs
 is_safe_url
 email-validator
+datetime

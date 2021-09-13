@@ -1,12 +1,69 @@
-{% extends "base.html" %}
-{% block content %}
-{{_('Username')}}: {{ current_user.username }}<br/>
-{{_('Email')}}: {{ current_user.email }}<br/>
-{{_('Created')}}: {{ current_user.date_created }}<br/>
-{{_('Last login')}}: {{ current_user.last_login }}<br/>
-{{_('Active')}}: {{ current_user.active }}<br/>
-<br/>
-<br/>
+{% extends "_private.html" %}
 
-<a href="{{url_for('user.logout')}}">{{_('Logout')}}</a>
+{% block content %}
+<div class="row">
+    <div class="col">
+        <div class="text-end m-3">
+            <a href="#" class="btn btn-outline-primary">
+                {{ _('Send message') }}
+            </a>
+            <a href="{{ url_for('user.edit') }}" class="btn btn-outline-success">
+                {{ _('Edit') }}
+            </a>
+            <a href="{{ url_for('user.change_password') }}" class="btn btn-outline-success">
+                {{ _('Change password') }}
+            </a>
+            <!-- Admin section -->
+            <a href="{{ url_for('user.ban') }}" class="btn btn-outline-danger">
+                {{ _('Ban') }}
+            </a>
+            <a href="{{ url_for('user.role') }}" class="btn btn-outline-danger">
+                {{ _('Set role') }}
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3 mb-2">
+        <div class="card">
+            <div class="row card-body">
+                <img class="p-0 col-5 col-xl-12" src="{{ url_for('static', filename='images/person_placeholder.png') }}" alt="Profile photo">
+                <div class="col">
+                    <h3 class="card-title">{{ user.first_name }} {{ user.last_name }}</h3>
+                    {{ _('Created') }}: {{ user.date_created.date() }}<br>
+                    {{ _('Last login') }}: {{ user.last_login.date() }}<br>
+
+                    <!-- Todo images -->
+                    <a href="#" class="badge bg-success">{{ visits | length }}</a>{{ _('Visits') }}<br/>
+                    <a href="#" class="badge bg-success">{{ locations | length }}</a>{{ _('Locations') }}<br>
+
+                    <!-- Admin section -->
+                    {{ user.email }}<br>
+                    {{ _('Status') }}: Active/banned<br>
+                    {{ _('Role') }}: Admin<br>
+                    {{ _('Invited by' )}}: <a href="#">Foo bar</a><br>
+                    {{ _('Invited') }}:
+                    <div class="list-group">
+                        <a href="#" class="text-center list-group-item list-group-item-action">Name Surname</a>
+                        <a href="#" class="text-center list-group-item list-group-item-action">Name Surname</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-header text-end">
+                {{ _('About') }}
+            </div>
+            <div class="card-body">
+                {% if user.about %}
+                    {{ user.about | markdown }}
+                {% else %}
+                    {{ _('Write something about youself') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
