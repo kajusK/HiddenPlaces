@@ -100,6 +100,6 @@ def register():
                 password=form.password.data
             )
             user.commit()
-            flash("New user registered, you can log in now")
+            flash("New user registered, you can log in now", "success")
             return redirect(url_for('user.login'))
     return render_template('user/register.html', form=form)

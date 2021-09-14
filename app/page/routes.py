@@ -6,6 +6,12 @@ from .forms import ContactForm, EditForm
 blueprint = Blueprint('page', __name__, url_prefix="/")
 
 
+@blueprint.route('/')
+@login_required
+def home():
+    return redirect(url_for('location.browse'))
+
+
 @blueprint.route('/page/edit/<int:id>/')
 @login_required
 def edit(id):
