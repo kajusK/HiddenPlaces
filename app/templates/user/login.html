@@ -1,5 +1,6 @@
+{% set title=_('Login') %}
 {% extends "_public.html" %}
-{% from "_helpers.html" import render_floating_field as render_field, render_submit %}
+{% from "_helpers.html" import render_floating_field, render_field %}
 
 {% block content %}
 <form method="POST" action="" role="form">
@@ -8,10 +9,10 @@
 
     {{ form.hidden_tag() }}
 
-    {{ render_field(form.email, placeholder='name@example.com') }}
-    {{ render_field(form.password, placeholder=_('Password')) }}
+    {{ render_floating_field(form.email, placeholder='name@example.com') }}
+    {{ render_floating_field(form.password, placeholder=form.password.label.text) }}
     {{ render_field(form.remember_me) }}
-    {{ render_submit(form.submit, class="mb-3 w-100 btn-lg") }}
+    {{ form.submit(class_="btn btn-primary mb-3 w-100 btn-lg") }}
 
     <a href="{{ url_for('user.reset_password') }}">{{ _('Forgot password?') }}</a>
 </form>

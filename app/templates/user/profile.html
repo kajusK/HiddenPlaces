@@ -1,5 +1,6 @@
-{% set title="foobar" %}
+{% set title=user.first_name+" "+user.last_name %}
 {% extends "_private.html" %}
+{% from "_helpers.html" import link_button %}
 
 {% block content %}
 <div class="row">
@@ -8,19 +9,12 @@
             <a href="#" class="btn btn-outline-primary">
                 {{ _('Send message') }}
             </a>
-            <a href="{{ url_for('user.edit') }}" class="btn btn-outline-success">
-                {{ _('Edit') }}
-            </a>
-            <a href="{{ url_for('user.change_password') }}" class="btn btn-outline-success">
-                {{ _('Change password') }}
-            </a>
+
+            {{ link_button(_('Edit'), url_for('user.edit'), color='outline-success') }}
+            {{ link_button(_('Change password'), url_for('user.change_password'), color='outline-success') }}
             <!-- Admin section -->
-            <a href="{{ url_for('user.ban', user_id=user.id) }}" class="btn btn-outline-danger">
-                {{ _('Ban') }}
-            </a>
-            <a href="{{ url_for('user.role', user_id=user.id) }}" class="btn btn-outline-danger">
-                {{ _('Set role') }}
-            </a>
+            {{ link_button(_('Ban'), url_for('user.ban', user_id=user.id), color='outline-danger') }}
+            {{ link_button(_('Set role'), url_for('user.role', user_id=user.id), color='outline-danger') }}
         </div>
     </div>
 </div>

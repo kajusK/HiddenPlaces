@@ -118,7 +118,7 @@ def edit():
         return redirect(url_for('user.profile'))
     if request.method == 'GET':
         form.about.data = current_user.about
-    return render_template('user/edit.html', form=form)
+    return render_template('user/edit.html', form=form, user=current_user)
 
 
 @blueprint.route('/change_password', methods=['GET', 'POST'])

@@ -1,36 +1,47 @@
-{%- macro render_submit(field, class='') -%}
-    {{ field(class_="btn btn-primary "+class, **kwargs) | safe }}
-{%- endmacro %}
+{%- macro render_label(field, image=None, class='', label=None) -%}
+    {% set label_class = 'form-label' -%}
+    {% if field.type == 'BooleanField' %}
+        {% set label_class = 'form-check-label' %}
+    {% endif -%}
 
-{%- macro render_label(field, image=None, class='') -%}
-    <label class="form-label {{ class }}" for="{{ field.id }}">
+    <label class="{{ label_class }} {{ class }}" for="{{ field.id }}">
         {% if image %}
         <i class="bi bi-{{ image }}"></i>
         {% endif %}
-        {{ field.label.text }}
+        {{ label or field.label.text }}
     </label>
 {%- endmacro %}
 
-{%- macro render_floating_field(field, class='', label='') -%}
-    {% set parent_class = 'form-floating' %}
-    {% set field_class = 'form-control' %}
-    {% set label_class = 'form-label' -%}
+{%- macro render_form_field(field, image=None, skip_label=False, class='', label=None, floating=False, description=None) -%}
+    {% set group_class = 'form-group' %}
+    {% if floating %}
+        {% set group_class = 'form-floating mb-2' %}
+    {% endif%}
 
+    {% set field_class = 'form-control' %}
     {% if field.type == 'BooleanField' %}
-        {% set parent_class = '' %}
         {% set field_class = 'form-check-input' %}
-        {% set label_class = 'form-check-label' %}
     {% endif -%}
 
     {% if field.errors %}
         {% set field_class = field_class+' is-invalid' %}
     {% endif -%}
 
-    <div class="{{ parent_class }} {{ class or 'mb-2' }}">
-        {{ field(class_=field_class, **kwargs)|safe }}
-        <label for="{{ field.id }}" class="{{ label_class }}">
-            {{ label or field.label.text }}
-        </label>
+    <div class="{{ group_class }} {{ class }}">
+        {% if floating %}
+            {{ field(class=field_class, **kwargs) }}
+        {% endif %}
+
+        {% if not skip_label %}{{ render_label(field, image, '', label) }}{% endif %}
+
+        {% if not floating %}
+        {{ field(class=field_class, **kwargs) }}
+        {% endif %}
+
+        {% if field.description or description %}
+        <p class="form-text">{{ (field.description or description)|safe }}</p>
+        {% endif %}
+
         {% if field.errors %}
         <ul class='invalid-feedback'>
             {% for error in field.errors %}
@@ -40,11 +51,16 @@
             {% endfor %}
         </ul>
         {% endif %}
-        {% if field.description %}
-        <p class="form-text">{{ field.description|safe }}</p>
-        {% endif %}
     </div>
-{%- endmacro %}
+{%- endmacro -%}
+
+{%- macro render_field(field, image=None, skip_label=False, class='') -%}
+    {{ render_form_field(field, image, skip_label, class, **kwargs) | safe }}
+{%- endmacro -%}
+
+{%- macro render_floating_field(field, class='', label=None) -%}
+    {{ render_form_field(field, None, False, class, label, floating=True, **kwargs) | safe }}
+{%- endmacro -%}
 
 {%- macro dropdown_link(name, image, url, badge=None) -%}
     <li>

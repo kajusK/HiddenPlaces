@@ -1,5 +1,6 @@
+{% set title=_('Register') %}
 {% extends "_public.html" %}
-{% from "_helpers.html" import render_floating_field as render_field, render_submit %}
+{% from "_helpers.html" import render_floating_field, render_field %}
 
 {% block content %}
 {% if form.errors|length == 0 %}
@@ -36,15 +37,15 @@
 
     {{ form.hidden_tag() }}
 
-    {{ render_field(form.first_name, placeholder=_('First name')) }}
-    {{ render_field(form.last_name, placeholder=_('Last name')) }}
-    {{ render_field(form.email, placeholder='name@example.com', class="mb-4") }}
-    {{ render_field(form.password, placeholder=_('Password')) }}
-    {{ render_field(form.confirm, placeholder=_('Password (again)')) }}
+    {{ render_floating_field(form.first_name, placeholder=form.first_name.label.text) }}
+    {{ render_floating_field(form.last_name, placeholder=form.last_name.label.text }}
+    {{ render_floating_field(form.email, placeholder='name@example.com', class="mb-4") }}
+    {{ render_floating_field(form.password, placeholder=form.password.label.text) }}
+    {{ render_floating_field(form.confirm, placeholder=form.confirm.label.text) }}
     {% set rules_btn = '<a data-bs-toggle="modal" href="#rulesModal" role="button">' | safe %}
     {% set rules_btn = rules_btn+_('Page rules')+'</a>' | safe %}
     {{ render_field(form.rules_agree, label=_('I will follow the ')+rules_btn) }}
-    {{ render_submit(form.submit, class="mb-3 w-100 btn-lg") }}
+    {{ form.submit(class_="btn btn-primary mb-3 w-100 btn-lg") }}
 
     <a href="{{ url_for('user.login') }}">{{_('Log In')}}</a>
 </form>

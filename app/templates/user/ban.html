@@ -1,28 +1,21 @@
+{% set title=_('Ban')+" "+user.first_name+" "+user.last_name %}
 {% extends '_private.html' %}
-{% from '_helpers.html' import render_label %}
+{% from '_helpers.html' import render_label, render_field, link_button %}
 
 {% block content %}
 <div class="card">
     <h4 class="card-header">
-        {{ _('Ban') }} {{ user.first_name }} {{ user.last_name }}
+        {{ title }}
     </h4>
     <div class="card-body">
         <form method="POST" action="" role="form">
             {{ form.hidden_tag() }}
-
-            <div class="form-group">
-                {{ render_label(form.reason, 'pencil') }}
-                {{ form.reason(class_="form-control", placeholder=_('Why are you banning this guy?')) }}
-            </div>
-
-            <div class="form-group">
-                {{ render_label(form.days, 'calendar-day') }}
-                {{ form.days(class_="form-control", placeholder=_('Amount of days to ban for.')) }}
-            </div>
+            {{ render_field(form.reason, 'pencil', placeholder=_('Why are you banning this guy?')) }}
+            {{ render_field(form.days, 'calendar-day', placeholder=_('Amount of days to ban for.')) }}
 
             <div class="d-flex justify-content-between align-items-end">
                 <div>
-                    {{ render_label(form.permanent, 'shield', 'form-label') }}<br>
+                    {{ render_label(form.permanent, 'shield') }}<br>
                     <div class="btn-group" role="group">
                         {% for subfield in form.permanent %}
                             {{ subfield(class_="btn-check") }}
@@ -32,6 +25,7 @@
                 </div>
 
                 <div class="mt-2 text-end">
+                    {{ link_button(_('Cancel'), url_for('user.profile', user_id=user.id), color='danger') }}
                     {{ form.submit(class="btn btn-success") }}
                 </div>
             </div>
