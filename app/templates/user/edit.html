@@ -7,7 +7,7 @@
     </h4>
     <div class="card-body">
         <form method="POST" action="" role="form">
-            {{ form.csrf_token }}
+            {{ form.hidden_tag() }}
             <div class="mb-2">
                 {{ _('Supports markdown formatting, check the ') }}<a href="https://www.markdownguide.org/basic-syntax/">{{ _('syntax') }}</a>
             </div>

@@ -1,2 +1,2 @@
-# -*- coding: utf-8 -*-
-from . import routes
+""" Users handling. """
+from app.user import routes

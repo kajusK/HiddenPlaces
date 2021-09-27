@@ -1,12 +1,28 @@
+"""Initialize the Flask web application."""
 import logging
-from flask import Flask, request, redirect, url_for, flash
-from app.extensions import db, login_manager, bcrypt, babel, misaka
+from typing import Dict, Any, Optional
+from flask import Flask, request, redirect, url_for, flash, current_app
+from flask_login import current_user
+
 from app import errors, user, location, admin, page, message
+from app.commands import user_cli
 from app.user.models import User
-from flask import current_app as app
+from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka
 
 
-def create_app(config_object='app.settings', config_override={}):
+def create_app(config_object: str = 'app.config.Config',
+               config_override: Dict[str, Any] = {}) -> Flask:
+    """Flask application factory.
+
+    Initializes flask appliacation and return it.
+    Args:
+        config_object: Path to application settings.
+        config_override: Overwrite specific config items.
+    Returns:
+        Initialized Flask application object
+    """
+    # pylint: disable=dangerous-default-value
+
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_object)
     for key, value in config_override.items():
@@ -21,6 +37,7 @@ def create_app(config_object='app.settings', config_override={}):
 
     # init extensions
     db.init_app(app)
+    migrate.init_app(app, db)
     login_manager.init_app(app)
     bcrypt.init_app(app)
     babel.init_app(app)
@@ -34,35 +51,88 @@ def create_app(config_object='app.settings', config_override={}):
     app.register_blueprint(message.routes.blueprint)
 
     # register error handlers
+    app.register_error_handler(403, errors.error_403)
     app.register_error_handler(404, errors.error_404)
     app.register_error_handler(500, errors.error_500)
-    app.register_error_handler(Exception, errors.unhandled_exception)
+    if not app.config['DEBUG']:
+        app.register_error_handler(Exception, errors.unhandled_exception)
+
+    # register custom flask commands
+    app.cli.add_command(user_cli)
 
     # modify jinja2 environment
     app.jinja_env.trim_blocks = True
     app.jinja_env.lstrip_blocks = True
+    # Disable caching limit, improves performance
+    app.jinja_env.cache = {}
+
+    # register functions to be called before each request
+    register_before_requests(app)
 
     return app
 
 
+def register_before_requests(app: Flask) -> None:
+    """Sets before request callback
+
+    Args:
+        app: Flask application object to register callbacks to
+    """
+    @app.before_request
+    def require_login_everywhere():
+        """Requires user to be logged in
+
+        Require logged-in user to access every endpoint with exception of
+        static files and pages explicitly marked as public
+        """
+        public = request.endpoint and getattr(
+            app.view_functions[request.endpoint], 'is_public', False)
+        static = request.path.startswith('/static/')
+        if public or static or current_user.is_authenticated:
+            return None
+        return unauthorized()
+
+    @app.before_request
+    def update_last_seen() -> None:
+        """Updates last seen field of currently logged in user
+
+        Keeps track of user actions on the page - stores last user access
+        """
+        if current_user.is_authenticated:
+            current_user.update_last_seen()
+            db.session.commit()
+
+
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(user_id: int):
+    """Loads current user from database
+
+    Used by flask login manager to obtain current user information
+
+    Args:
+        user_id: ID of the user to fetch data for.
+    Returns:
+        User object or None if not found
+    """
     return User.get_by_id(user_id)
 
 
 @login_manager.unauthorized_handler
 def unauthorized():
-    flash("Not authorized to access this page, please log-in")
+    """Handles unauthorized access (user not logged in)."""
+    flash("Not authorized to access this page, please log-in", "danger")
     return redirect(url_for('user.login', next=request.path))
 
 
 @babel.localeselector
-def get_locale():
+def get_locale() -> Optional[str]:
+    """Chooses a locale for babel package from client's accept language."""
     return request.accept_languages.best_match(
-        app.config['SUPPORTED_LANGUAGES'].keys())
+        current_app.config['SUPPORTED_LANGUAGES'].keys())
 
 
 @babel.timezoneselector
 def get_timezone():
+    """Selects timezone for babel package."""
     # TODO get timezone from user settings
     return None

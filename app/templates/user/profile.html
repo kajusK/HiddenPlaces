@@ -1,3 +1,4 @@
+{% set title="foobar" %}
 {% extends "_private.html" %}
 
 {% block content %}
@@ -14,10 +15,10 @@
                 {{ _('Change password') }}
             </a>
             <!-- Admin section -->
-            <a href="{{ url_for('user.ban') }}" class="btn btn-outline-danger">
+            <a href="{{ url_for('user.ban', user_id=user.id) }}" class="btn btn-outline-danger">
                 {{ _('Ban') }}
             </a>
-            <a href="{{ url_for('user.role') }}" class="btn btn-outline-danger">
+            <a href="{{ url_for('user.role', user_id=user.id) }}" class="btn btn-outline-danger">
                 {{ _('Set role') }}
             </a>
         </div>
@@ -30,8 +31,8 @@
                 <img class="p-0 col-5 col-xl-12" src="{{ url_for('static', filename='images/person_placeholder.png') }}" alt="Profile photo">
                 <div class="col">
                     <h3 class="card-title">{{ user.first_name }} {{ user.last_name }}</h3>
-                    {{ _('Created') }}: {{ user.date_created.date() }}<br>
-                    {{ _('Last login') }}: {{ user.last_login.date() }}<br>
+                    {{ _('Created') }}: {{ user.created.date() }}<br>
+                    {{ _('Last seen') }}: {{ user.last_seen.date() }}<br>
 
                     <!-- Todo images -->
                     <a href="#" class="badge bg-success">{{ visits | length }}</a>{{ _('Visits') }}<br/>
@@ -39,7 +40,7 @@
 
                     <!-- Admin section -->
                     {{ user.email }}<br>
-                    {{ _('Status') }}: Active/banned<br>
+                    {{ _('Status') }}: {{ _("Active") if user.active else _("Banned") }}<br>
                     {{ _('Role') }}: Admin<br>
                     {{ _('Invited by' )}}: <a href="#">Foo bar</a><br>
                     {{ _('Invited') }}:

@@ -6,7 +6,7 @@
     <img class="mb-2" src="{{ url_for('static', filename='images/favicon.ico') }}" alt="">
     <h1 class="h2 mb-3 fw-bold">{{ _('Hidden places') }}</h1>
 
-    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
 
     {{ render_field(form.email, placeholder='name@example.com') }}
     {{ render_field(form.password, placeholder=_('Password')) }}

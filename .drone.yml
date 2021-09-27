@@ -3,6 +3,13 @@ type: docker
 name: default
 
 steps:
+- name: lint
+  image: python:3
+  commands:
+    - pip install pylint flake8 pylint-flask-sqlalchemy
+    - flake8 app
+    - pylint app
+
 - name: tests
   image: python:3
   commands:

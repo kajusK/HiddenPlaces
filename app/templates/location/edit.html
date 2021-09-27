@@ -17,7 +17,7 @@
 </h2>
 
 <form method="POST" action="" role="form" class="row">
-    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
 
     <div class="col">
         <div class="card content-card">

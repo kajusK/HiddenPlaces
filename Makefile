@@ -1,4 +1,4 @@
-.PHONY: build run lint tests coverage run_docker
+.PHONY: build run lint unittests tests coverage run_docker ci all
 
 app_name = hidden_places
 
@@ -12,14 +12,25 @@ run:
 	python run.py
 
 lint:
-	@echo "linting packages and modules ..."
+	@echo "Linting packages and modules ..."
+	@mypy app
 	@pylint app
 	@pylint tests
+	@jinjalint app/templates
+
+unittests:
+	@echo "Running unit tests ..."
+	@pytest tests/unit
 
 tests:
-	@echo "running tests ..."
-	@python -m pytest -v
+	@echo "Running all tests ..."
+	@pytest tests
 
 coverage:
 	@echo "Checking code coverage"
 	@python -m pytest --cov=project
+
+ci:
+	@drone exec --pipeline=test
+
+all: tests coverage lint

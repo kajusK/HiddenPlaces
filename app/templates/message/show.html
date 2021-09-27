@@ -8,7 +8,7 @@
     <div class="list-group list-group-flush">
         <div class="list-group-item">
             <form class="form" method="POST" action="" role="form">
-                {{ form.csrf_token }}
+                {{ form.hidden_tag() }}
                 {{ form.message(placeholder=_('Message'), class_="form-control") }}
                 <div class="text-end mt-2">
                     {{ form.submit(class="btn btn-success") }}

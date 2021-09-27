@@ -6,7 +6,7 @@
     <h2 class="card-header">{{ _('Edit page') }} {{ page_name }}</h2>
     <div class="card-body">
         <form method="POST" action="" role="form" method="POST">
-            {{ form.csrf_token }}
+            {{ form.hidden_tag() }}
 
             <div class="form-group">
                 {{ render_label(form.text, 'pencil') }}

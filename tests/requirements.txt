@@ -1,1 +1,6 @@
+pylint
+pylint-flask-sqlalchemy
+flake8
 pytest
+pytest-subtests
+jinjalint

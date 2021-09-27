@@ -15,10 +15,10 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" if="rulesModalTitle">{{ _('Page rules') }}</h5>
+                <h5 class="modal-title" if="rulesModalTitle">{{ rules.title }}</h5>
             </div>
             <div class="modal-body">
-                Some page rules - TODO
+                {{ rules.text | markdown }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
@@ -34,7 +34,7 @@
     <h1 class="mb-3 fw-bold">{{ _('Hidden places') }}</h1>
     <h3 class="mb-3 fw-bold">{{ _('Register new user') }}</h3>
 
-    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
 
     {{ render_field(form.first_name, placeholder=_('First name')) }}
     {{ render_field(form.last_name, placeholder=_('Last name')) }}

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, abort, redirect, url_for, flash
 from flask_login import login_required, current_user
 
-from app.user.models import User
+from app.user.models import User, Invitation, LoginLog
 from app.location.models import Location
 
 blueprint = Blueprint('admin', __name__, url_prefix="/admin")
@@ -24,7 +24,8 @@ def locations():
 @blueprint.route('/invitations')
 @login_required
 def invitations():
-    return render_template("admin/invitations.html")
+    invitations = Invitations.query.all()
+    return render_template("admin/invitations.html", invitations=invitations)
 
 
 @blueprint.route('/settings')
@@ -36,4 +37,5 @@ def settings():
 @blueprint.route('/logins')
 @login_required
 def logins():
-    return render_template("admin/logins.html")
+    logins = LoginLog.query.all()
+    return render_template("admin/logins.html", logins=logins)

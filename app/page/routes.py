@@ -8,7 +8,7 @@ blueprint = Blueprint('page', __name__, url_prefix="/")
 
 @blueprint.route('/')
 @login_required
-def home():
+def index():
     return redirect(url_for('location.browse'))
 
 

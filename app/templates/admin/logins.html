@@ -19,31 +19,41 @@
                 <tr>
                     <th scope="col">{{ _('Time') }}</th>
                     <th scope="col">{{ _('IP') }}</th>
+                    <th scope="col">{{ _('Location') }}</th>
+                    <th scope="col">{{ _('System') }}</th>
+                    <th scope="col">{{ _('Browser') }}</th>
                     <th scope="col">{{ _('Email') }}</th>
-                    <th scope="col">{{ _('Device') }}</th>
                     <th scope="col">{{ _('Result') }}</th>
                 </tr>
             </thead>
             <tbody class="align-middle">
+                {% for login in logins %}
                 <tr class="table-success">
                     <td>21-2-2021 17:52:15</td>
                     <td>192.168.1.1</td>
+                    <td>Czechia</td>
+                    <td>Linux</td>
+                    <td>Firefox 1.2.3</td>
                     <td><a href="#">mee@too.com</a></td>
-                    <td>Android/Firefox</td>
                     <td>Success</td>
                 </tr>
+                {% endfor %}
                 <tr class="table-warning">
                     <td>21-2-2021 19:21:11</td>
                     <td>192.168.1.1</td>
+                    <td>Austria</td>
+                    <td>Windows</td>
+                    <td>Firefox 1.2.3</td>
                     <td><a href="#">mee@too.com</a></td>
-                    <td>Android/Firefox</td>
                     <td>Invalid password</td>
                 </tr>
                 <tr class="table-danger">
                     <td>21-2-2021 19:21:11</td>
                     <td>192.168.1.1</td>
+                    <td>Austria</td>
+                    <td>Android</td>
+                    <td>Chrome 1.2.3</td>
                     <td>invalid@email.com</td>
-                    <td>Android/Firefox</td>
                     <td>Invalid email</td>
                 </tr>
             </tbody>

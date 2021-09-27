@@ -23,31 +23,31 @@ def app():
     os.unlink(db_path)
 
 
-@pytest.fixture(scope='session')
-def client(app):
-    item1 = User(
-        username=user1['name'],
-        email=user1['email'],
-        password=user1['pass']
-    )
-    item2 = User(
-        username=user2['name'],
-        email=user2['email'],
-        password=user2['pass'],
-        active=False
-    )
-    with app.test_client() as client:
-        with app.app_context():
-            _db.drop_all()
-            _db.create_all()
-            _db.session.add(item1)
-            _db.session.add(item2)
-            _db.session.commit()
-            yield client
-
-
-@pytest.fixture
-def login_default_user(client):
-    login(client, user1['name'], user1['pass'])
-    yield
-    logout(client)
+#@pytest.fixture(scope='session')
+#def client(app):
+#    item1 = User(
+#        username=user1['name'],
+#        email=user1['email'],
+#        password=user1['pass']
+#    )
+#    item2 = User(
+#        username=user2['name'],
+#        email=user2['email'],
+#        password=user2['pass'],
+#        active=False
+#    )
+#    with app.test_client() as client:
+#        with app.app_context():
+#            _db.drop_all()
+#            _db.create_all()
+#            _db.session.add(item1)
+#            _db.session.add(item2)
+#            _db.session.commit()
+#            yield client
+#
+#
+#@pytest.fixture
+#def login_default_user(client):
+#    login(client, user1['name'], user1['pass'])
+#    yield
+#    logout(client)
