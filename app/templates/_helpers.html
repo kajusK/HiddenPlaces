@@ -121,7 +121,7 @@
     </a>
 {%- endmacro -%}
 
-{%- macro card_count(name, number, image, color='') -%}
+{%- macro card_count(name, number, image, color='', url=None) -%}
     <div class="col-6 col-md-3">
         <div class="card content-card">
             <div class="card-body d-flex">
@@ -132,6 +132,7 @@
                 <div class="d-flex align-items-center">
                     <i class="bi bi-{{ image }} {{ color }}" style="font-size: 50px"></i>
                 </div>
+                {% if url %}<a href="{{ url }}" class='stretched-link'></a>{% endif %}
             </div>
         </div>
     </div>

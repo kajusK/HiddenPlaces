@@ -89,6 +89,7 @@ class Invitation(DBItem):
     key = db.Column(db.String(32), nullable=False, index=True)
 
     reason = db.Column(db.String(MAX_REASON_LEN), nullable=False)
+    created = db.Column(db.DateTime(), nullable=False, default=datetime.utcnow)
     valid_until = db.Column(db.DateTime(), nullable=False)
     state = db.Column(db.Enum(InvitationState), nullable=False,
                       default=InvitationState.WAITING)

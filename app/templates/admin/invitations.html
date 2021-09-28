@@ -3,38 +3,49 @@
 
 {% block content %}
 <div class="row">
-    {{ card_count(_('Waiting'), 0, 'shield', 'text-warning') }}
-    {{ card_count(_('Approved'), 0, 'check-lg', 'text-success') }}
-    {{ card_count(_('Denied'), 0, 'x-lg', 'text-danger') }}
+    {{ card_count(_('Waiting'), waiting, 'shield', 'text-warning', url_for('admin.invitations', state='waiting')) }}
+    {{ card_count(_('Approved'), approved, 'check-lg', 'text-success', url_for('admin.invitations', state='approved')) }}
+    {{ card_count(_('Denied'), denied, 'x-lg', 'text-danger', url_for('admin.invitations', state='denied')) }}
+    {{ card_count(_('Registered'), registered, 'person', 'text-primary', url_for('admin.invitations', state='registered')) }}
 </div>
 
 <div class="card">
     <div class="card-header">
-        <h3>{{ _('Invitations') }}</h3>
+        <h3>{{ title }}</h3>
     </div>
     <div class="card-body pb-0">
         <table class="table">
             <thead class="bg-light">
                 <tr>
-                    <th scope="col">{{ _('Created') }}</th>
                     <th scope="col">{{ _('Inviter') }}</th>
+                    <th scope="col">{{ _('Name') }}</th>
                     <th scope="col">{{ _('State') }}</th>
                     <th scope="col">{{ _('Description') }}</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody class="align-middle">
+                {% for invite in invitations %}
                 <tr>
-                    <td>21-2-2021</td>
-                    <td><a href="#">People Inviter</a></td>
-                    <!-- link to registered user, waiting to register, approved, expired, aborted -->
-                    <td class="text-warning">Waiting to register</td>
-                    <td>Some very long text with all the unimportant crap about the user I invited, I don't know who he is and why I should talk to him at all</td>
+                    <td><a href="{{ url_for('user.profile', user_id=invite.invited_by_id) }}">{{ invite.invited_by.first_name }} {{ invite.invited_by.last_name }}</a></td>
+                    {% if invite.state.name == 'REGISTERED' %}
+                    <td><a href="{{ url_for('user.profile', user_id=invite.user_id)}}">{{ invite.user.first_name }} {{ invite.user.last_name }}</a></td>
+                    {% else %}
+                    <td>{{ invite.name }}</td>
+                    {% endif %}
+
+                    {% if invite.state.name == 'WAITING' %}<td class="text-warning">{{ _('Waiting for approval') }}</td>
+                    {% elif invite.state.name == 'APPROVED' %}<td class="text-primary">{{ _('Approved') }}</td>
+                    {% elif invite.state.name == 'REGISTERED' %}<td class="text-success">{{ _('Registered') }}</td>
+                    {% elif invite.state.name == 'TIMED_OUT' %}<td class="text-warning">{{ _('Timed out') }}</td>
+                    {% else %}<td class="text-danger">{{ _('Denied') }}</td>{% endif %}
+                    <td>{{ invite.reason }}</td>
                     <td class="text-end">
-                        {{ link_button(_('Approve'), '#', 'check-lg', 'warning') }}
-                        {{ link_button(_('Deny'), '#', 'x-lg', 'danger') }}
+                        {% if invite.state.name in ('WAITING', 'DENIED') %}{{ link_button(_('Approve'), url_for('admin.invite_approve', invite_id=invite.id), 'check-lg', 'warning') }}{% endif %}
+                        {% if invite.state.name in ('WAITING', 'APPROVED') %}{{ link_button(_('Deny'), url_for('admin.invite_deny', invite_id=invite.id), 'x-lg', 'danger') }}{% endif %}
                     </td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
 

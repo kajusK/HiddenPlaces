@@ -1,2 +1,2 @@
-# -*- coding: utf-8 -*-
+""" Admin interface handling. """
 from . import routes

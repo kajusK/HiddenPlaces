@@ -3,42 +3,53 @@
 
 {% block content %}
 <div class="row">
-    {{ card_count(_('Users'), users | length, 'person', 'text-success') }}
-    {{ card_count(_('Admins'), users | length, 'gear', 'text-warning') }}
-    {{ card_count(_('Moderators'), users | length, 'chat-left-text', 'text-primary') }}
-    {{ card_count(_('Bans'), 0, 'exclamation-triangle', 'text-danger') }}
+    {{ card_count(_('Users'), users_count, 'person', 'text-success', url_for('admin.users')) }}
+    {{ card_count(_('Admins'), admins_count, 'gear', 'text-warning', url_for('admin.users', role='admins')) }}
+    {{ card_count(_('Moderators'), moderators_count, 'chat-left-text', 'text-primary', url_for('admin.users', role='moderators')) }}
+    {{ card_count(_('Bans'), bans_count, 'exclamation-triangle', 'text-danger', url_for('admin.users', role='bans')) }}
 </div>
 
 <div class="card">
     <div class="card-header">
-        <h3>{{ _('Users') }}</h3>
+        <h3>{{ title }}</h3>
     </div>
     <div class="card-body pb-0">
         <table class="table">
             <thead class="bg-light">
                 <tr>
+                    <th scope="col">{{ _('Created') }}</th>
                     <th scope="col">{{ _('Name') }}</th>
                     <th scope="col">{{ _('Invited by') }}</th>
-                    <th scope="col">{{ _('Roles') }}</th>
+                    <th scope="col">{{ _('Seen') }}</th>
+                    <th scope="col">{{ _('Role') }}</th>
+                    <th scope="col">{{ _('State') }}</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody class="align-middle">
-        {% for user in users %}
+            {% for user in users %}
                 <tr>
+                    <td>{{ user.created.date() }}</td>
                     <td>{{ user.first_name }} {{ user.last_name }}</td>
                     <td><a href="#">Someone Somename</a></td>
+                    <td>{{ user.last_seen.date() }}</td>
                     <td>
-                        <span class="badge bg-secondary">Admin</span>
-                        <span class="badge bg-secondary">Moderator</span>
+                        <span class="badge bg-secondary">{{ user.role.name.lower() }}</span>
+                    </td>
+                    <td>
+                        {% if user.active %}
+                        <span class="badge bg-success">{{ _("Active") }}</span>
+                        {% else %}
+                        <span class="badge bg-danger">{{ _("Banned") }}</span>
+                        {% endif %}
                     </td>
                     <td class="text-end">
-                        {{ link_button(_('Show'), url_for('user.profile', id=user.id), 'eye', 'success') }}
-                        {{ link_button(_('Role'), url_for('user.profile', id=user.id), 'unlock', 'warning') }}
-                        {{ link_button(_('Ban'), url_for('user.profile', id=user.id), 'exclamation-triangle', 'danger') }}
+                        {{ link_button(_('Show'), url_for('user.profile', user_id=user.id), 'eye', 'success') }}
+                        {{ link_button(_('Role'), url_for('user.role', user_id=user.id), 'unlock', 'warning') }}
+                        {{ link_button(_('Ban'), url_for('user.ban', user_id=user.id), 'exclamation-triangle', 'danger') }}
                     </td>
                 </tr>
-        {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
 
