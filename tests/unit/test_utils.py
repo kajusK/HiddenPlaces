@@ -1,9 +1,10 @@
 """Unit tests for app.utils. """
 from unittest.mock import patch, mock_open
+from pytest import approx, raises
 from urllib.error import URLError
 from flask import request
 from werkzeug.datastructures import MultiDict
-from app.utils import GeoIp, get_visitor_ip, random_string
+from app.utils import GeoIp, get_visitor_ip, random_string, LatLon, OrderedEnum
 
 
 def test_geo_ip_full():
@@ -109,3 +110,95 @@ def test_random_string():
             assert len(output) == i
             data.append(output)
         assert len(set(data)) == 10
+
+
+def test_latlon_conversion(subtests):
+    """Tests the LatLon object creation for various coordinat formats."""
+    valid = [
+        # decimal degrees format
+        ('40.7648N', 40.7648, True),
+        ('67.7648 S', -67.7648, True),
+        ('40 N', 40, True),
+        ('67S', -67, True),
+        ('  123.7648  E  ', 123.7684, False),
+        ('168.7648W', -168.7648, False),
+        # degrees, decimal minutes format
+        ('15°24.15\'N', 15.4025, True),
+        ('0 ° 18.15 \'S', -0.3025, True),
+        ('131°24.92\'E', 131.4153, False),
+        ('1°51.75\'  W ', -1.8625, False),
+        # degrees, minutes, seconds format
+        ('15°24\'15.2"N', 15.404222, True),
+        ('86 °  5 \' 1 " S ', -86.0836, True),
+        ('15°24\'15.2"E', 15.404222, False),
+        ('86 °  5 \' 1 " W ', -86.0836, False),
+        # Still valid, but questionable - seconds/minutes overflow
+        ('15°84\'15.2"N', 16.404222, True),
+        ('15°24\'3615.2"N', 16.404222, True),
+    ]
+    invalid = ['foo123.456Nbar', '91.231N', '-12.345N', '40,123N', '123.1S',
+               '91°24.15\'N', '89°84.15\'S', '181°24\'15.2"E',
+               '181°24\'15.2"W', '18°24.15N', '18°24\'15.2E']
+
+    for item in valid:
+        with subtests.test(data=item[0]):
+            result = LatLon.from_str(item[0])
+            assert result.is_latitude is item[2]
+            assert result.is_longitude is not item[2]
+            assert result.value == approx(item[1], 1e-4)
+
+    for item in invalid:
+        with subtests.test(data=item):
+            with raises(ValueError):
+                LatLon.from_str(item)
+
+
+def test_latlon_str(subtests):
+    """Tests conversion of LatLon object to string."""
+    items = [
+        (LatLon(12.654, True), '12°39\'14.4" N'),
+        (LatLon(-12.654, True), '12°39\'14.4" S'),
+        (LatLon(123.456, False), '123°27\'21.6" E'),
+        (LatLon(-123.456, False), '123°27\'21.6" W'),
+    ]
+
+    for item in items:
+        with subtests.test(expected=item[1]):
+            assert str(item[0]) == item[1]
+
+
+def test_ordered_enum(subtests):
+    """Tests comparsion of OrderedEnum items."""
+    class TestEnum(OrderedEnum):
+        FIRST = 1
+        SECOND = 2
+        THIRD = 3
+
+    class OtherEnum(OrderedEnum):
+        FOO = 1
+        BAR = 2
+
+    first = TestEnum.FIRST
+    second = TestEnum.SECOND
+    third = TestEnum.THIRD
+    other = OtherEnum.FOO
+
+    assert first <= first
+    assert first <= third
+    assert first < second
+    assert first < third
+    assert second > first
+    assert third > first
+    assert second >= first
+    assert second >= second
+
+    assert not first == second
+    assert not first >= third
+    assert not first > second
+    assert not first > third
+    assert not second < first
+    assert not third < first
+    assert not second <= first
+
+    with raises(TypeError):
+        first < other

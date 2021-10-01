@@ -1,8 +1,10 @@
 """Various helper utilities."""
+import re
 import urllib.request
 import random
 import json
 import logging
+from enum import Enum
 from typing import Optional
 from urllib.error import URLError
 from flask import request
@@ -48,6 +50,97 @@ class GeoIp:
         self.city = data.get('city')
         self.lat = data.get('latitude')
         self.lon = data.get('longitude')
+
+
+class LatLon:
+    """Geolocation coordinates handling and conversions.
+
+    Attributes:
+        value: Decimal degrees value of the latitude/longitude
+        is_latitude: True if this instance is latitude
+        is_longitude: True if this instance is longitude
+    """
+
+    def __init__(self, value: float, is_latitude: bool) -> None:
+        """Initializes a LatLon object.
+
+        Args:
+            value: decimal degrees value
+            is_latitue: True if is latitude record, false otherwise
+        Raises:
+            ValueError: When string doesn't contain valid data
+        """
+        self.value = value
+        self.is_latitude = is_latitude
+        self.is_longitude = not is_latitude
+        self._check_bounds()
+
+    @classmethod
+    def from_str(cls, data: str):
+        """Converts the lat/lon string to numerical value
+
+        Args:
+            data: String to be converted (15.1234N, 15°24'15.2"N, 15°24.15'N)
+        Raises:
+            ValueError: When string doesn't contain valid data
+        """
+        data = data.strip().replace(' ', '').upper()
+
+        result = re.search(
+            r'^([0-9.]+)(?:°([0-9.]+)\'(?:([0-9.]+)")?)?([NSEW])$', data)
+        if not result:
+            raise ValueError(f"Invalid latlon format: {data}")
+        degrees, minutes, seconds, direction = result.groups(default=0)
+
+        value = float(degrees) + float(minutes)/60 + float(seconds)/3600
+        if direction in ('S', 'W'):
+            value = -value
+        is_latitude = direction in ('N', 'S')
+        return cls(value, is_latitude)
+
+    def _check_bounds(self):
+        """Checks bounds of the value according to latitude/longitude. """
+        if self.is_latitude and abs(self.value) > 90:
+            raise ValueError("Latitude must be between -90 and 90 degrees")
+        if self.is_longitude and abs(self.value) > 180:
+            raise ValueError("Longitude must be between -180 and 180 degrees")
+
+    def __str__(self) -> str:
+        """Creates a textual representation of the coordinates. """
+        if self.is_latitude:
+            direction = 'N' if self.value >= 0 else 'S'
+        else:
+            direction = 'E' if self.value >= 0 else 'W'
+
+        value = abs(self.value)
+        degrees = int(value)
+        minutes = int((value - degrees)*60)
+        seconds = (value - degrees - minutes/60)*3600
+
+        return f'{degrees}°{minutes}\'{seconds:.1f}" {direction}'
+
+
+class OrderedEnum(Enum):
+    """Implements Enum that allows comparsion of its elements together."""
+    def __ge__(self, other):
+        if self.__class__ is other.__class__:
+            return self.value >= other.value
+        return NotImplemented
+
+    def __gt__(self, other):
+        if self.__class__ is other.__class__:
+            return self.value > other.value
+        return NotImplemented
+
+    def __le__(self, other):
+        if self.__class__ is other.__class__:
+            return self.value <= other.value
+        return NotImplemented
+
+    def __lt__(self, other):
+        if self.__class__ is other.__class__:
+            return self.value < other.value
+        return NotImplemented
 
 
 def get_visitor_ip() -> Optional[str]:
