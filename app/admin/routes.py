@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from flask import Blueprint, render_template, redirect, url_for, abort
+from flask_login import current_user
 from flask_babel import _
 from sqlalchemy import or_, desc, sql
 
@@ -136,6 +137,7 @@ def invite_approve(invite_id: int):
         return abort(404, _("Invitation not found."))
     if invite.state in (InvitationState.WAITING, InvitationState.DENIED):
         invite.state = InvitationState.APPROVED
+        invite.approved_by = current_user
         db.session.commit()
     return redirect(url_for('admin.invitations'))
 
@@ -153,5 +155,6 @@ def invite_deny(invite_id: int):
         return abort(404, _("Invitation not found."))
     if invite.state in (InvitationState.WAITING, InvitationState.APPROVED):
         invite.state = InvitationState.DENIED
+        invite.approved_by = current_user
         db.session.commit()
     return redirect(url_for('admin.invitations'))
