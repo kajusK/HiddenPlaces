@@ -1,5 +1,6 @@
 """ Constants for user module. """
 from enum import Enum
+from app.utils import OrderedEnum
 
 # Lengths of the various DB strings
 MAX_FIRST_NAME_LEN = 20
@@ -27,7 +28,7 @@ class InvitationState(Enum):
     DENIED = 4
 
 
-class UserRole(Enum):
+class UserRole(OrderedEnum):
     """Available user roles. """
     ROOT = 0
     ADMIN = 1

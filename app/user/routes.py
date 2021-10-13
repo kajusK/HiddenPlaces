@@ -180,7 +180,7 @@ def invite():
     form = InviteForm(request.form)
     if form.validate_on_submit():
         initial_state = InvitationState.WAITING
-        if current_user.role.value <= UserRole.ADMIN.value:
+        if current_user.role <= UserRole.ADMIN:
             initial_state = InvitationState.APPROVED
 
         Invitation.create(

@@ -8,22 +8,23 @@ from flask_login import UserMixin
 from app.database import DBItem, db
 from app.extensions import bcrypt
 from app.utils import GeoIp, get_visitor_ip, random_string
-from app.user.constants import LoginResult, MAX_FIRST_NAME_LEN, \
-    MAX_LAST_NAME_LEN, MAX_EMAIL_LEN, MAX_ABOUT_LEN, MAX_REASON_LEN
-from app.user.constants import UserRole, InvitationState
+from app.user import constants
+from app.user.constants import LoginResult, UserRole, InvitationState
 
 
 class User(DBItem, UserMixin):
     """User description and handling."""
     password = db.Column(db.LargeBinary(128), nullable=False)
-    first_name = db.Column(db.String(MAX_FIRST_NAME_LEN), nullable=False)
-    last_name = db.Column(db.String(MAX_LAST_NAME_LEN), nullable=False)
-    email = db.Column(db.String(MAX_EMAIL_LEN), index=True, unique=True,
-                      nullable=False)
+    first_name = db.Column(db.String(constants.MAX_FIRST_NAME_LEN),
+                           nullable=False)
+    last_name = db.Column(db.String(constants.MAX_LAST_NAME_LEN),
+                          nullable=False)
+    email = db.Column(db.String(constants.MAX_EMAIL_LEN), index=True,
+                      unique=True, nullable=False)
     created = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     active = db.Column(db.Boolean(), default=True)
-    about = db.Column(db.String(MAX_ABOUT_LEN), default="")
+    about = db.Column(db.String(constants.MAX_ABOUT_LEN), default="")
     role = db.Column(db.Enum(UserRole), default=UserRole.NEWBIE)
 
     def __init__(self, password: str = None, **kwargs):
@@ -75,20 +76,21 @@ class Ban(DBItem):
     creator = db.relationship("User", foreign_keys=creator_id)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship("User", foreign_keys=user_id)
-    reason = db.Column(db.String(MAX_REASON_LEN), nullable=False)
+    reason = db.Column(db.String(constants.MAX_REASON_LEN), nullable=False)
     until = db.Column(db.DateTime(), nullable=False)
     permanent = db.Column(db.Boolean(), default=False)
 
 
 class Invitation(DBItem):
     """New user invitation model."""
-    email = db.Column(db.String(MAX_EMAIL_LEN), nullable=False)
-    name = db.Column(db.String(MAX_FIRST_NAME_LEN+MAX_LAST_NAME_LEN+1),
+    email = db.Column(db.String(constants.MAX_EMAIL_LEN), nullable=False)
+    name = db.Column(db.String(constants.MAX_FIRST_NAME_LEN +
+                               constants.MAX_LAST_NAME_LEN+1),
                      nullable=False)
     # code required in the register request
     key = db.Column(db.String(32), nullable=False, index=True)
 
-    reason = db.Column(db.String(MAX_REASON_LEN), nullable=False)
+    reason = db.Column(db.String(constants.MAX_REASON_LEN), nullable=False)
     created = db.Column(db.DateTime(), nullable=False, default=datetime.utcnow)
     valid_until = db.Column(db.DateTime(), nullable=False)
     state = db.Column(db.Enum(InvitationState), nullable=False,
@@ -125,7 +127,7 @@ class Invitation(DBItem):
 
 class LoginLog(DBItem):
     """Table for login attempts logging."""
-    email = db.Column(db.String(MAX_EMAIL_LEN), nullable=False)
+    email = db.Column(db.String(constants.MAX_EMAIL_LEN), nullable=False)
     result = db.Column(db.Enum(LoginResult), nullable=False, index=True)
     ip = db.Column(db.String(46), nullable=False)
     # In case of success, also logs user that logged in

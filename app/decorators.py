@@ -17,7 +17,7 @@ def admin(function):
     """Allows only users with admin role to access this route."""
     @wraps(function)
     def _admin(*args, **kwargs):
-        if current_user.role.value > UserRole.ADMIN.value:
+        if current_user.role > UserRole.ADMIN:
             return abort(503,
                          _("You don't have sufficient access permissions"))
         return function(*args, **kwargs)
@@ -29,7 +29,7 @@ def moderator(function):
     @wraps(function)
     def _moderator(*args, **kwargs):
         """Allows only users with admin role to access this route."""
-        if current_user.role.value > UserRole.MODERATOR.value:
+        if current_user.role > UserRole.MODERATOR:
             return abort(503,
                          _("You don't have sufficient access permissions"))
         return function(*args, **kwargs)
