@@ -4,7 +4,8 @@ from pytest import approx, raises
 from urllib.error import URLError
 from flask import request
 from werkzeug.datastructures import MultiDict
-from app.utils import GeoIp, get_visitor_ip, random_string, LatLon, OrderedEnum
+from app.utils import GeoIp, get_visitor_ip, random_string, LatLon, \
+     OrderedEnum, StringEnum
 
 
 def test_geo_ip_full():
@@ -202,3 +203,48 @@ def test_ordered_enum(subtests):
 
     with raises(TypeError):
         first < other
+
+
+def test_string_enum_translation():
+    """Tests enum items translations."""
+    class TestEnum(StringEnum):
+        FOO = 0, "translated_foo"
+        BAR = 1, "translated_bar"
+
+    assert "translated_foo" == TestEnum.FOO.translation
+    assert "translated_bar" == TestEnum.BAR.translation
+
+
+def test_string_enum_str():
+    """Tests conversion of enum item to string value."""
+    class TestEnum(StringEnum):
+        FOO = 0, "translated_foo"
+        BAR = 1, "translated_bar"
+
+    assert "translated_foo" == str(TestEnum.FOO)
+    assert "translated_bar" == str(TestEnum.BAR)
+
+
+def test_string_enum_choices():
+    """Tests getting list of enum choices for WTForms."""
+    class TestEnum(StringEnum):
+        FOO = 0, "translated_foo"
+        BAR = 1, "translated_bar"
+
+    data = [(0, "translated_foo"), (1, "translated_bar")]
+    assert data == TestEnum.choices()
+
+
+def test_string_enum_coerce():
+    """Tests coercing enum items."""
+    class TestEnum(StringEnum):
+        FOO = 0, "translated_foo"
+        BAR = 1, "translated_bar"
+
+    assert TestEnum.coerce(TestEnum.FOO) == TestEnum.FOO
+    assert TestEnum.coerce(TestEnum.BAR) == TestEnum.BAR
+    assert TestEnum.coerce('0') == TestEnum.FOO
+    assert TestEnum.coerce('1') == TestEnum.BAR
+    assert TestEnum.coerce('') is None
+    with raises(ValueError):
+        TestEnum.coerce('2')
