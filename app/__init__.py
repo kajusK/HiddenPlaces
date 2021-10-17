@@ -4,7 +4,7 @@ from typing import Dict, Any, Optional
 from flask import Flask, request, redirect, url_for, flash, current_app
 from flask_login import current_user
 
-from app import errors, user, location, admin, page, message
+from app import errors, user, location, admin, page, message, upload
 from app.commands import user_cli
 from app.user.models import User
 from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka
@@ -46,6 +46,7 @@ def create_app(config_object: str = 'app.config.Config',
     # register routes
     app.register_blueprint(user.routes.blueprint)
     app.register_blueprint(location.routes.blueprint)
+    app.register_blueprint(upload.routes.blueprint)
     app.register_blueprint(admin.routes.blueprint)
     app.register_blueprint(page.routes.blueprint)
     app.register_blueprint(message.routes.blueprint)

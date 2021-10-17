@@ -28,6 +28,8 @@ class Config:
     SQLALCHEMY_ECHO = os.environ.get('FLASK_ENV') == 'development'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    UPLOAD_DIR = 'uploads'
+
     LOGGING_FORMAT = '%(asctime)s:%(levelname)s: %(message)s'
     LOGGING_LOCATION = 'app.log'
     LOGGING_LEVEL = logging.INFO
