@@ -1,8 +1,36 @@
 """Custom validator functions for wtforms."""
 import re
+import os
+from flask import current_app as app
 from typing import Optional, Callable, Any
 from flask_babel import _
 from wtforms import ValidationError
+
+
+def image_file(message: Optional[str] = None) -> Callable[[Any, Any], None]:
+    """Generates validation function for image files.
+
+    Args:
+        message : Message to set in the ValidationError exception.
+
+    Returns:
+        A function to be used as a validator in wtforms.
+
+    Raises:
+        ValidationError: If the image doesn't have expected extension
+    """
+    if not message:
+        message = _("Not a supported image format")
+
+    def _image_file(form, field):
+        if not field.data:
+            return
+
+        extension = os.path.splitext(field.data.filename)[1][1:].lower()
+        if extension not in app.config['IMAGE_EXTENSIONS']:
+            raise ValidationError(message)
+
+    return _image_file
 
 
 def password_rules(length: int = 6,

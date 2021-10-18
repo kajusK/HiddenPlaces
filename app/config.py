@@ -29,6 +29,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     UPLOAD_DIR = 'uploads'
+    IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'svg', 'eps', 'webp', 'heif', 'heic']
 
     LOGGING_FORMAT = '%(asctime)s:%(levelname)s: %(message)s'
     LOGGING_LOCATION = 'app.log'

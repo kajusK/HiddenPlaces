@@ -2,14 +2,15 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
 from flask_babel import _, format_date
+from flask_wtf.file import FileField
 from wtforms import StringField, PasswordField, BooleanField, RadioField, \
-    ValidationError, SubmitField, FileField, TextAreaField
+    ValidationError, SubmitField, TextAreaField
 from wtforms.fields.html5 import EmailField, IntegerField
 from wtforms.validators import InputRequired, EqualTo, Email, Length, \
     NumberRange
 
 from app.user.models import User, Invitation
-from app.validators import password_rules
+from app.validators import password_rules, image_file
 from app.user.constants import LoginResult, MAX_FIRST_NAME_LEN, \
     MAX_LAST_NAME_LEN, MAX_EMAIL_LEN, MAX_ABOUT_LEN, MAX_REASON_LEN
 
@@ -110,8 +111,7 @@ class EditProfileForm(FlaskForm):
     """Edit profile form."""
     about = TextAreaField(_('About'),
                           [InputRequired(), Length(max=MAX_ABOUT_LEN)])
-    # TODO handle photo
-    photo = FileField(_('Profile photo'))
+    photo = FileField(_('Profile photo'), [image_file()])
     submit = SubmitField(_('Save'))
 
 

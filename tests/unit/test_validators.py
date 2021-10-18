@@ -1,7 +1,8 @@
 """Unit tests for app.validators. """
 from wtforms import ValidationError
+import flask
 from pytest import raises
-from app.validators import password_rules
+from app.validators import password_rules, image_file
 
 
 class DummyField(object):
@@ -23,6 +24,15 @@ class DummyForm(dict):
     pass
 
 
+class DummyFile(object):
+    """Dummy file like class to emulate uploaded file handler."""
+    def __init__(self, filename):
+        self.filename = filename
+
+    def __repr__(self):
+        return self.filename
+
+
 def _run_validator_check(subtests, validator, valid, invalid):
     """Runs tests again validator with valid and invalid inputs.
 
@@ -34,16 +44,44 @@ def _run_validator_check(subtests, validator, valid, invalid):
     """
     field = DummyField()
 
-    for password in valid:
-        field.data = password
-        with subtests.test(password=password):
+    for item in valid:
+        field.data = item
+        with subtests.test(item=item):
             validator(DummyForm(), field)
 
-    for password in invalid:
-        field.data = password
-        with subtests.test(password=password):
+    for item in invalid:
+        field.data = item
+        with subtests.test(item=item):
             with raises(ValidationError):
                 validator(DummyForm(), field)
+
+
+def test_image_file(subtests, app):
+    validator = image_file()
+    extensions = ['jpg', 'png', 'tiff']
+    valid = ['foo.jpg', 'foo.JPG', 'bar.png', 'blah.tiff', 'a.foo.jpg']
+    invalid = ['foo', 'jpg', 'foo.pdf', 'foo.jpg.pdf', '', '.jpg', 'o.gif']
+
+    valid = [DummyFile(x) for x in valid]
+    invalid = [DummyFile(x) for x in invalid]
+    with app.app_context():
+        flask.current_app.config['IMAGE_EXTENSIONS'] = extensions
+        with flask.current_app.test_request_context():
+            _run_validator_check(subtests, validator, valid, invalid)
+
+
+def test_image_file_message(app):
+    validator = image_file(message="custom message")
+
+    field = DummyField()
+    field.data = DummyFile("blah")
+
+    with app.app_context():
+        flask.current_app.config['IMAGE_EXTENSIONS'] = ['foo']
+        with flask.current_app.test_request_context():
+            with raises(ValidationError) as e:
+                validator(DummyForm(), field)
+    assert str(e.value) == "custom message"
 
 
 def test_password_rules_length(subtests):
@@ -93,3 +131,13 @@ def test_password_rules_all(subtests):
     valid = ["ABc1.2", "abcDEF123#%^", "a2B.C?"]
     invalid = ["helloo", "ABCDEF", "Ab1.?c"]
     _run_validator_check(subtests, validator, valid, invalid)
+
+
+def test_password_rules_message(subtests):
+    validator = password_rules(length=100, message="custom message")
+
+    field = DummyField()
+    field.data = "wrong"
+    with raises(ValidationError) as e:
+        validator(DummyForm(), field)
+    assert str(e.value) == "custom message"

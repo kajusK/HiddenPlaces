@@ -12,6 +12,7 @@ from app.user.forms import LoginForm, RegisterForm, ChangePasswordForm, \
 from app.user.constants import InvitationState, UserRole
 from app.location.models import Location, Visit
 from app.database import db
+from app.upload.models import save_uploaded_file
 from app.page.models import Page
 from app.decorators import public, moderator, admin
 
@@ -29,7 +30,7 @@ def login():
     if current_user.is_authenticated:
         return redirect(next_hop or url_for('page.index'))
 
-    form = LoginForm(request.form)
+    form = LoginForm()
     if form.validate_on_submit():
         login_user(form.user, remember=form.remember_me.data)
         flash(_("You were logged in"), 'success')
@@ -62,7 +63,7 @@ def register(invite_id, key):
         flash(_("The invitation is not valid."), 'danger')
         return redirect(url_for('user.login'))
 
-    form = RegisterForm(request.form)
+    form = RegisterForm()
     if form.validate_on_submit():
         user = User.create(
             first_name=form.first_name.data,
@@ -108,11 +109,14 @@ def profile(user_id: int = None):
 @blueprint.route('/edit', methods=['GET', 'POST'])
 def edit():
     """Edit user profile."""
-    form = EditProfileForm(request.form)
+    form = EditProfileForm()
     if form.validate_on_submit():
         # pylint: disable=assigning-non-slot
         current_user.about = form.about.data
-        # TODO photo
+        if form.photo.data:
+            current_user.photo_path = save_uploaded_file(
+                form.photo.data, 'user', str(current_user.id))
+
         db.session.commit()
         flash(_("Your profile changes were saved"), 'success')
         return redirect(url_for('user.profile'))
@@ -124,7 +128,7 @@ def edit():
 @blueprint.route('/change_password', methods=['GET', 'POST'])
 def change_password():
     """Change user password (by himself)."""
-    form = ChangePasswordForm(request.form)
+    form = ChangePasswordForm()
     if form.validate_on_submit():
         current_user.set_password(form.password.data)
         db.session.commit()
@@ -156,7 +160,7 @@ def ban(user_id: int):
         flash(_("Superuser cannot be banned"), 'danger')
         return redirect(url_for('user.profile', user_id=banned_user.id))
 
-    form = BanForm(request.form)
+    form = BanForm()
     if form.validate_on_submit():
         Ban.create(
             creator=current_user,
@@ -177,7 +181,7 @@ def ban(user_id: int):
 @moderator
 def invite():
     """Invite new user."""
-    form = InviteForm(request.form)
+    form = InviteForm()
     if form.validate_on_submit():
         initial_state = InvitationState.WAITING
         if current_user.role <= UserRole.ADMIN:

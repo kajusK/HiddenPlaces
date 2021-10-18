@@ -25,6 +25,7 @@ class User(DBItem, UserMixin):
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     active = db.Column(db.Boolean(), default=True)
     about = db.Column(db.String(constants.MAX_ABOUT_LEN), default="")
+    photo_path = db.Column(db.String(64))
     role = db.Column(db.Enum(UserRole), default=UserRole.NEWBIE)
 
     def __init__(self, password: str = None, **kwargs):

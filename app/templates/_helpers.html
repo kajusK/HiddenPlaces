@@ -22,6 +22,9 @@
     {% if field.type == 'BooleanField' %}
         {% set field_class = 'form-check-input' %}
     {% endif -%}
+    {% if 'field_class' in kwargs %}
+        {% set field_class = kwargs['field_class'] %}
+    {% endif %}
 
     {% if field.errors %}
         {% set field_class = field_class+' is-invalid' %}
