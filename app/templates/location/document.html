@@ -1,5 +1,5 @@
 {% extends "_private.html" %}
-{% from '_helpers.html' import render_label %}
+{% from '_helpers.html' import render_form, link_button %}
 
 {% block content %}
 
@@ -10,29 +10,13 @@
     <div class="card-body">
         <form method="POST" action="" role="form" class="row">
             {{ form.hidden_tag() }}
-
-            <div class="form-group">
-                {{ render_label(form.name, 'pencil') }}
-                {{ form.name(class_="form-control", placeholder=_('Document name')) }}
-            </div>
-
-            <div class="form-group">
-                {{ render_label(form.description, 'card-text', 'form-label') }}
-                {{ form.description(class_="form-control", placeholder=_('Short description of the document')) }}
-            </div>
-
-            <div class="form-group">
-                {{ render_label(form.source, 'person', 'form-label') }}
-                {{ form.source(class_="form-control", placeholder=_('Source of the document')) }}
-            </div>
-
-            <div class="form-group">
-                {{ render_label(form.file, 'file-earmark-text', 'form-label') }}
-                {{ form.file(class_="form-control") }}
-            </div>
+            {{ render_form(form.name, 'pencil', placeholder=_('Document name')) }}
+            {{ render_form(form.description, 'card-text', placeholder=_('Short description of the document')) }}
+            {{ render_form(form.source, 'person', placeholder=_('Source of the document')) }}
+            {{ render_form(form.file, 'file-earmark-text') }}
 
             <div class="form-group text-end">
-                <a href="{{ url_for('location.show', id=location.id)  }}" class="btn btn-danger">{{ _('Cancel') }}</a>
+                {{ link_button(_('Cancel'), url_for('location.show', id=location.id), None, 'danger') }}
                 {{ form.submit(class="btn btn-success") }}
             </div>
         </form>

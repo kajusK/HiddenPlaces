@@ -1,22 +1,24 @@
+{% if location %}
+    {% set title=_('Edit location: ')+location.name %}
+    {% set return_url = url_for('location.show', id=location.id) %}
+{% elif parent %}
+    {% set title=_('Add new child for ')+parent.name %}
+    {% set return_url = url_for('location.show', id=parent.id) %}
+{% else %}
+    {% set title=_('Add a new location') %}
+    {% set return_url = url_for('location.browse') %}
+{% endif %}
+
 {% extends "_private.html" %}
-{% from '_helpers.html' import render_label %}
+{% from '_helpers.html' import render_field, render_label, link_button  %}
 
 {% block content %}
 
 <h2>
-{% if location %}
-    {{ _('Edit location') }}: {{ location.name }}
-    {% set return_url = url_for('location.show', id=location.id) %}
-{% elif parent %}
-    {{ _('Add new child for') }} {{ parent.name }}
-    {% set return_url = url_for('location.show', id=parent.id) %}
-{% else %}
-    {{ _('Add a new location') }}
-    {% set return_url = url_for('location.browse') %}
-{% endif %}
+    {{ title }}
 </h2>
 
-<form method="POST" action="" role="form" class="row">
+<form method="POST" action="" role="form" class="row" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
 
     <div class="col">
@@ -25,26 +27,14 @@
                 {{ _('Location') }}
             </h4>
             <div class="card-body">
-                <div class="form-group">
-                    {{ render_label(form.name, 'pencil') }}
-                    {{ form.name(class_="form-control", placeholder=_('Location name')) }}
-                </div>
+                {{ render_field(form.name, 'pencil', placeholder=_('Location name')) }}
 
-                <div class="form-group">
-                    {{ render_label(form.description, 'card-text') }}
-                    {{ form.description(class_="form-control", style="min-height: 5em", placeholder=_('Short description of the location and its current state')) }}
-                    <div class="form-text">
-                        {{ _('Supports markdown formatting, check the ') }}<a href="https://www.markdownguide.org/basic-syntax/">{{ _('syntax') }}</a>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    {{ render_label(form.about, 'file-earmark-text') }}
-                    {{ form.about(class_="form-control", style="min-height: 15em", placeholder=_('Location description, history,...')) }}
-                </div>
+                {% set description = _('Supports markdown formatting, check the <a href="https://www.markdownguide.org/basic-syntax/">syntax</a>') %}
+                {{ render_field(form.description, 'card-text', style="min-height: 5em", placeholder=_('Short description of the location and its current state'), description=description) }}
+                {{ render_field(form.about, 'file-earmark-text', style="min-height: 15em", placeholder=_('Location description, history,...'), description=description) }}
 
                 <div class='text-end mt-2'>
-                    <a href="{{ return_url }}" class="btn btn-danger">{{ _('Cancel') }}</a>
+                    {{ link_button(_('Cancel'), return_url, None, 'danger') }}
                     {{ form.submit(class="btn btn-success") }}
                 </div>
             </div>
@@ -57,47 +47,25 @@
                 {{ _('Metadata') }}
             </h4>
             <div class="card-body">
-                <div class="form-group">
-                    {{ render_label(form.photo, 'image', 'form-label') }}
-                    {{ form.photo(class_="form-control") }}
-                </div>
-                <div class="form-group">
-                    {{ render_label(form.latitude, 'geo-alt', 'form-label') }}
-                    {{ form.latitude(class_="form-control", placeholder=_('50.1234N')) }}
+                {{ render_field(form.photo, 'image') }}
 
-                    {{ render_label(form.longitude, 'geo-alt', 'form-label') }}
-                    {{ form.longitude(class_="form-control", placeholder=_('14.4567E')) }}
+                {{ render_field(form.latitude, 'geo-alt', placeholder=_('50.1234N')) }}
+                {{ render_field(form.longitude, 'geo-alt', placeholder=_('14.4567E')) }}
 
-                    <div class="text-center mt-2">
-                        <a href="#" class="btn btn-sm btn-secondary">
-                            {{ _('Select from map') }}
-                        </a>
-                    </div>
+                <div class="text-center mt-2">
+                    {{ link_button(_('Select from map'), '#', None, 'secondary btn-sm')}}
                 </div>
-                <div class="form-group">
-                    {{ render_label(form.materials, 'geo-alt', 'form-label') }}
-                    {{ form.materials(class_="dselect") }}
-                </div>
-                <div class="form-group">
-                    {{ render_label(form.area, 'geo-alt', 'form-label') }}
-                    {{ form.area(class_="dselect-search") }}
-                </div>
-                <div class="form-group">
-                    {{ render_label(form.type, 'house-door', 'form-label') }}
-                    {{ form.type(class_="dselect-search") }}
-                </div>
-                <div class="form-group">
-                    {{ render_label(form.state, 'wrench', 'form-label') }}
-                    {{ form.state(class_="form-select") }}
-                </div>
-                <div class="form-group">
-                    {{ render_label(form.length, 'signpost', 'form-label') }}
-                    {{ form.length(class_="form-control") }}
-                </div>
-                <div class="form-group">
-                    {{ render_label(form.abandoned, 'watch', 'form-label') }}
-                    {{ form.abandoned(class_="form-control") }}
-                </div>
+
+                {{ render_field(form.country, 'flag', field_class="dselect") }}
+
+                {{ render_field(form.type, 'house-door', field_class="dselect", required=False) }}
+                {{ render_field(form.materials, 'minecart-loaded', field_class="dselect", required=False) }}
+                {{ render_field(form.state, 'wrench', field_class="dselect", required=False) }}
+                {{ render_field(form.accessibility, 'door-closed', field_class="dselect", required=False) }}
+                {{ render_field(form.length, 'signpost') }}
+                {{ render_field(form.abandoned, 'watch') }}
+                {{ render_field(form.geofond_id, 'globe2') }}
+
                 <div class="form-group">
                     {{ render_label(form.published, 'share', 'form-label me-4') }}
                     <div class="btn-group" role="group">

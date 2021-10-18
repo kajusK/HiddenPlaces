@@ -2,15 +2,24 @@
     <div class="card-header">
         {{ _('Metadata') }}
     </div>
-    <img class="card-img-top" src="{{ url_for('static', filename='images/favicon.ico') }}" alt="Location photo">
+    {% set image_url = url_for('static', filename='images/favicon.ico') %}
+    {% if location.photo %}
+        {% set image_url = url_for('upload.get', path=location.photo.path) %}
+    {% endif %}
+    <img class="card-img-top" src="{{ image_url }}" alt="Location title image">
     <div class="card-body">
-        {{ _('Created') }}: {{ location.created_on }}<br>
-        {{ _('Last updated') }}: {{ location.modified_on }}<br>
+        {{ _('Created') }}: {{ location.created.date() }}<br>
+        {{ _('Last updated') }}: {{ location.modified.date() }}<br>
         {{ _('Maintainer') }}: <a href="{{ url_for('user.profile', id=location.owner_id) }}">{{ location.owner.first_name }} {{ location.owner.last_name }}</a><br>
-        {{ _('Approved by') }}: Meeeeee<br>
         <hr>
-        {{ _('Materials') }}: <a href="#" class="badge bg-secondary text-decoration-none">Gold</a> <a href="#" class="badge bg-secondary text-decoration-none">Iron</a> <br>
-        {{ _('Abandoned') }}: {{ 'Unknown' if 0 else '123' }} <br>
-        {{ _('Length') }}: {{ 'Unknown' if 0 else '1250' }} m <br>
+        {{ _('Materials') }}:
+        {% for material in location.materials %}
+        <a href="#" class="badge bg-secondary text-decoration-none">{{ material.type }}</a>
+        {% endfor %}
+
+        <br>
+        {{ _('State') }}: {{ location.state }}</br>
+        {{ _('Abandoned') }}: {{ 'Unknown' if location.abandoned_year == None else location.abandoned_year }} <br>
+        {{ _('Length') }}: {{ 'Unknown' if location.length == None else location.length }} m <br>
     </div>
 </div>

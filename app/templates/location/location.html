@@ -6,13 +6,17 @@
     <div class="col-auto">
         <h1>
             {{ location.name }}
-            (<a href="#">Parent object</a>)
+            {% if location.parent %}
+            (<a href="{{ url_for('location.show', id=location.parent.id) }}">{{ location.parent.name }}</a>)
+            {% endif %}
+            {% if not location.published %}
             <span class="text-danger">Not published</span>
+            {% endif %}
         </h1>
-        <h3>Mine, accessible</h3>
+        <h3>{{ location.type }}, {{ location.accessibility }}</h3>
         <small clas="text-muted">
             <i class="bi bi-geo-alt"></i>
-            12.1234E 49.2312N
+            {{ location.latitude }} {{ location.longitude }}
         </small>
     </div>
     <div class="col-auto">
@@ -34,6 +38,9 @@
             </a>
             <a href="{{ url_for('location.add', parent_id=location.id) }}" class="btn btn-outline-success">
                 {{ _('Add children') }}
+            </a>
+            <a href="{{ url_for('location.add', parent_id=location.id) }}" class="btn btn-outline-success">
+                {{ _('Set parent') }}
             </a>
         </div>
     </div>

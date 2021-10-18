@@ -1,41 +1,62 @@
+"""Models for locations module."""
+import os
+import uuid
+from flask import current_app as app
 from datetime import datetime
+from werkzeug.utils import secure_filename
 
-from app.database import DBItem, db
+from app.database import DBItem, db, Latitude, Longitude, UUID
+from app.location.constants import LocationType, LocationState, MaterialType, \
+    Accessibility, Country, POIType
+from app.location import constants
 
-
-tag_association = db.Table('tag_association', db.Model.metadata,
-                           db.Column('left_id', db.ForeignKey('tag.id'),
-                                     primary_key=True),
-                           db.Column('right_id', db.ForeignKey('location.id'),
-                                     primary_key=True),
-                           )
+bookmark_association = db.Table(
+    'bookmark_association',
+    db.Column('bookmark_id', db.ForeignKey('bookmarks.id')),
+    db.Column('location_id', db.ForeignKey('location.id'))
+)
 
 
 class Location(DBItem):
-    name = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(200), nullable=False)
-    about = db.Column(db.Text)
+    """Table of locations."""
+    name = db.Column(db.String(constants.MAX_LOCATION_LEN), nullable=False)
+    description = db.Column(db.String(constants.MAX_DESCRIPTION_LEN))
+    about = db.Column(db.Text())
 
-    created_on = db.Column(db.DateTime(), default=datetime.utcnow)
-    modified_on = db.Column(db.DateTime(), default=datetime.utcnow)
-    latitude = db.Column(db.Float, nullable=False)
-    longitude = db.Column(db.Float, nullable=False)
+    created = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
+    modified = db.Column(db.DateTime(), default=datetime.utcnow,
+                         nullable=False)
+    latitude = db.Column(Latitude(), nullable=False, index=True)
+    longitude = db.Column(Longitude(), nullable=False, index=True)
+    published = db.Column(db.Boolean(), nullable=False, index=True)
 
-    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    country = db.Column(db.Enum(Country))
+    type = db.Column(db.Enum(LocationType))
+    state = db.Column(db.Enum(LocationState))
+    accessibility = db.Column(db.Enum(Accessibility))
+
+    length = db.Column(db.Integer())
+    geofond_id = db.Column(db.Integer())
+    abandoned_year = db.Column(db.Integer())
+
+    parent_id = db.Column(db.Integer(), db.ForeignKey('location.id'))
+    owner_id = db.Column(db.Integer(), db.ForeignKey('user.id'),
+                         nullable=False, index=True)
+    photo_id = db.Column(db.Integer(), db.ForeignKey('upload.id'))
+    # UUID used to join location with uploaded files
+    uploads_uuid = db.Column(UUID(), default=uuid.uuid4())
+
+    parent = db.relationship('Location', back_populates='children',
+                             foreign_keys=parent_id)
+    children = db.relationship('Location', back_populates='parent',
+                               remote_side='Location.id')
     owner = db.relationship('User')
-
-#    photo_id = db.Column(db.Integer, db.ForeignKey('attachement.id'))
-#    photo = db.relationship('Attachement', foreign_key=photo_id)
-
-    tags = db.relationship('Tag', secondary=tag_association)
-
+    photo = db.relationship('Upload', post_update=True, foreign_keys=photo_id)
     links = db.relationship('Link')
-    attachements = db.relationship('Attachement')
-    visits = db.relationship('Visit', back_populates='location')
-
-    def commit(self):
-        self.modified_on = datetime.utcnow()
-        super().commit()
+    uploads = db.relationship('Upload', primaryjoin="remote(Location.uploads_uuid)==foreign(Upload.object_uuid)")
+    visits = db.relationship('Visit')
+    materials = db.relationship("Material", back_populates='location',
+                                lazy='selectin', cascade='all,delete-orphan')
 
     @classmethod
     def get_by_owner(cls, owner):
@@ -52,58 +73,52 @@ class Location(DBItem):
         return cls.query.filter_by(owner=person).all()
 
 
-class Attachement(DBItem):
-    name = db.Column(db.String(50), nullable=False)
-    descriptin = db.Column(db.String(200))
-    path = db.Column(db.String(512), nullable=False)
-    type = db.Column(db.Integer, nullable=False)
-    created_on = db.Column(db.DateTime(), default=datetime.utcnow)
+class Material(DBItem):
+    """Table of materials mined in given location."""
+    type = db.Column(db.Enum(MaterialType))
+    location_id = db.Column(db.Integer(), db.ForeignKey('location.id'),
+                            nullable=False)
+    location = db.relationship("Location", back_populates='materials')
 
-    created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    created_by = db.relationship('User')
 
-    location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
+class Bookmarks(DBItem):
+    name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
+    description = db.Column(db.String(constants.MAX_SHORT_DESC_LEN))
 
-    def delete(self):
-        super().delete()
-        #TODO remove file
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User')
+    bookmarks = db.relationship('Location', secondary=bookmark_association)
 
 
 class Link(DBItem):
-    name = db.Column(db.String(50), nullable=False)
-    url = db.Column(db.String(256))
+    """Table of links related to the location."""
+    name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
+    url = db.Column(db.String(constants.MAX_URL_LEN), nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
 
 
-class Tag(DBItem):
-    name = db.Column(db.String(50), nullable=False)
-
-
 class POI(DBItem):
-    name = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(512))
+    """Table of points of interests around the location."""
+    name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
+    description = db.Column(db.String(constants.MAX_SHORT_DESC_LEN))
+    type = db.Column(db.Enum(POIType), nullable=False)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
 
 
 class Visit(DBItem):
-    visited_on = db.Column(db.Date(), default=datetime.utcnow)
-    comment = db.Column(db.String(), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    """Table of users visits."""
+    visited_on = db.Column(db.Date(), default=datetime.utcnow, nullable=False)
+    comment = db.Column(db.String(constants.MAX_COMMENT_LEN), nullable=False)
+
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    location_id = db.Column(db.Integer(), db.ForeignKey('location.id'),
+                            nullable=False)
+
     user = db.relationship('User')
-    location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
-    location = db.relationship("Location", back_populates="visits")
+    location = db.relationship("Location")
 
     @classmethod
     def get_by_user(cls, user):
         return cls.query.filter_by(user=user).all()
-
-
-class Comment(DBItem):
-    comment = db.Column(db.String(), nullable=False)
-    created_on = db.Column(db.DateTime(), default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User')
-    response_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
-    response = db.relationship('Comment')

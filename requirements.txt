@@ -10,3 +10,4 @@ gunicorn
 is_safe_url
 email-validator
 datetime
+uuid

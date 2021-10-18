@@ -1,2 +1,2 @@
-# -*- coding: utf-8 -*-
-from . import routes
+""" Locations handling. """
+from app.location import routes
