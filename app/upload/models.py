@@ -23,7 +23,7 @@ class Upload(DBItem):
     created = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
 
     # Object UUID that is related to this file
-    object_uuid = db.Column(UUID, nullable=False)
+    object_uuid = db.Column(UUID, nullable=False, index=True)
     created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'),
                               nullable=False)
     created_by = db.relationship("User")
