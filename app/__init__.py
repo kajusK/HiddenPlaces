@@ -79,6 +79,14 @@ def register_before_requests(app: Flask) -> None:
     Args:
         app: Flask application object to register callbacks to
     """
+
+    def is_public() -> bool:
+        """Checks if the endpoint accesses is publicly accessible."""
+        public = request.endpoint and getattr(
+            app.view_functions[request.endpoint], 'is_public', False)
+        static = request.path.startswith('/static/')
+        return public or static
+
     @app.before_request
     def require_login_everywhere():
         """Requires user to be logged in
@@ -86,10 +94,7 @@ def register_before_requests(app: Flask) -> None:
         Require logged-in user to access every endpoint with exception of
         static files and pages explicitly marked as public
         """
-        public = request.endpoint and getattr(
-            app.view_functions[request.endpoint], 'is_public', False)
-        static = request.path.startswith('/static/')
-        if public or static or current_user.is_authenticated:
+        if is_public or current_user.is_authenticated:
             return None
         return unauthorized()
 
@@ -99,7 +104,7 @@ def register_before_requests(app: Flask) -> None:
 
         Keeps track of user actions on the page - stores last user access
         """
-        if current_user.is_authenticated:
+        if not is_public and current_user.is_authenticated:
             current_user.update_last_seen()
             db.session.commit()
 
