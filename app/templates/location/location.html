@@ -1,4 +1,5 @@
 {% extends "_private.html" %}
+{% from '_helpers.html' import link_button %}
 
 {% block content %}
 
@@ -21,27 +22,12 @@
     </div>
     <div class="col-auto">
         <div class="h1">
-            <a href="#" class="btn btn-outline-primary">
-                <i class="bi bi-star"></i>
-            </a>
-            <a href="#" class="btn btn-outline-primary">
-                {{ _('Show on map') }}
-            </a>
-            <a href="{{ url_for('location.edit', id=location.id) }}" class="btn btn-outline-success">
-                {{ _('Edit') }}
-            </a>
-            <a href="{{ url_for('location.add_document', location_id=location.id) }}" class="btn btn-outline-success">
-                {{ _('Add document') }}
-            </a>
-            <a href="{{ url_for('location.add_photo', location_id=location.id) }}" class="btn btn-outline-success">
-                {{ _('Add photo') }}
-            </a>
-            <a href="{{ url_for('location.add', parent_id=location.id) }}" class="btn btn-outline-success">
-                {{ _('Add children') }}
-            </a>
-            <a href="{{ url_for('location.add', parent_id=location.id) }}" class="btn btn-outline-success">
-                {{ _('Set parent') }}
-            </a>
+            {{ link_button('', '#', 'star', 'outline-primary') }}
+            {{ link_button(_('Edit'), url_for('location.edit', id=location.id), 'pencil', 'outline-success') }}
+            {{ link_button(_('Document'), url_for('location.document_add', location_id=location.id), 'file-earmark-plus', 'outline-success') }}
+            {{ link_button(_('Photo'), url_for('location.photo_add', location_id=location.id), 'camera-fill', 'outline-success') }}
+            {{ link_button(_('Link'), url_for('location.link_add', location_id=location.id), 'link', 'outline-success') }}
+            <!-- TODO add parent, child -->
         </div>
     </div>
 </div>
@@ -73,6 +59,7 @@
     <div class="col-md-3">
         {% include 'location/_metadata.html' %}
 
+        {% if location.children %}
         <div class="card content-card">
             <div class="card-header">
                 {{ _('Related places') }}
@@ -87,37 +74,53 @@
                 </a>
             </div>
         </div>
+        {% endif %}
 
+        {% if location.geofond_id or (location.links | length) %}
         <div class="card content-card">
             <div class="card-header">
                 {{ _('Links') }}
             </div>
             <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action">
-                    <strong>Geofond</strong>
+                {% if location.geofond_id %}
+                <a href="https://app.geology.cz/dud/php/foto_dd.php?id_={{ location.geofond_id }}" class="list-group-item list-group-item-action">
+                    <strong>Geofond - foto</strong>
                 </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <strong>hornictvi.info</strong>
-                    <p class="mb-0 text-muted">Location history</p>
+                <a href="https://mapy.geology.cz/dulni_dila_poddolovani/?query=dulni_dila_4034_0%2Cid_dd%2C{{ location.geofond_id }}" class="list-group-item list-group-item-action">
+                    <strong>Geofond - informace</strong>
                 </a>
+                {% endif %}
+                {% for link in location.links %}
+                <a href="{{ link.url }}" class="list-group-item list-group-item-action">
+                    <strong>{{ link.name }}</strong>
+                    <p class="mb-0 text-muted text-truncate">{{ link.url }}</p>
+                </a>
+                {% endfor %}
             </div>
         </div>
+        {% endif %}
 
+        {% if location.has_documents() %}
         <div class="card content-card">
             <div class="card-header">
                 {{ _('Documents') }}
             </div>
             <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action">
-                    <strong>Some document name</strong>
-                    <p class="mb-0 text-muted">Some descripton of the item</p>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <strong>Some document name</strong>
-                    <p class="mb-0 text-muted">Some descripton of the item</p>
-                </a>
+                {% for item in location.uploads %}
+                    {% if item.type.name not in ('PHOTO', 'HISTORICAL_PHOTO') %}
+                    <a href="{{ url_for('upload.get', path=item.path) }}" class="list-group-item list-group-item-action">
+                        <div class="d-flex justify-content-between">
+                            <strong>{{ item.name }}</strong>
+                            <span class="text-muted">{{ item.created_by.first_name }} {{ item.created_by.last_name }}</span>
+                        </div>
+                        <p class="mb-0 text-muted">{{ item.description }}</p>
+                    </a>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
+        {% endif %}
+
         <!-- TODO nasty solution, is there any way except javascript how to reorder this better?-->
         <div class="d-inline d-md-none">
             {% include 'location/_gallery.html' %}

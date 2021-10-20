@@ -4,16 +4,14 @@
 {% block content %}
 <div class="card">
     <h4 class="card-header">
-        {{ _('Add photo for') }} {{ location.name }}
+        {{ _('Add link for') }} {{ location.name }}
     </h4>
     <div class="card-body">
-        <form method="POST" action="" role="form" enctype="multipart/form-data">
+        <form method="POST" action="" role="form">
             {{ form.hidden_tag() }}
 
-            {{ render_field(form.name, 'pencil', placeholder=_('Photo name')) }}
-            {{ render_field(form.description, 'card-text', placeholder=_('Short description of the photo')) }}
-            {{ render_field(form.taken_on, 'calendar-date') }}
-            {{ render_field(form.file, 'image') }}
+            {{ render_field(form.url, 'link', placeholder=_('Page URL')) }}
+            {{ render_field(form.name, 'card-text', placeholder=_('Description of the linked page')) }}
 
             <div class='text-end mt-2'>
                 {{ link_button(_('Cancel'), url_for('location.show', id=location.id), None, 'danger') }}

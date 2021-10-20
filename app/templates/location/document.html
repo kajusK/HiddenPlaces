@@ -1,5 +1,5 @@
 {% extends "_private.html" %}
-{% from '_helpers.html' import render_form, link_button %}
+{% from '_helpers.html' import render_field, link_button %}
 
 {% block content %}
 
@@ -8,14 +8,15 @@
         {{ _('Add document for') }} {{ location.name }}
     </h4>
     <div class="card-body">
-        <form method="POST" action="" role="form" class="row">
+        <form method="POST" action="" role="form" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
-            {{ render_form(form.name, 'pencil', placeholder=_('Document name')) }}
-            {{ render_form(form.description, 'card-text', placeholder=_('Short description of the document')) }}
-            {{ render_form(form.source, 'person', placeholder=_('Source of the document')) }}
-            {{ render_form(form.file, 'file-earmark-text') }}
 
-            <div class="form-group text-end">
+            {{ render_field(form.name, 'pencil', placeholder=_('Document name')) }}
+            {{ render_field(form.description, 'card-text', placeholder=_('Short description of the document')) }}
+            {{ render_field(form.type, 'list-nested', field_class="dselect", required=False) }}
+            {{ render_field(form.file, 'file-earmark-text') }}
+
+            <div class='text-end mt-2'>
                 {{ link_button(_('Cancel'), url_for('location.show', id=location.id), None, 'danger') }}
                 {{ form.submit(class="btn btn-success") }}
             </div>

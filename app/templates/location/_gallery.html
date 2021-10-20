@@ -1,7 +1,28 @@
+{% from '_helpers.html' import link_button %}
 <div class="card content-card">
     <div class="card-header">
         {{ _('Gallery') }}
     </div>
-    <div class="card-body">
+    <div class="card-body row">
+        {% for image in location.uploads %}
+            {% if image.type.name in ('PHOTO', 'HISTORICAL_PHOTO') %}
+            <div class="col-sm-4">
+                <div class="position-relative">
+                    {{ link_button('', url_for('location.photo_delete', photo_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 start-0') }}
+                    {{ link_button('', url_for('location.photo_edit', photo_id=image.id), 'pencil', 'warning', class='btn-sm position-absolute top-0 end-0') }}
+
+                    <a href="{{ url_for('upload.get', path=image.path) }}"
+                       data-toggle="lightbox" data-gallery="photo-gallery"
+                       data-caption="<b>{{ image.name }}</b>{% if image.description %}<br><br>{{ image.description }}{% endif %}" >
+                        <img src="{{ url_for('upload.get', path=image.path) }}" class="img-fluid" alt="{{ image.name }}">
+                        <div class="image-caption d-flex justify-content-between">
+                            {{ image.created_by.first_name }} {{ image.created_by.last_name}}
+                            <span>{{ image.created.date() }}</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
     </div>
 </div>

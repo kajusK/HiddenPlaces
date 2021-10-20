@@ -115,8 +115,8 @@
 <!-- TODO - show alert with icon and close button, close infos automatically after timeout-->
 {%- endmacro %}
 
-{%- macro link_button(text, url, image=None, color=None) -%}
-    <a class="btn {{ 'btn-'+color if color else '' }} m-1" href="{{ url }}">
+{%- macro link_button(text, url, image=None, color=None, class='') -%}
+    <a class="btn {{ 'btn-'+color if color else '' }} m-1 {{ class }}" href="{{ url }}">
         {% if image %}
         <i class="bi bi-{{ image }}"></i>
         {% endif %}

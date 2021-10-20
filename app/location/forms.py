@@ -2,11 +2,12 @@ from datetime import datetime
 from flask_babel import _
 from flask import current_app as app
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField
+from flask_wtf.file import FileField, FileRequired
 from wtforms import StringField, SelectField, TextAreaField, SubmitField, BooleanField, SelectMultipleField, RadioField, SelectField, ValidationError
 from wtforms.fields.html5 import DateField, IntegerField
-from wtforms.validators import InputRequired, Length, Optional, NumberRange
+from wtforms.validators import InputRequired, Length, Optional, NumberRange, URL
 
+from app.upload.constants import UploadType
 from app.location import constants
 from app.utils import LatLon
 from app.validators import image_file
@@ -78,7 +79,7 @@ class LocationForm(FlaskForm):
 
     def validate_abandoned(self, field):
         if field.data > datetime.utcnow().year:
-            raise ValidationError(_("It has to be in the past"))
+            raise ValidationError(_("It cannot be in the future"))
 
     def validate_latitude(self, field):
         try:
@@ -101,30 +102,35 @@ class LocationForm(FlaskForm):
 
 class VisitForm(FlaskForm):
     comment = TextAreaField(_('Comment'), [InputRequired()])
-    date = DateField(_('Visited on:'), [InputRequired()], default=datetime.now())
+    date = DateField(_('Visited on:'), [InputRequired()], default=datetime.utcnow)
     submit = SubmitField(_('Log your visit'))
 
 
 class DocumentForm(FlaskForm):
     name = StringField(_('Name'), [InputRequired()])
     description = StringField(_('Description'), [InputRequired()])
-    source = StringField(_('Source citation'), [InputRequired()])
-    file = FileField(_('Document'))
+    type = SelectField(_('Document type'), [InputRequired()],
+                       coerce=UploadType.coerce,
+                       choices=UploadType.choices([UploadType.PHOTO]))
+    file = FileField(_('Document'), [FileRequired()])
     submit = SubmitField(_('Save'))
 
 
 class PhotoForm(FlaskForm):
     name = StringField(_('Name'), [InputRequired()])
     description = StringField(_('Description'), [InputRequired()])
-    source = StringField(_('Source citation'), [InputRequired()])
-    file = FileField(_('Photo'))
+    taken_on = DateField(_('Taken on:'), [InputRequired()],
+                         default=datetime.utcnow)
+    file = FileField(_('Photo'), [FileRequired(), image_file()])
+    # TODO taken date (current or user settable)
     submit = SubmitField(_('Save'))
 
+    def validate_taken_on(self, field):
+        if field.data > datetime.utcnow().date():
+            raise ValidationError(_("It cannot be in the future"))
 
-class AttachementForm(FlaskForm):
+
+class LinkForm(FlaskForm):
+    url = StringField('URL', [InputRequired(), URL(require_tld=True)])
     name = StringField(_('Name'), [InputRequired()])
-    description = StringField(_('Name'), [InputRequired()])
-
-
-class CommentForm(FlaskForm):
-    pass
+    submit = SubmitField(_('Save'))

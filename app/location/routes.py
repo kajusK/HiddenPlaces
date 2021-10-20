@@ -4,8 +4,8 @@ from flask_login import login_required, current_user
 from flask_babel import _
 
 from app.database import db
-from .forms import LocationForm, VisitForm, DocumentForm, PhotoForm
-from .models import Location, Visit, Material
+from .forms import LocationForm, VisitForm, DocumentForm, PhotoForm, LinkForm
+from .models import Location, Visit, Material, Link
 from app.upload.models import Upload
 from app.upload.constants import UploadType
 
@@ -74,64 +74,49 @@ def browse():
     return render_template("location/browse.html", locations=locations)
 
 
-@blueprint.route('/document/<int:location_id>')
-def add_document(location_id):
-    form = DocumentForm()
-    location = Location.get_by_id(location_id)
-    return render_template("location/document.html", form=form, location=location)
-
-
-@blueprint.route('/photo/<int:location_id>')
-def add_photo(location_id):
-    form = PhotoForm()
-    location = Location.get_by_id(location_id)
-    return render_template("location/photo.html", form=form, location=location)
-
-
 @blueprint.route('/add', methods=['GET', 'POST'])
 @blueprint.route('/add/<int:parent_id>', methods=['GET', 'POST'])
 def add(parent_id=None):
-    form = LocationForm()
     parent = None
     if parent_id:
         parent = Location.get_by_id(parent_id)
 
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            location = Location.create(
-                name=form.name.data,
-                description=form.description.data,
-                about=form.about.data,
-                latitude=form.latitude.data,
-                longitude=form.longitude.data,
-                country=form.country.data,
-                type=form.type.data,
-                state=form.state.data,
-                accessibility=form.accessibility.data,
-                length=form.length.data,
-                geofond_id=form.geofond_id.data,
-                abandoned_year=form.abandoned.data,
-                published=int(form.published.data),
-                parent_id=parent_id,
-                owner=current_user,
+    form = LocationForm()
+    if form.validate_on_submit():
+        location = Location.create(
+            name=form.name.data,
+            description=form.description.data,
+            about=form.about.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data,
+            country=form.country.data,
+            type=form.type.data,
+            state=form.state.data,
+            accessibility=form.accessibility.data,
+            length=form.length.data,
+            geofond_id=form.geofond_id.data,
+            abandoned_year=form.abandoned.data,
+            published=int(form.published.data),
+            parent_id=parent_id,
+            owner=current_user,
+        )
+        for material in form.materials.data:
+            location.materials.append(Material.create(type=material))
+        db.session.commit()
+
+        if form.photo.data:
+            location.photo = Upload.create(
+                file=form.photo.data,
+                subfolder=f"location/{ location.id }",
+                name="Title photo",
+                type=UploadType.PHOTO,
+                created_by=current_user,
+                object_uuid=location.uploads_uuid,
             )
-            for material in form.materials.data:
-                location.materials.append(Material.create(type=material))
-            db.session.commit()
+        db.session.commit()
 
-            if form.photo.data:
-                location.photo = Upload.create(
-                    file=form.photo.data,
-                    subfolder=f"location/{ location.id }",
-                    name="Title photo",
-                    type=UploadType.PHOTO,
-                    created_by=current_user,
-                    object_uuid=location.uploads_uuid,
-                )
-            db.session.commit()
-
-            flash("New location created", "success")
-            return redirect(url_for("location.show", id=location.id))
+        flash("New location created", "success")
+        return redirect(url_for("location.show", id=location.id))
     return render_template("location/edit.html", form=form, parent=parent)
 
 
@@ -196,3 +181,107 @@ def edit(id):
                                 name=location.name))
 
     return render_template("location/edit.html", form=form, location=location)
+
+
+@blueprint.route('/photo/add/<int:location_id>', methods=['GET', 'POST'])
+def photo_add(location_id):
+    location = Location.get_by_id(location_id)
+    if not location:
+        return abort(404)
+
+    form = PhotoForm()
+    if form.validate_on_submit():
+        Upload.create(
+            file=form.file.data,
+            subfolder=f"location/{ location.id }/photos",
+            name=form.name.data,
+            description=form.description.data,
+            created=form.taken_on.data,
+            type=UploadType.PHOTO,
+            created_by=current_user,
+            object_uuid=location.uploads_uuid,
+        )
+        db.session.commit()
+        flash("New photo added", "success")
+        return redirect(url_for("location.show", id=location.id,
+                                name=location.name))
+
+    return render_template("location/photo.html", form=form, location=location)
+
+
+@blueprint.route('/photo/edit/<int:photo_id>', methods=['GET', 'POST'])
+def photo_edit(photo_id):
+    photo = Upload.get_by_id(photo_id)
+    if not photo:
+        return abort(404)
+
+    form = PhotoForm()
+    if request.method == 'GET':
+        form.name.data = photo.name
+        form.description.data = photo.description
+    elif form.validate_on_submit():
+        photo.name = form.name.data
+        photo.description = form.description.data
+        #TODO hide item
+        db.session.commit()
+
+        #TODO get return URL
+        return redirect(url_for("location.show", id=0))
+
+    return render_template("location/photo.html", form=form)
+
+
+@blueprint.route('/photo/delete/<int:photo_id>')
+def photo_delete(photo_id):
+    photo = Upload.get_by_id(photo_id)
+    if not photo:
+        return abort(404)
+    photo.delete()
+    db.session.commit()
+    #TODO get return URL
+
+
+@blueprint.route('/document/add/<int:location_id>', methods=['GET', 'POST'])
+def document_add(location_id):
+    location = Location.get_by_id(location_id)
+    if not location:
+        return abort(404)
+
+    form = DocumentForm()
+    if form.validate_on_submit():
+        Upload.create(
+            file=form.file.data,
+            subfolder=f"location/{ location.id }/files",
+            name=form.name.data,
+            description=form.description.data,
+            type=form.type.data,
+            created_by=current_user,
+            object_uuid=location.uploads_uuid)
+
+        db.session.commit()
+        flash("New document added", "success")
+        return redirect(url_for("location.show", id=location.id,
+                                name=location.name))
+
+    return render_template("location/document.html", form=form, location=location)
+
+
+@blueprint.route('/link/add/<int:location_id>', methods=['GET', 'POST'])
+def link_add(location_id):
+    location = Location.get_by_id(location_id)
+    if not location:
+        return abort(404)
+
+    form = LinkForm()
+    if form.validate_on_submit():
+        location.links.append(Link.create(
+            url=form.url.data,
+            name=form.name.data,
+            created_by=current_user))
+
+        db.session.commit()
+        flash("New document added", "success")
+        return redirect(url_for("location.show", id=location.id,
+                                name=location.name))
+
+    return render_template("location/link.html", form=form, location=location)

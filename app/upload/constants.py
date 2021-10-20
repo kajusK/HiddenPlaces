@@ -13,4 +13,6 @@ class UploadType(StringEnum):
     PHOTO = 1, _("Photo")
     HISTORICAL_PHOTO = 2, _("Historical photo")
     MAP = 3, _("Map")
-    DOCUMENT = 4, _("Document")
+    ARTICLE = 4, _("Article")
+    BOOK = 5, _("Book")
+    DOCUMENT = 6, _("Document")

@@ -9,6 +9,7 @@ from app.database import DBItem, db, Latitude, Longitude, UUID
 from app.location.constants import LocationType, LocationState, MaterialType, \
     Accessibility, Country, POIType
 from app.location import constants
+from app.upload.constants import UploadType
 
 bookmark_association = db.Table(
     'bookmark_association',
@@ -52,8 +53,8 @@ class Location(DBItem):
                                remote_side='Location.id')
     owner = db.relationship('User')
     photo = db.relationship('Upload', post_update=True, foreign_keys=photo_id)
-    links = db.relationship('Link')
-    uploads = db.relationship('Upload', primaryjoin="remote(Location.uploads_uuid)==foreign(Upload.object_uuid)")
+    links = db.relationship('Link', back_populates='location', lazy='selectin', cascade='all,delete-orphan')
+    uploads = db.relationship('Upload', primaryjoin="Location.uploads_uuid==foreign(Upload.object_uuid)")
     visits = db.relationship('Visit')
     materials = db.relationship("Material", back_populates='location',
                                 lazy='selectin', cascade='all,delete-orphan')
@@ -72,6 +73,11 @@ class Location(DBItem):
         # TODO
         return cls.query.filter_by(owner=person).all()
 
+    def has_documents(self):
+        docs = filter(lambda x: x.type not in (
+            UploadType.PHOTO, UploadType.HISTORICAL_PHOTO), self.uploads)
+        return len(list(docs)) != 0
+
 
 class Material(DBItem):
     """Table of materials mined in given location."""
@@ -81,6 +87,19 @@ class Material(DBItem):
     location = db.relationship("Location", back_populates='materials')
 
 
+class Link(DBItem):
+    """Table of links related to the location."""
+    name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
+    url = db.Column(db.String(constants.MAX_URL_LEN), nullable=False)
+
+    created_by_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    location_id = db.Column(db.Integer(), db.ForeignKey('location.id'),
+                            nullable=False)
+
+    created_by = db.relationship('User')
+    location = db.relationship('Location', back_populates='links')
+
+
 class Bookmarks(DBItem):
     name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
     description = db.Column(db.String(constants.MAX_SHORT_DESC_LEN))
@@ -88,23 +107,6 @@ class Bookmarks(DBItem):
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User')
     bookmarks = db.relationship('Location', secondary=bookmark_association)
-
-
-class Link(DBItem):
-    """Table of links related to the location."""
-    name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
-    url = db.Column(db.String(constants.MAX_URL_LEN), nullable=False)
-    location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
-
-
-class POI(DBItem):
-    """Table of points of interests around the location."""
-    name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
-    description = db.Column(db.String(constants.MAX_SHORT_DESC_LEN))
-    type = db.Column(db.Enum(POIType), nullable=False)
-    latitude = db.Column(db.Float, nullable=False)
-    longitude = db.Column(db.Float, nullable=False)
-    location_id = db.Column(db.Integer, db.ForeignKey('location.id'))
 
 
 class Visit(DBItem):
