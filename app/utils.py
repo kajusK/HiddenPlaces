@@ -162,9 +162,18 @@ class StringEnum(OrderedEnum):
         return obj
 
     @classmethod
-    def choices(cls):
-        """Get list of choices for wtforms (Enum, translation)."""
-        return [(v.value, v.translation) for v in cls]
+    def choices(cls, skip=[]):
+        """Get list of choices for wtforms (Enum, translation).
+
+        Args:
+            skip: List of enum values to be skipped in choices
+        """
+        data = []
+        for item in cls:
+            if item in skip:
+                continue
+            data.append((item.value, item.translation))
+        return data
 
     @classmethod
     def coerce(cls, item):

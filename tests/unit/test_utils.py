@@ -235,6 +235,18 @@ def test_string_enum_choices():
     assert data == TestEnum.choices()
 
 
+def test_string_enum_choices_skip():
+    """Tests getting list of enum choices with skipped items."""
+    class TestEnum(StringEnum):
+        FOO = 0, "foo"
+        BAR = 1, "bar"
+        BLAH = 2, "blah"
+        BOO = 3, "boo"
+
+    data = [(0, "foo"), (3, "boo")]
+    assert data == TestEnum.choices([TestEnum.BAR, TestEnum.BLAH])
+
+
 def test_string_enum_coerce():
     """Tests coercing enum items."""
     class TestEnum(StringEnum):
