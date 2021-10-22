@@ -10,6 +10,8 @@ from wtforms import ValidationError
 def image_file(message: Optional[str] = None) -> Callable[[Any, Any], None]:
     """Generates validation function for image files.
 
+    Supports single and multiple files selection.
+
     Args:
         message : Message to set in the ValidationError exception.
 
@@ -25,10 +27,13 @@ def image_file(message: Optional[str] = None) -> Callable[[Any, Any], None]:
     def _image_file(form, field):
         if not field.data:
             return
+        if not isinstance(field.data, list):
+            field.data = [field.data]
 
-        extension = os.path.splitext(field.data.filename)[1][1:].lower()
-        if extension not in app.config['IMAGE_EXTENSIONS']:
-            raise ValidationError(message)
+        for item in field.data:
+            extension = os.path.splitext(item.filename)[1][1:].lower()
+            if extension not in app.config['IMAGE_EXTENSIONS']:
+                raise ValidationError(message)
 
     return _image_file
 

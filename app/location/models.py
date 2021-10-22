@@ -20,6 +20,8 @@ bookmark_association = db.Table(
 
 class Location(DBItem):
     """Table of locations."""
+    uuid = db.Column(UUID(), default=uuid.uuid4)
+
     name = db.Column(db.String(constants.MAX_LOCATION_LEN), nullable=False)
     description = db.Column(db.String(constants.MAX_DESCRIPTION_LEN))
     about = db.Column(db.Text())
@@ -44,8 +46,6 @@ class Location(DBItem):
     owner_id = db.Column(db.Integer(), db.ForeignKey('user.id'),
                          nullable=False, index=True)
     photo_id = db.Column(db.Integer(), db.ForeignKey('upload.id'))
-    # UUID used to join location with uploaded files
-    uploads_uuid = db.Column(UUID(), default=uuid.uuid4())
 
     parent = db.relationship('Location', back_populates='children',
                              foreign_keys=parent_id)
@@ -54,8 +54,8 @@ class Location(DBItem):
     owner = db.relationship('User')
     photo = db.relationship('Upload', post_update=True, foreign_keys=photo_id)
     links = db.relationship('Link', back_populates='location', lazy='selectin', cascade='all,delete-orphan')
-    uploads = db.relationship('Upload', primaryjoin="Location.uploads_uuid==foreign(Upload.object_uuid)")
-    visits = db.relationship('Visit')
+    uploads = db.relationship('Upload', primaryjoin="Location.uuid==foreign(Upload.object_uuid)")
+    visits = db.relationship('Visit', back_populates='location', cascade='all,delete-orphan')
     materials = db.relationship("Material", back_populates='location',
                                 lazy='selectin', cascade='all,delete-orphan')
 
@@ -100,6 +100,25 @@ class Link(DBItem):
     location = db.relationship('Location', back_populates='links')
 
 
+class Visit(DBItem):
+    """Table of users visits."""
+    uuid = db.Column(UUID(), default=uuid.uuid4, nullable=False)
+
+    visited_on = db.Column(db.Date(), default=datetime.utcnow, nullable=False)
+    comment = db.Column(db.String(constants.MAX_COMMENT_LEN), nullable=False)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
+    location_id = db.Column(db.Integer(), db.ForeignKey('location.id'),
+                            nullable=False)
+
+    photos = db.relationship('Upload', primaryjoin="Visit.uuid==foreign(Upload.object_uuid)")
+    user = db.relationship('User')
+    location = db.relationship("Location", back_populates='visits')
+
+    @classmethod
+    def get_by_user(cls, user):
+        return cls.query.filter_by(user=user).all()
+
+
 class Bookmarks(DBItem):
     name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
     description = db.Column(db.String(constants.MAX_SHORT_DESC_LEN))
@@ -107,20 +126,3 @@ class Bookmarks(DBItem):
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User')
     bookmarks = db.relationship('Location', secondary=bookmark_association)
-
-
-class Visit(DBItem):
-    """Table of users visits."""
-    visited_on = db.Column(db.Date(), default=datetime.utcnow, nullable=False)
-    comment = db.Column(db.String(constants.MAX_COMMENT_LEN), nullable=False)
-
-    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
-    location_id = db.Column(db.Integer(), db.ForeignKey('location.id'),
-                            nullable=False)
-
-    user = db.relationship('User')
-    location = db.relationship("Location")
-
-    @classmethod
-    def get_by_user(cls, user):
-        return cls.query.filter_by(user=user).all()

@@ -11,38 +11,44 @@ from app.upload.constants import UploadType
 
 blueprint = Blueprint('location', __name__, url_prefix="/location")
 
+
 @blueprint.route('/<int:id>', methods=['GET', 'POST'])
 @blueprint.route('/<int:id>-<string:name>', methods=['GET', 'POST'])
 def show(id, name=None):
     location = Location.get_by_id(id)
     if not location:
         return abort(404)
-    # TODO deny access to users that cannot view this page
     if name != location.name:
         return redirect(url_for("location.show", id=location.id,
                                 name=location.name))
 
-    is_editable = location.owner == current_user
+    form = VisitForm()
+    if form.validate_on_submit():
+        visit = Visit.create(
+            comment=form.comment.data,
+            visited_on=form.date.data,
+            location=location,
+            user_id=current_user.id)
+        db.session.commit()
 
-    form = VisitForm(request.form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            location.visits.append(Visit(
-                comment=form.comment.data,
-                visited_on=form.date.data,
-                user=current_user))
-            location.visits[-1].commit()
-            flash("Visit logged", "success")
-            return redirect(url_for("location.show",
-                                    id=location.id,
-                                    name=location.name))
-    return render_template("location/location.html",
-                           location=location,
-                           editable=is_editable,
-                           form=form,
-                           title=location.name)
+        if form.photos.data:
+            for photo in form.photos.data:
+                Upload.create(
+                    file=photo,
+                    subfolder=f"location/{ location.id }/visits",
+                    name="Visit photo",
+                    type=UploadType.PHOTO,
+                    created_by=current_user,
+                    object_uuid=visit.uploads_uuid,
+                )
+            db.session.commit()
 
+        flash("Visit logged", "success")
+        return redirect(url_for("location.show", id=location.id,
+                                name=location.name))
 
+    return render_template("location/location.html", location=location,
+                           form=form, title=location.name)
 
 
 @blueprint.route('/search', methods=['POST'])

@@ -70,6 +70,22 @@ def test_image_file(subtests, app):
             _run_validator_check(subtests, validator, valid, invalid)
 
 
+def test_image_file_multiple(subtests, app):
+    validator = image_file()
+    extensions = ['jpg', 'png', 'tiff']
+    valid = ['foo.jpg', 'foo.JPG', 'bar.png', 'blah.tiff', 'a.foo.jpg']
+    invalid = ['foo', 'jpg', 'foo.pdf', 'foo.jpg.pdf', '', '.jpg', 'o.gif']
+
+    valid = [[DummyFile(x) for x in valid], [DummyFile(valid[0])],
+             [DummyFile(valid[0]), DummyFile(valid[1])]]
+    invalid = [[DummyFile(x) for x in invalid], [DummyFile(invalid[0])],
+               [DummyFile(invalid[0]), DummyFile(invalid[1])]]
+    with app.app_context():
+        flask.current_app.config['IMAGE_EXTENSIONS'] = extensions
+        with flask.current_app.test_request_context():
+            _run_validator_check(subtests, validator, valid, invalid)
+
+
 def test_image_file_message(app):
     validator = image_file(message="custom message")
 

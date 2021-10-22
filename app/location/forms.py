@@ -3,10 +3,11 @@ from flask_babel import _
 from flask import current_app as app
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
-from wtforms import StringField, SelectField, TextAreaField, SubmitField, BooleanField, SelectMultipleField, RadioField, SelectField, ValidationError
+from wtforms import StringField, SelectField, TextAreaField, SubmitField, BooleanField, SelectMultipleField, RadioField, SelectField, ValidationError, SelectMultipleField
 from wtforms.fields.html5 import DateField, IntegerField
 from wtforms.validators import InputRequired, Length, Optional, NumberRange, URL
 
+from app.fields import MultipleFileField
 from app.upload.constants import UploadType
 from app.location import constants
 from app.utils import LatLon
@@ -100,12 +101,6 @@ class LocationForm(FlaskForm):
             raise ValidationError(_("Not a longitude"))
 
 
-class VisitForm(FlaskForm):
-    comment = TextAreaField(_('Comment'), [InputRequired()])
-    date = DateField(_('Visited on:'), [InputRequired()], default=datetime.utcnow)
-    submit = SubmitField(_('Log your visit'))
-
-
 class DocumentForm(FlaskForm):
     name = StringField(_('Name'), [InputRequired()])
     description = StringField(_('Description'), [InputRequired()])
@@ -134,3 +129,14 @@ class LinkForm(FlaskForm):
     url = StringField('URL', [InputRequired(), URL(require_tld=True)])
     name = StringField(_('Name'), [InputRequired()])
     submit = SubmitField(_('Save'))
+
+
+class VisitForm(FlaskForm):
+    comment = TextAreaField(_('Comment'), [InputRequired()])
+    date = DateField(_('Visited on:'), [InputRequired()], default=datetime.utcnow)
+    photos = MultipleFileField(_('Photos'), [image_file()])
+    submit = SubmitField(_('Log your visit'))
+
+    def validate_date(self, field):
+        if field.data > datetime.utcnow().date():
+            raise ValidationError(_("It cannot be in the future"))
