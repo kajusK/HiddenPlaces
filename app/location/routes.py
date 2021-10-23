@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 from flask_babel import _
 
 from app.database import db
+from app.utils import redirect_return
 from .forms import LocationForm, VisitForm, DocumentForm, PhotoForm, LinkForm
 from .models import Location, Visit, Material, Link
 from app.upload.models import Upload
@@ -39,7 +40,7 @@ def show(id, name=None):
                     name="Visit photo",
                     type=UploadType.PHOTO,
                     created_by=current_user,
-                    object_uuid=visit.uploads_uuid,
+                    object_uuid=visit.uuid,
                 )
             db.session.commit()
 
@@ -116,13 +117,13 @@ def add(parent_id=None):
                 subfolder=f"location/{ location.id }",
                 name="Title photo",
                 type=UploadType.PHOTO,
-                created_by=current_user,
-                object_uuid=location.uploads_uuid,
+                created_by=current_user
             )
         db.session.commit()
 
         flash("New location created", "success")
         return redirect(url_for("location.show", id=location.id))
+
     return render_template("location/edit.html", form=form, parent=parent)
 
 
@@ -178,13 +179,12 @@ def edit(id):
                 name=_("Title photo"),
                 type=UploadType.PHOTO,
                 created_by=current_user,
-                object_uuid=location.uploads_uuid,
+                object_uuid=location.uuid,
             )
         db.session.commit()
 
         flash("Location saved", "success")
-        return redirect(url_for("location.show", id=location.id,
-                                name=location.name))
+        return redirect_return()
 
     return render_template("location/edit.html", form=form, location=location)
 
@@ -205,12 +205,11 @@ def photo_add(location_id):
             created=form.taken_on.data,
             type=UploadType.PHOTO,
             created_by=current_user,
-            object_uuid=location.uploads_uuid,
+            object_uuid=location.uuid,
         )
         db.session.commit()
         flash("New photo added", "success")
-        return redirect(url_for("location.show", id=location.id,
-                                name=location.name))
+        return redirect_return()
 
     return render_template("location/photo.html", form=form, location=location)
 
@@ -228,11 +227,9 @@ def photo_edit(photo_id):
     elif form.validate_on_submit():
         photo.name = form.name.data
         photo.description = form.description.data
-        #TODO hide item
+        #TODO hide file
         db.session.commit()
-
-        #TODO get return URL
-        return redirect(url_for("location.show", id=0))
+        return redirect_return()
 
     return render_template("location/photo.html", form=form)
 
@@ -242,9 +239,10 @@ def photo_delete(photo_id):
     photo = Upload.get_by_id(photo_id)
     if not photo:
         return abort(404)
+
     photo.delete()
     db.session.commit()
-    #TODO get return URL
+    return redirect_return()
 
 
 @blueprint.route('/document/add/<int:location_id>', methods=['GET', 'POST'])
@@ -262,12 +260,11 @@ def document_add(location_id):
             description=form.description.data,
             type=form.type.data,
             created_by=current_user,
-            object_uuid=location.uploads_uuid)
+            object_uuid=location.uuid)
 
         db.session.commit()
         flash("New document added", "success")
-        return redirect(url_for("location.show", id=location.id,
-                                name=location.name))
+        return redirect_return()
 
     return render_template("location/document.html", form=form, location=location)
 
@@ -287,7 +284,6 @@ def link_add(location_id):
 
         db.session.commit()
         flash("New document added", "success")
-        return redirect(url_for("location.show", id=location.id,
-                                name=location.name))
+        return redirect_return()
 
     return render_template("location/link.html", form=form, location=location)

@@ -14,7 +14,7 @@
             {{ render_field(form.name, 'card-text', placeholder=_('Description of the linked page')) }}
 
             <div class='text-end mt-2'>
-                {{ link_button(_('Cancel'), url_for('location.show', id=location.id), None, 'danger') }}
+                {{ link_button(_('Cancel'), url_return(), None, 'danger') }}
                 {{ form.submit(class="btn btn-success") }}
             </div>
         </form>

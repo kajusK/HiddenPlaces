@@ -2,8 +2,8 @@ from datetime import datetime
 from flask_babel import _
 from flask import current_app as app
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired
 from wtforms import StringField, SelectField, TextAreaField, SubmitField, BooleanField, SelectMultipleField, RadioField, SelectField, ValidationError, SelectMultipleField
+from flask_wtf.file import FileField, FileRequired
 from wtforms.fields.html5 import DateField, IntegerField
 from wtforms.validators import InputRequired, Length, Optional, NumberRange, URL
 

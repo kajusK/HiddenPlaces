@@ -1,7 +1,8 @@
 """Initialize the Flask web application."""
 import logging
 from typing import Dict, Any, Optional
-from flask import Flask, request, redirect, url_for, flash, current_app
+from flask import Flask, request, redirect, url_for, flash, current_app,\
+    session
 from flask_login import current_user
 
 from app import errors, user, location, admin, page, message, upload
@@ -66,11 +67,31 @@ def create_app(config_object: str = 'app.config.Config',
     app.jinja_env.lstrip_blocks = True
     # Disable caching limit, improves performance
     app.jinja_env.cache = {}
+    # add jinja2 global variables and functions
+    register_template_context(app)
 
     # register functions to be called before each request
     register_before_requests(app)
 
     return app
+
+
+def register_template_context(app: Flask) -> None:
+    """Registers additional global Jinja2 functions and variables."""
+    @app.context_processor
+    def url_with_return():
+        """Registers url generator with return to prev page ability."""
+        def _url_for_return(*args, **kwargs):
+            session['return_url'] = request.path
+            return url_for(*args, **kwargs)
+        return dict(url_for_return=_url_for_return)
+
+    @app.context_processor
+    def url_return():
+        """Registers function for generating return to prev page url."""
+        def _url_return():
+            return session['return_url'] or url_for('user.login')
+        return dict(url_return=_url_return)
 
 
 def register_before_requests(app: Flask) -> None:

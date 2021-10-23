@@ -2,11 +2,13 @@
     <div class="card-header">
         {{ _('Metadata') }}
     </div>
-    {% set image_url = url_for('static', filename='images/favicon.ico') %}
     {% if location.photo %}
-        {% set image_url = url_for('upload.get', path=location.photo.path) %}
+    <a href="{{ url_for('upload.get', path=location.photo.path) }}" data-toggle="lightbox" data-gallery="title">
+        <img class="card-img-top" src="{{ url_for('upload.get', path=location.photo.path) }}" alt="Location title image">
+    </a>
+    {% else %}
+    <img class="card-img-top" src="{{ url_for('static', filename='images/favicon.ico') }}" alt="Location title image">
     {% endif %}
-    <img class="card-img-top" src="{{ image_url }}" alt="Location title image">
     <div class="card-body">
         {{ _('Created') }}: {{ location.created.date() }}<br>
         {{ _('Last updated') }}: {{ location.modified.date() }}<br>

@@ -23,10 +23,10 @@
     <div class="col-auto">
         <div class="h1">
             {{ link_button('', '#', 'star', 'outline-primary') }}
-            {{ link_button(_('Edit'), url_for('location.edit', id=location.id), 'pencil', 'outline-success') }}
-            {{ link_button(_('Document'), url_for('location.document_add', location_id=location.id), 'file-earmark-plus', 'outline-success') }}
-            {{ link_button(_('Photo'), url_for('location.photo_add', location_id=location.id), 'camera-fill', 'outline-success') }}
-            {{ link_button(_('Link'), url_for('location.link_add', location_id=location.id), 'link', 'outline-success') }}
+            {{ link_button(_('Edit'), url_for_return('location.edit', id=location.id), 'pencil', 'outline-success') }}
+            {{ link_button(_('Document'), url_for_return('location.document_add', location_id=location.id), 'file-earmark-plus', 'outline-success') }}
+            {{ link_button(_('Photo'), url_for_return('location.photo_add', location_id=location.id), 'camera-fill', 'outline-success') }}
+            {{ link_button(_('Link'), url_for_return('location.link_add', location_id=location.id), 'link', 'outline-success') }}
             <!-- TODO add parent, child -->
         </div>
     </div>

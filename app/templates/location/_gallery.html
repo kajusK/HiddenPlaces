@@ -8,8 +8,8 @@
             {% if image.type.name in ('PHOTO', 'HISTORICAL_PHOTO') %}
             <div class="col-sm-4">
                 <div class="position-relative">
-                    {{ link_button('', url_for('location.photo_delete', photo_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 start-0') }}
-                    {{ link_button('', url_for('location.photo_edit', photo_id=image.id), 'pencil', 'warning', class='btn-sm position-absolute top-0 end-0') }}
+                    {{ link_button('', url_for_return('location.photo_delete', photo_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 start-0') }}
+                    {{ link_button('', url_for_return('location.photo_edit', photo_id=image.id), 'pencil', 'warning', class='btn-sm position-absolute top-0 end-0') }}
 
                     <a href="{{ url_for('upload.get', path=image.path) }}"
                        data-toggle="lightbox" data-gallery="photo-gallery"
