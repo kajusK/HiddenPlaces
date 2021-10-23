@@ -4,7 +4,11 @@
 {% block content %}
 <div class="card">
     <h4 class="card-header">
+        {% if location %}
         {{ _('Add photo for') }} {{ location.name }}
+        {% else %}
+        {{ _('Edit photo') }}
+        {% endif %}
     </h4>
     <div class="card-body">
         <form method="POST" action="" role="form" enctype="multipart/form-data">
@@ -13,7 +17,9 @@
             {{ render_field(form.name, 'pencil', placeholder=_('Photo name')) }}
             {{ render_field(form.description, 'card-text', placeholder=_('Short description of the photo')) }}
             {{ render_field(form.taken_on, 'calendar-date') }}
+            {% if location %}
             {{ render_field(form.file, 'image') }}
+            {% endif %}
 
             <div class='text-end mt-2'>
                 {{ link_button(_('Cancel'), url_return(), None, 'danger') }}

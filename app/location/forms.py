@@ -111,18 +111,20 @@ class DocumentForm(FlaskForm):
     submit = SubmitField(_('Save'))
 
 
-class PhotoForm(FlaskForm):
+class PhotoEditForm(FlaskForm):
     name = StringField(_('Name'), [InputRequired()])
     description = StringField(_('Description'), [InputRequired()])
     taken_on = DateField(_('Taken on:'), [InputRequired()],
                          default=datetime.utcnow)
-    file = FileField(_('Photo'), [FileRequired(), image_file()])
-    # TODO taken date (current or user settable)
     submit = SubmitField(_('Save'))
 
     def validate_taken_on(self, field):
         if field.data > datetime.utcnow().date():
             raise ValidationError(_("It cannot be in the future"))
+
+
+class PhotoForm(PhotoEditForm):
+    file = FileField(_('Photo'), [FileRequired(), image_file()])
 
 
 class LinkForm(FlaskForm):

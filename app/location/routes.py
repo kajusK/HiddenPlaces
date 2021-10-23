@@ -5,7 +5,7 @@ from flask_babel import _
 
 from app.database import db
 from app.utils import redirect_return
-from .forms import LocationForm, VisitForm, DocumentForm, PhotoForm, LinkForm
+from .forms import LocationForm, VisitForm, DocumentForm, PhotoForm, LinkForm, PhotoEditForm
 from .models import Location, Visit, Material, Link
 from app.upload.models import Upload
 from app.upload.constants import UploadType
@@ -220,14 +220,13 @@ def photo_edit(photo_id):
     if not photo:
         return abort(404)
 
-    form = PhotoForm()
+    form = PhotoEditForm()
     if request.method == 'GET':
         form.name.data = photo.name
         form.description.data = photo.description
     elif form.validate_on_submit():
         photo.name = form.name.data
         photo.description = form.description.data
-        #TODO hide file
         db.session.commit()
         return redirect_return()
 
