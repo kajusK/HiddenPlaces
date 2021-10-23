@@ -27,10 +27,12 @@ def image_file(message: Optional[str] = None) -> Callable[[Any, Any], None]:
     def _image_file(form, field):
         if not field.data:
             return
-        if not isinstance(field.data, list):
-            field.data = [field.data]
 
-        for item in field.data:
+        data = field.data
+        if not isinstance(field.data, list):
+            data = [field.data]
+
+        for item in data:
             extension = os.path.splitext(item.filename)[1][1:].lower()
             if extension not in app.config['IMAGE_EXTENSIONS']:
                 raise ValidationError(message)
