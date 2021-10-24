@@ -1,13 +1,13 @@
 """Modes for user module."""
-import hashlib
 from typing import Optional
 from datetime import datetime
 from flask import request
 from flask_login import UserMixin
+import uuid
 
-from app.database import DBItem, db
+from app.database import DBItem, db, UUID
 from app.extensions import bcrypt
-from app.utils import GeoIp, get_visitor_ip, random_string
+from app.utils import GeoIp, get_visitor_ip
 from app.user import constants
 from app.user.constants import LoginResult, UserRole, InvitationState
 
@@ -89,7 +89,7 @@ class Invitation(DBItem):
                                constants.MAX_LAST_NAME_LEN+1),
                      nullable=False)
     # code required in the register request
-    key = db.Column(db.String(32), nullable=False, index=True)
+    key = db.Column(UUID(), default=uuid.uuid4, nullable=False, index=True)
 
     reason = db.Column(db.String(constants.MAX_REASON_LEN), nullable=False)
     created = db.Column(db.DateTime(), nullable=False, default=datetime.utcnow)
@@ -105,15 +105,6 @@ class Invitation(DBItem):
     invited_by = db.relationship("User", foreign_keys=invited_by_id)
     approved_by = db.relationship("User", foreign_keys=approved_by_id)
     user = db.relationship("User", foreign_keys=user_id)
-
-    def __init__(self, **kwargs) -> None:
-        """Initializes the Invitation model.
-
-        If hash is not set and name and email are present, calculate the key
-        """
-        super().__init__(**kwargs)
-        if 'key' not in kwargs:
-            self.key = hashlib.md5(random_string(32).encode()).hexdigest()
 
     def is_valid(self) -> bool:
         """Checks if the invitation is approved and valid for registration. """

@@ -44,10 +44,10 @@ def login():
     return render_template('user/login.html', form=form)
 
 
-@blueprint.route('/register/<int:invite_id>/<string:key>',
+@blueprint.route('/register/<int:invite_id>/<string:uuid>',
                  methods=['GET', 'POST'])
 @public
-def register(invite_id, key):
+def register(invite_id, uuid):
     """Register a new user.
 
     Invitation based system, the user has to be invited first.
@@ -59,7 +59,7 @@ def register(invite_id, key):
     invitation = Invitation.get_by_id(invite_id)
     if not invitation:
         return abort(404, _("Invitation not found"))
-    if not invitation.is_valid() or invitation.key != key:
+    if not invitation.is_valid() or invitation.uuid != uuid:
         flash(_("The invitation is not valid."), 'danger')
         return redirect(url_for('user.login'))
 
