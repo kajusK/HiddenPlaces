@@ -91,10 +91,12 @@
                 </a>
                 {% endif %}
                 {% for link in location.links %}
-                <a href="{{ link.url }}" class="list-group-item list-group-item-action">
+                <div class="list-group-item list-group-item-action position-relative control-hover">
+                    {{ link_button('', url_for_return('location.photo_delete', photo_id=0), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0 foreground-item control-hide') }}
                     <strong>{{ link.name }}</strong>
                     <p class="mb-0 text-muted text-truncate">{{ link.url }}</p>
-                </a>
+                    <a href="{{ link.url }}" class="stretched-link"></a>
+                </div>
                 {% endfor %}
             </div>
         </div>
@@ -108,13 +110,15 @@
             <div class="list-group list-group-flush">
                 {% for item in location.uploads %}
                     {% if item.type.name not in ('PHOTO', 'HISTORICAL_PHOTO') %}
-                    <a href="{{ url_for('upload.get', path=item.path) }}" class="list-group-item list-group-item-action">
-                        <div class="d-flex justify-content-between">
-                            <strong>{{ item.name }}</strong>
-                            <span class="text-muted">{{ item.created_by.first_name }} {{ item.created_by.last_name }}</span>
+                    <div class="list-group-item list-group-item-action position-relative control-hover">
+                        <div class="position-absolute top-0 end-0 foreground-item control-hide">
+                            {{ link_button('', url_for_return('location.photo_delete', photo_id=0), 'pencil', 'warning', class='btn-sm') }}
+                            {{ link_button('', url_for_return('location.photo_delete', photo_id=0), 'trash', 'danger', class='btn-sm') }}
                         </div>
+                        <strong>{{ item.name }}</strong>
                         <p class="mb-0 text-muted">{{ item.description }}</p>
-                    </a>
+                        <a href="{{ url_for('upload.get', path=item.path) }}" class="stretched-link"></a>
+                    </div>
                     {% endif %}
                 {% endfor %}
             </div>

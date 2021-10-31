@@ -23,6 +23,18 @@ body {
     margin-bottom: 0.5em;
 }
 
+.foreground-item {
+    z-index: 100;
+}
+
+.control-hide {
+    visibility: hidden;
+}
+
+.control-hover:hover .control-hide {
+    visibility: visible;
+}
+
 .btn-menu {
     display: inline-flex;
     text-decoration: none;
