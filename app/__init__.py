@@ -8,6 +8,7 @@ from flask_login import current_user
 from app import errors, user, location, admin, page, message, upload
 from app.commands import user_cli
 from app.user.models import User
+from app.location.models import Bookmarks
 from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka
 
 
@@ -92,6 +93,13 @@ def register_template_context(app: Flask) -> None:
         def _url_return():
             return session['return_url'] or url_for('user.login')
         return dict(url_return=_url_return)
+
+    @app.context_processor
+    def get_bookmarks():
+        """Registers function for obtaining list of bookmarks for user."""
+        def _get_bookmarks():
+            return Bookmarks.get_by_user(current_user)
+        return dict(get_bookmarks=_get_bookmarks)
 
 
 def register_before_requests(app: Flask) -> None:

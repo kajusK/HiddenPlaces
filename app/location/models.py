@@ -68,11 +68,6 @@ class Location(DBItem):
         # TODO
         return cls.query.filter_by(owner=person).all()
 
-    @classmethod
-    def get_bookmarked(cls, person):
-        # TODO
-        return cls.query.filter_by(owner=person).all()
-
     def has_documents(self):
         docs = filter(lambda x: x.type not in (
             UploadType.PHOTO, UploadType.HISTORICAL_PHOTO), self.uploads)
@@ -121,8 +116,14 @@ class Visit(DBItem):
 
 class Bookmarks(DBItem):
     name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
-    description = db.Column(db.String(constants.MAX_SHORT_DESC_LEN))
-
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User')
-    bookmarks = db.relationship('Location', secondary=bookmark_association)
+    locations = db.relationship('Location', secondary=bookmark_association)
+
+    @classmethod
+    def get_by_user(cls, user):
+        return cls.query.filter_by(user=user).all()
+
+    @classmethod
+    def get_by_name(cls, name):
+        return cls.query.filter_by(name=name).all()

@@ -5,8 +5,8 @@ from flask_babel import _
 
 from app.database import db
 from app.utils import redirect_return
-from .forms import LocationForm, VisitForm, DocumentForm, PhotoForm, LinkForm, PhotoEditForm
-from .models import Location, Visit, Material, Link
+from .forms import LocationForm, VisitForm, DocumentForm, PhotoForm, LinkForm, PhotoEditForm, BookmarkForm
+from .models import Location, Visit, Material, Link, Bookmarks
 from app.upload.models import Upload
 from app.upload.constants import UploadType
 
@@ -24,6 +24,9 @@ def show(id, name=None):
                                 name=location.name))
 
     form = VisitForm()
+    bookmark_form = BookmarkForm()
+    bookmarks = Bookmarks.get_by_user(current_user)
+
     if form.validate_on_submit():
         visit = Visit.create(
             comment=form.comment.data,
@@ -49,7 +52,8 @@ def show(id, name=None):
                                 name=location.name))
 
     return render_template("location/location.html", location=location,
-                           form=form, title=location.name)
+                           form=form, bookmark_form=bookmark_form,
+                           bookmarks=bookmarks)
 
 
 @blueprint.route('/search', methods=['POST'])
@@ -69,10 +73,12 @@ def visited():
     return render_template("location/browse.html", locations=locations)
 
 
-@blueprint.route('/bookmarks')
-def bookmarks():
-    locations = Location.get_bookmarked(current_user)
-    return render_template("location/browse.html", locations=locations)
+@blueprint.route('/bookmarks/<int:bookmarks_id>')
+def bookmarks(bookmarks_id):
+    bookmarks = Bookmarks.get_by_id(bookmarks_id)
+    if not bookmarks:
+        return abort(404)
+    return render_template("location/browse.html", locations=bookmarks.locations)
 
 
 @blueprint.route('/browse')
@@ -282,7 +288,65 @@ def link_add(location_id):
             created_by=current_user))
 
         db.session.commit()
-        flash("New document added", "success")
+        flash(_("New document added"), "success")
         return redirect_return()
 
     return render_template("location/link.html", form=form, location=location)
+
+
+@blueprint.route('/bookmark/create', methods=['POST'])
+@blueprint.route('/bookmark/create/<int:location_id>', methods=['POST'])
+def bookmark_create(location_id=None):
+    location = None
+    if location_id is not None:
+        location = Location.get_by_id(location_id)
+        if not location:
+            return abort(404)
+
+    form = BookmarkForm()
+    if form.validate_on_submit():
+        Bookmarks.create(
+            name=form.name.data,
+            user=current_user,
+            locations=[location] if location else [],
+        )
+        db.session.commit()
+        flash(_("The bookmark list %(name)s created", name=form.name.data),
+              'success')
+    else:
+        for form, errors in form.errors.items():
+            for error in errors:
+                flash(_("Adding bookmark failed: %(error)s", error=error),
+                      'warning')
+    return redirect_return()
+
+
+@blueprint.route('/bookmark/add/<int:bookmarks_id>/<int:location_id>')
+def bookmark_add(bookmarks_id, location_id):
+    bookmarks = Bookmarks.get_by_id(bookmarks_id)
+    location = Location.get_by_id(location_id)
+    if not location or not bookmarks or location in bookmarks.locations:
+        return abort(404)
+
+    if location in bookmarks.locations:
+        return redirect_return()
+
+    bookmarks.locations.append(location)
+    db.session.commit()
+    flash(_("Added to bookmark list: %(name)s", name=bookmarks.name),
+          'success')
+    return redirect_return()
+
+
+@blueprint.route('/bookmark/remove/<int:bookmarks_id>/<int:location_id>')
+def bookmark_remove(bookmarks_id, location_id):
+    bookmarks = Bookmarks.get_by_id(bookmarks_id)
+    location = Location.get_by_id(location_id)
+    if not location or not bookmarks or location not in bookmarks.locations:
+        return abort(404)
+
+    bookmarks.locations.remove(location)
+    db.session.commit()
+    flash(_("Removed from bookmark list: %(name)s", name=bookmarks.name),
+          'success')
+    return redirect_return()

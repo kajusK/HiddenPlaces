@@ -13,10 +13,15 @@
             menu_item(_("Browse"), "book", url_for('location.browse')),
             menu_item(_("Show on map"), "map", '#'),
             menu_item(_("My locations"), "geo", url_for('location.owned')),
-            menu_item(_("Bookmarks"), "star", url_for('location.bookmarks')),
             menu_item(_("Visited"), "pin", url_for('location.visited')),
             ], show=True)
         }}
+
+        {% set bookmark_items = [] %}
+        {% for bookmark in get_bookmarks() %}
+            {{ bookmark_items.append(menu_item(bookmark.name, "", url_for('location.bookmarks', bookmarks_id=bookmark.id))) or "" }}
+        {% endfor %}
+        {{ menu_block(_("Bookmarks"), "star", bookmark_items) }}
 
         {{ menu_block(_("Admin"), "shield", [
             menu_item(_("Locations"), "geo-alt", url_for('admin.locations')),

@@ -12,6 +12,7 @@ from app.upload.constants import UploadType
 from app.location import constants
 from app.utils import LatLon
 from app.validators import image_file
+from app.location.models import Bookmarks
 from app.location.constants import LocationType, LocationState, MaterialType, Accessibility, Country
 
 
@@ -142,3 +143,12 @@ class VisitForm(FlaskForm):
     def validate_date(self, field):
         if field.data > datetime.utcnow().date():
             raise ValidationError(_("It cannot be in the future"))
+
+
+class BookmarkForm(FlaskForm):
+    name = StringField(_('Name'), [InputRequired()])
+    submit = SubmitField(_('Add'))
+
+    def validate_name(self, field):
+        if len(Bookmarks.get_by_name(field.data)):
+            raise ValidationError(_("Name already used"))
