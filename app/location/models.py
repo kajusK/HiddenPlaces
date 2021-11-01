@@ -54,7 +54,7 @@ class Location(DBItem):
     owner = db.relationship('User')
     photo = db.relationship('Upload', post_update=True, foreign_keys=photo_id)
     links = db.relationship('Link', back_populates='location', lazy='selectin', cascade='all,delete-orphan')
-    uploads = db.relationship('Upload', primaryjoin="Location.uuid==foreign(Upload.object_uuid)")
+    uploads = db.relationship('Upload', primaryjoin="Location.uuid==foreign(Upload.object_uuid)", cascade='all,delete-orphan')
     visits = db.relationship('Visit', back_populates='location', cascade='all,delete-orphan')
     materials = db.relationship("Material", back_populates='location',
                                 lazy='selectin', cascade='all,delete-orphan')
@@ -62,11 +62,6 @@ class Location(DBItem):
     @classmethod
     def get_by_owner(cls, owner):
         return cls.query.filter_by(owner=owner).all()
-
-    @classmethod
-    def get_visited(cls, person):
-        # TODO
-        return cls.query.filter_by(owner=person).all()
 
     def has_documents(self):
         docs = filter(lambda x: x.type not in (
@@ -105,7 +100,7 @@ class Visit(DBItem):
     location_id = db.Column(db.Integer(), db.ForeignKey('location.id'),
                             nullable=False)
 
-    photos = db.relationship('Upload', primaryjoin="Visit.uuid==foreign(Upload.object_uuid)")
+    photos = db.relationship('Upload', primaryjoin="Visit.uuid==foreign(Upload.object_uuid)", cascade='all,delete-orphan')
     user = db.relationship('User')
     location = db.relationship("Location", back_populates='visits')
 

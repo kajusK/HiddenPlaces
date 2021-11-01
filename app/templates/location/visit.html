@@ -1,0 +1,13 @@
+{% extends "_private.html" %}
+{% from '_helpers.html' import render_field, link_button %}
+
+{% block content %}
+<div class="card">
+    <h4 class="card-header">
+        {{ _('Edit your visit log') }}
+    </h4>
+    <div class="card-body">
+        {% include 'location/_visit_form.html' %}
+    </div>
+</div>
+{% endblock %}

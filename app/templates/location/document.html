@@ -5,7 +5,11 @@
 
 <div class="card">
     <h4 class="card-header">
-        {{ _('Add document for') }} {{ location.name }}
+        {% if location %}
+            {{ _('Add document for') }} {{ location.name }}
+        {% else %}
+            {{ _('Edit document') }}
+        {% endif %}
     </h4>
     <div class="card-body">
         <form method="POST" action="" role="form" enctype="multipart/form-data">

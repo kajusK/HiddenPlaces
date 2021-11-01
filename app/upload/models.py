@@ -28,13 +28,27 @@ class Upload(DBItem):
                               nullable=False)
     created_by = db.relationship("User")
 
-    def delete(self):
-        """Deletes file from drive and database."""
+    def _delete_file(self):
+        """Deletes file related to this object."""
         base_dir = os.path.join(app.instance_path, app.config['UPLOAD_DIR'])
         filename = safe_join(base_dir, self.path)
         if os.path.exists(filename):
             os.remove(filename)
+
+    def delete(self):
+        """Deletes file from drive and database."""
+        self._delete_file()
         super().delete()
+
+    def replace(self, file):
+        """Replaces the file related to this upload with a new one.
+
+        Args:
+            file: Opened file handler to be saved
+        """
+        self._delete_file()
+        subfolder = os.path.dirname(self.path)
+        self.path = save_uploaded_file(file, subfolder, str(uuid.uuid4()))
 
     @classmethod
     def create(cls, file, subfolder, *args, **kwargs):

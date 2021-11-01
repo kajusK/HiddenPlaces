@@ -5,7 +5,7 @@ from flask_babel import _
 
 from app.database import db
 from app.utils import redirect_return
-from .forms import LocationForm, VisitForm, DocumentForm, PhotoForm, LinkForm, PhotoEditForm, BookmarkForm
+from .forms import LocationForm, VisitForm, DocumentForm, PhotoForm, LinkForm, PhotoEditForm, BookmarkForm, DocumentEditForm
 from .models import Location, Visit, Material, Link, Bookmarks
 from app.upload.models import Upload
 from app.upload.constants import UploadType
@@ -69,7 +69,11 @@ def owned():
 
 @blueprint.route('/visited')
 def visited():
-    locations = Location.get_visited(current_user)
+    visits = Visit.get_by_user(current_user)
+    locations = []
+    for visit in visits:
+        if visit.location not in locations:
+            locations.append(visit.location)
     return render_template("location/browse.html", locations=locations)
 
 
@@ -78,7 +82,8 @@ def bookmarks(bookmarks_id):
     bookmarks = Bookmarks.get_by_id(bookmarks_id)
     if not bookmarks:
         return abort(404)
-    return render_template("location/browse.html", locations=bookmarks.locations)
+    return render_template("location/browse.html",
+                           locations=bookmarks.locations)
 
 
 @blueprint.route('/browse')
@@ -195,6 +200,46 @@ def edit(id):
     return render_template("location/edit.html", form=form, location=location)
 
 
+@blueprint.route('/visit/edit/<int:visit_id>', methods=['GET', 'POST'])
+def visit_edit(visit_id):
+    visit = Visit.get_by_id(visit_id)
+    if not visit:
+        return abort(404)
+
+    form = VisitForm()
+    if request.method == 'GET':
+        form.comment.data = visit.comment
+        form.date.data = visit.visited_on
+    elif form.validate_on_submit():
+        visit.comment = form.comment.data
+        visit.visited_on = form.date.data
+        if form.photos.data:
+            for photo in form.photos.data:
+                Upload.create(
+                    file=photo,
+                    subfolder=f"location/{ visit.location.id }/visits",
+                    name="Visit photo",
+                    type=UploadType.PHOTO,
+                    created_by=current_user,
+                    object_uuid=visit.uuid,
+                )
+        db.session.commit()
+        return redirect_return()
+
+    return render_template("location/visit.html", form=form)
+
+
+@blueprint.route('/visit/delete/<int:visit_id>')
+def visit_remove(visit_id):
+    visit = Visit.get_by_id(visit_id)
+    if not visit:
+        return abort(404)
+
+    visit.delete()
+    db.session.commit()
+    return redirect_return()
+
+
 @blueprint.route('/photo/add/<int:location_id>', methods=['GET', 'POST'])
 def photo_add(location_id):
     location = Location.get_by_id(location_id)
@@ -240,7 +285,7 @@ def photo_edit(photo_id):
 
 
 @blueprint.route('/photo/delete/<int:photo_id>')
-def photo_delete(photo_id):
+def photo_remove(photo_id):
     photo = Upload.get_by_id(photo_id)
     if not photo:
         return abort(404)
@@ -274,6 +319,51 @@ def document_add(location_id):
     return render_template("location/document.html", form=form, location=location)
 
 
+@blueprint.route('/document/remove/<int:document_id>')
+def document_remove(document_id):
+    """Removes document entry.
+
+    Args:
+        document_id: ID of the document to be removed
+    """
+    document = Upload.get_by_id(document_id)
+    if not document:
+        return abort(404)
+
+    document.delete()
+    db.session.commit()
+    return redirect_return()
+
+
+@blueprint.route('/document/edit/<int:document_id>', methods=['GET', 'POST'])
+def document_edit(document_id):
+    """Edits document entry.
+
+    Args:
+        document_id: ID of the document to be edited
+    """
+    document = Upload.get_by_id(document_id)
+    if not document:
+        return abort(404)
+
+    form = DocumentEditForm()
+    if request.method == 'GET':
+        form.name.data = document.name
+        form.description.data = document.description
+        form.type.data = document.type
+
+    elif form.validate_on_submit():
+        document.name = form.name.data
+        document.description = form.description.data
+        document.type = form.type.data
+        if form.file.data:
+            document.replace(form.file.data)
+        db.session.commit()
+
+        return redirect_return()
+    return render_template("location/document.html", form=form)
+
+
 @blueprint.route('/link/add/<int:location_id>', methods=['GET', 'POST'])
 def link_add(location_id):
     location = Location.get_by_id(location_id)
@@ -292,6 +382,17 @@ def link_add(location_id):
         return redirect_return()
 
     return render_template("location/link.html", form=form, location=location)
+
+
+@blueprint.route('/link/remove/<int:link_id>')
+def link_remove(link_id):
+    link = Link.get_by_id(link_id)
+    if not link:
+        return abort(404)
+
+    link.delete()
+    db.session.commit()
+    return redirect_return()
 
 
 @blueprint.route('/bookmark/create', methods=['POST'])

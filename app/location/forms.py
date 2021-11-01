@@ -102,14 +102,19 @@ class LocationForm(FlaskForm):
             raise ValidationError(_("Not a longitude"))
 
 
-class DocumentForm(FlaskForm):
+class DocumentEditForm(FlaskForm):
     name = StringField(_('Name'), [InputRequired()])
     description = StringField(_('Description'), [InputRequired()])
     type = SelectField(_('Document type'), [InputRequired()],
                        coerce=UploadType.coerce,
                        choices=UploadType.choices([UploadType.PHOTO]))
-    file = FileField(_('Document'), [FileRequired()])
+    # File not required by default when editing
+    file = FileField(_('Document'))
     submit = SubmitField(_('Save'))
+
+
+class DocumentForm(DocumentEditForm):
+    file = FileField(_('Document'), [FileRequired()])
 
 
 class PhotoEditForm(FlaskForm):

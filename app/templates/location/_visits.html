@@ -7,22 +7,7 @@
 
     <div class="list-group list-group-flush">
         <div class="list-group-item">
-            <form method="POST" action="" role="form" enctype="multipart/form-data">
-                {{ form.hidden_tag() }}
-
-                {{ render_field(form.comment, 'pencil', placeholder=_('How was your visit?')) }}
-                {{ render_field(form.photos, 'image') }}
-
-                <div class="d-flex justify-content-between mt-2">
-                    <div class="row">
-                        {{ form.date.label(class_="col-auto col-form-label") }}
-                        <div class="col-auto">
-                            {{ render_field(form.date, 'calendar-date', class='col-auto', skip_label=True)}}
-                        </div>
-                    </div>
-                    {{ form.submit(class_="btn btn-success mt-2") }}
-                </div>
-            </form>
+            {% include 'location/_visit_form.html' %}
         </div>
 
         {% for visit in location.visits %}
@@ -34,13 +19,13 @@
                             <strong class="mb-1">{{ visit.user.first_name }} {{ visit.user.last_name }}</strong>
                         </a>
                         <span class="control-hide">
-                            {{ link_button('', url_for_return('location.photo_delete', photo_id=0), 'pencil', 'warning', class='btn-sm') }}
-                            {{ link_button('', url_for_return('location.photo_delete', photo_id=0), 'trash', 'danger', class='btn-sm') }}
+                            {{ link_button('', url_for_return('location.visit_edit', visit_id=visit.id), 'pencil', 'warning', class='btn-sm') }}
+                            {{ link_button('', url_for_return('location.visit_remove', visit_id=visit.id), 'trash', 'danger', class='btn-sm') }}
                         </span>
                     </span>
                     <small>{{ visit.visited_on }}</small>
                 </div>
-                <p class="mb-0">{{ visit.comment }}</p>
+                <pre class="mb-0">{{ visit.comment }}</pre>
             </div>
 
             {% if visit.photos %}
@@ -48,7 +33,7 @@
                 {% for image in visit.photos %}
                 <div class="col-sm-3">
                     <div class="position-relative control-hover">
-                        {{ link_button('', url_for_return('location.photo_delete', photo_id=0), 'trash', 'danger', class='btn-sm position-absolute top-0 start-0 control-hide') }}
+                        {{ link_button('', url_for_return('location.photo_remove', photo_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0 control-hide') }}
                         <a href="{{ url_for('upload.get', path=image.path) }}"
                             data-toggle="lightbox" data-gallery="{{ visit.id }}">
                             <img src="{{ url_for('upload.get', path=image.path) }}" class="img-fluid">

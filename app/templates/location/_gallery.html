@@ -5,12 +5,12 @@
     </div>
     <div class="card-body row">
         {% for image in location.uploads %}
-            {% if image.type.name in ('PHOTO', 'HISTORICAL_PHOTO') %}
+            {% if image.type.name in ('PHOTO', 'HISTORICAL_PHOTO') and not image == location.photo %}
             <div class="col-sm-4">
                 <div class="position-relative control-hover">
                     <div class="control-hide">
                         {{ link_button('', url_for_return('location.photo_edit', photo_id=image.id), 'pencil', 'warning', class='btn-sm position-absolute top-0 start-0') }}
-                        {{ link_button('', url_for_return('location.photo_delete', photo_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0') }}
+                        {{ link_button('', url_for_return('location.photo_remove', photo_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0') }}
                     </div>
 
                     <a href="{{ url_for('upload.get', path=image.path) }}"
