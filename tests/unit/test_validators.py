@@ -2,7 +2,7 @@
 from wtforms import ValidationError
 import flask
 from pytest import raises
-from app.validators import password_rules, image_file
+from app.validators import password_rules, image_file, allowed_file
 
 
 class DummyField(object):
@@ -54,6 +54,50 @@ def _run_validator_check(subtests, validator, valid, invalid):
         with subtests.test(item=item):
             with raises(ValidationError):
                 validator(DummyForm(), field)
+
+
+def test_allowed_file(subtests, app):
+    validator = allowed_file()
+    extensions = ['exe', 'html']
+    valid = ['foo.jpg', 'exe', 'foo.exe.zip', 'foo']
+    invalid = ['foo.exe', 'foo.EXE', 'foo.pdf.exe', 'foo.html']
+
+    valid = [DummyFile(x) for x in valid]
+    invalid = [DummyFile(x) for x in invalid]
+    with app.app_context():
+        flask.current_app.config['DISABLED_EXTENSIONS'] = extensions
+        with flask.current_app.test_request_context():
+            _run_validator_check(subtests, validator, valid, invalid)
+
+
+def test_allowed_file_multiple(subtests, app):
+    validator = allowed_file()
+    extensions = ['exe', 'html']
+    valid = ['foo.jpg', 'exe', 'foo.exe.zip', 'foo']
+    invalid = ['foo.exe', 'foo.EXE', 'foo.pdf.exe', 'foo.html']
+
+    valid = [[DummyFile(x) for x in valid], [DummyFile(valid[0])],
+             [DummyFile(valid[0]), DummyFile(valid[1])]]
+    invalid = [[DummyFile(x) for x in invalid], [DummyFile(invalid[0])],
+               [DummyFile(invalid[0]), DummyFile(invalid[1])]]
+    with app.app_context():
+        flask.current_app.config['DISABLED_EXTENSIONS'] = extensions
+        with flask.current_app.test_request_context():
+            _run_validator_check(subtests, validator, valid, invalid)
+
+
+def test_allowed_file_message(app):
+    validator = allowed_file(message="custom message")
+
+    field = DummyField()
+    field.data = DummyFile("blah.foo")
+
+    with app.app_context():
+        flask.current_app.config['DISABLED_EXTENSIONS'] = ['foo']
+        with flask.current_app.test_request_context():
+            with raises(ValidationError) as e:
+                validator(DummyForm(), field)
+    assert str(e.value) == "custom message"
 
 
 def test_image_file(subtests, app):

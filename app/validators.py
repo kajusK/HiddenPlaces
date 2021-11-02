@@ -7,37 +7,69 @@ from flask_babel import _
 from wtforms import ValidationError
 
 
-def image_file(message: Optional[str] = None) -> Callable[[Any, Any], None]:
-    """Generates validation function for image files.
+def _validate_extension(field, allowed=None, not_allowed=None,
+                        message: Optional[str] = None):
+    """Validates file field uploaded extension
 
     Supports single and multiple files selection.
 
     Args:
+        field: Field to be validated
+        allowed: List of allowed extensions, cannot be set if not_allowed used
+        non_allowed: List of not allowed extensions
         message : Message to set in the ValidationError exception.
 
-    Returns:
-        A function to be used as a validator in wtforms.
-
     Raises:
-        ValidationError: If the image doesn't have expected extension
+        ValidationError: If the file doesn't have expected extension
     """
     if not message:
-        message = _("Not a supported image format")
+        message = _("Not an allowed file format")
+
+    if not field.data:
+        return
+
+    data = field.data
+    if not isinstance(field.data, list):
+        data = [field.data]
+
+    for item in data:
+        extension = os.path.splitext(item.filename)[1][1:].lower()
+        if allowed and extension not in allowed:
+            raise ValidationError(message)
+        if not_allowed and extension in not_allowed:
+            raise ValidationError(message)
+
+
+def image_file(message: Optional[str] = None) -> Callable[[Any, Any], None]:
+    """Generates validation function for uploaded image files.
+
+    Args:
+        message : Message to set in the ValidationError exception.
+    """
+    if not message:
+        message = _("Not a supported image type")
 
     def _image_file(form, field):
-        if not field.data:
-            return
-
-        data = field.data
-        if not isinstance(field.data, list):
-            data = [field.data]
-
-        for item in data:
-            extension = os.path.splitext(item.filename)[1][1:].lower()
-            if extension not in app.config['IMAGE_EXTENSIONS']:
-                raise ValidationError(message)
+        _validate_extension(field, allowed=app.config['IMAGE_EXTENSIONS'],
+                            message=message)
 
     return _image_file
+
+
+def allowed_file(message: Optional[str] = None) -> Callable[[Any, Any], None]:
+    """Generates validation function for uploaded files.
+
+    Args:
+        message : Message to set in the ValidationError exception.
+    """
+    if not message:
+        message = _("Files of this type are not allowed")
+
+    def _allowed_file(form, field):
+        _validate_extension(field,
+                            not_allowed=app.config['DISABLED_EXTENSIONS'],
+                            message=message)
+    return _allowed_file
 
 
 def password_rules(length: int = 6,

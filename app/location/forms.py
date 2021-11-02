@@ -11,7 +11,7 @@ from app.fields import MultipleFileField
 from app.upload.constants import UploadType
 from app.location import constants
 from app.utils import LatLon
-from app.validators import image_file
+from app.validators import image_file, allowed_file
 from app.location.models import Bookmarks
 from app.location.constants import LocationType, LocationState, MaterialType, Accessibility, Country
 
@@ -109,12 +109,12 @@ class DocumentEditForm(FlaskForm):
                        coerce=UploadType.coerce,
                        choices=UploadType.choices([UploadType.PHOTO]))
     # File not required by default when editing
-    file = FileField(_('Document'))
+    file = FileField(_('Document'), [allowed_file()])
     submit = SubmitField(_('Save'))
 
 
 class DocumentForm(DocumentEditForm):
-    file = FileField(_('Document'), [FileRequired()])
+    file = FileField(_('Document'), [FileRequired(), allowed_file()])
 
 
 class PhotoEditForm(FlaskForm):

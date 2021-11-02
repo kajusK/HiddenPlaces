@@ -30,6 +30,7 @@ class Config:
 
     UPLOAD_DIR = 'uploads'
     IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'svg', 'eps', 'webp', 'heif', 'heic']
+    DISABLED_EXTENSIONS = ['exe', 'php', 'js', 'html']
 
     LOGGING_FORMAT = '%(asctime)s:%(levelname)s: %(message)s'
     LOGGING_LOCATION = 'app.log'
