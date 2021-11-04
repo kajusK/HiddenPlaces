@@ -60,8 +60,12 @@ class Location(DBItem):
                                 lazy='selectin', cascade='all,delete-orphan')
 
     @classmethod
+    def get(cls):
+        return cls.query.order_by(cls.modified.desc())
+
+    @classmethod
     def get_by_owner(cls, owner):
-        return cls.query.filter_by(owner=owner).all()
+        return cls.get().filter_by(owner=owner)
 
     def has_documents(self):
         docs = filter(lambda x: x.type not in (

@@ -42,3 +42,6 @@ class Config:
         'en': 'English',
         'cs': 'Čeština'
     }
+
+    # amount of items to show on single page
+    ITEMS_PER_PAGE = 3

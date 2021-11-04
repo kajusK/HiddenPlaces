@@ -1,10 +1,11 @@
 from datetime import datetime
 from flask import Blueprint, render_template, request, abort, redirect, url_for, flash
+from flask import current_app as app
 from flask_login import login_required, current_user
 from flask_babel import _
 
 from app.database import db
-from app.utils import redirect_return
+from app.utils import redirect_return, Pagination
 from .forms import LocationForm, VisitForm, DocumentForm, PhotoForm, LinkForm, PhotoEditForm, BookmarkForm, DocumentEditForm
 from .models import Location, Visit, Material, Link, Bookmarks
 from app.upload.models import Upload
@@ -87,9 +88,13 @@ def bookmarks(bookmarks_id):
 
 
 @blueprint.route('/browse')
-def browse():
-    locations = Location.query.all()
-    return render_template("location/browse.html", locations=locations)
+@blueprint.route('/browse/<int:page>')
+def browse(page=1):
+    locations = Location.get().paginate(page, app.config['ITEMS_PER_PAGE'], True).items
+    import math
+    pagination = Pagination(page, math.ceil(Location.get().count()/app.config['ITEMS_PER_PAGE']), 'location.browse')
+    return render_template("location/browse.html", locations=locations,
+                           pagination=pagination)
 
 
 @blueprint.route('/add', methods=['GET', 'POST'])
