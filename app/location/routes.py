@@ -1,3 +1,4 @@
+import math
 from datetime import datetime
 from flask import Blueprint, render_template, request, abort, redirect, url_for, flash
 from flask import current_app as app
@@ -16,7 +17,7 @@ blueprint = Blueprint('location', __name__, url_prefix="/location")
 
 @blueprint.route('/<int:id>', methods=['GET', 'POST'])
 @blueprint.route('/<int:id>-<string:name>', methods=['GET', 'POST'])
-def show(id, name=None):
+def show(id: int, name: str = None):
     location = Location.get_by_id(id)
     if not location:
         return abort(404)
@@ -63,36 +64,57 @@ def search():
 
 
 @blueprint.route('/mine')
-def owned():
-    locations = Location.get_by_owner(current_user)
-    return render_template("location/browse.html", locations=locations)
+@blueprint.route('/mine/<int:page>')
+def owned(page=1):
+    query = Location.get_by_owner(current_user)
+    locations = query.paginate(page, app.config['ITEMS_PER_PAGE'], True).items
+    pagination = Pagination(
+        page, math.ceil(query.count()/app.config['ITEMS_PER_PAGE']),
+        'location.owned')
+
+    return render_template("location/browse.html", locations=locations,
+                           pagination=pagination)
 
 
 @blueprint.route('/visited')
-def visited():
-    visits = Visit.get_by_user(current_user)
-    locations = []
-    for visit in visits:
-        if visit.location not in locations:
-            locations.append(visit.location)
-    return render_template("location/browse.html", locations=locations)
+@blueprint.route('/visited/<int:page>')
+def visited(page: int = 1):
+    query = Location.get_unique_visits(current_user)
+    locations = query.paginate(page, app.config['ITEMS_PER_PAGE'], True).items
+    pagination = Pagination(
+        page, math.ceil(query.count()/app.config['ITEMS_PER_PAGE']),
+        'location.visited')
+
+    return render_template("location/browse.html", locations=locations,
+                           pagination=pagination)
 
 
 @blueprint.route('/bookmarks/<int:bookmarks_id>')
-def bookmarks(bookmarks_id):
+@blueprint.route('/bookmarks/<int:bookmarks_id>/<int:page>')
+def bookmarks(bookmarks_id: int, page: int = 1):
     bookmarks = Bookmarks.get_by_id(bookmarks_id)
     if not bookmarks:
         return abort(404)
-    return render_template("location/browse.html",
-                           locations=bookmarks.locations)
+
+    query = bookmarks.locations
+    locations = query.paginate(page, app.config['ITEMS_PER_PAGE'], True).items
+    pagination = Pagination(
+        page, math.ceil(query.count()/app.config['ITEMS_PER_PAGE']),
+        'location.bookmarks', bookmarks_id=bookmarks_id)
+
+    return render_template("location/browse.html", locations=locations,
+                           pagination=pagination)
 
 
 @blueprint.route('/browse')
 @blueprint.route('/browse/<int:page>')
 def browse(page=1):
-    locations = Location.get().paginate(page, app.config['ITEMS_PER_PAGE'], True).items
-    import math
-    pagination = Pagination(page, math.ceil(Location.get().count()/app.config['ITEMS_PER_PAGE']), 'location.browse')
+    query = Location.get()
+    locations = query.paginate(page, app.config['ITEMS_PER_PAGE'], True).items
+    pagination = Pagination(
+        page, math.ceil(query.count()/app.config['ITEMS_PER_PAGE']),
+        'location.browse')
+
     return render_template("location/browse.html", locations=locations,
                            pagination=pagination)
 

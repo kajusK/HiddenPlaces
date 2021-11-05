@@ -44,4 +44,4 @@ class Config:
     }
 
     # amount of items to show on single page
-    ITEMS_PER_PAGE = 3
+    ITEMS_PER_PAGE = 8

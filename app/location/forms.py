@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask_babel import _
 from flask import current_app as app
+from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, TextAreaField, SubmitField, BooleanField, SelectMultipleField, RadioField, SelectField, ValidationError, SelectMultipleField
 from flask_wtf.file import FileField, FileRequired
@@ -155,5 +156,5 @@ class BookmarkForm(FlaskForm):
     submit = SubmitField(_('Add'))
 
     def validate_name(self, field):
-        if len(Bookmarks.get_by_name(field.data)):
+        if len(Bookmarks.get_by_name(current_user, field.data)):
             raise ValidationError(_("Name already used"))
