@@ -59,8 +59,20 @@ def show(id: int, name: str = None):
 
 
 @blueprint.route('/search', methods=['POST'])
-def search():
-    return f"Searching for {request}"
+@blueprint.route('/search/<string:string>')
+@blueprint.route('/search/<string:string>/<int:page>')
+def search(string=None, page=1):
+    if request.method == 'POST':
+        string = request.form.get('search')
+
+    query = Location.search(string)
+    locations = query.paginate(page, app.config['ITEMS_PER_PAGE'], True).items
+    pagination = Pagination(
+        page, math.ceil(query.count()/app.config['ITEMS_PER_PAGE']),
+        'location.search', string=string)
+
+    return render_template("location/browse.html", locations=locations,
+                           pagination=pagination)
 
 
 @blueprint.route('/mine')

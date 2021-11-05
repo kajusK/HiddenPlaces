@@ -72,6 +72,10 @@ class Location(DBItem):
         return cls.query.join(Visit).filter_by(user=user).order_by(
             Visit.visited_on.desc()).distinct()
 
+    @classmethod
+    def search(cls, string):
+        return cls.query.filter(cls.name.like(f'%{string}%'))
+
     def has_documents(self):
         docs = filter(lambda x: x.type not in (
             UploadType.PHOTO, UploadType.HISTORICAL_PHOTO), self.uploads)
