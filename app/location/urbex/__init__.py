@@ -1,0 +1,1 @@
+""" Urbex locations handling. """

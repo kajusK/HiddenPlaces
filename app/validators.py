@@ -1,10 +1,13 @@
 """Custom validator functions for wtforms."""
 import re
 import os
+from datetime import datetime
 from flask import current_app as app
 from typing import Optional, Callable, Any
 from flask_babel import _
 from wtforms import ValidationError
+
+from app.utils import LatLon
 
 
 def _validate_extension(field, allowed=None, not_allowed=None,
@@ -70,6 +73,59 @@ def allowed_file(message: Optional[str] = None) -> Callable[[Any, Any], None]:
                             not_allowed=app.config['DISABLED_EXTENSIONS'],
                             message=message)
     return _allowed_file
+
+
+def latitude(message: Optional[str] = None) -> Callable[[Any, Any], None]:
+    """Generates validation function for latitude string
+
+    Args:
+        message : Message to set in the ValidationError exception.
+    """
+    if not message:
+        message = _("Invalid latitude format")
+
+    def _latitude(form, field):
+        try:
+            field.data = LatLon.from_str(field.data)
+        except ValueError:
+            raise ValidationError(message)
+        if not field.data.is_latitude:
+            raise ValidationError(message)
+    return _latitude
+
+
+def longitude(message: Optional[str] = None) -> Callable[[Any, Any], None]:
+    """Generates validation function for longitude string
+
+    Args:
+        message : Message to set in the ValidationError exception.
+    """
+    if not message:
+        message = _("Invalid longitude format")
+
+    def _longitude(form, field):
+        try:
+            field.data = LatLon.from_str(field.data)
+        except ValueError:
+            raise ValidationError(message)
+        if not field.data.is_longitude:
+            raise ValidationError(message)
+    return _longitude
+
+
+def date_in_past(message: Optional[str] = None) -> Callable[[Any, Any], None]:
+    """Generates validation function to check the date field is in past
+
+    Args:
+        message : Message to set in the ValidationError exception.
+    """
+    if not message:
+        message = _("Date cannot be in the future")
+
+    def _date_in_past(form, field):
+        if field.data > datetime.utcnow().date():
+            raise ValidationError(message)
+    return _date_in_past
 
 
 def password_rules(length: int = 6,

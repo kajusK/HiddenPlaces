@@ -1,12 +1,9 @@
 {% if location %}
-    {% set title=_('Edit location: ')+location.name %}
-    {% set return_url = url_for('location.show', id=location.id) %}
+    {% set title=_('Edit location %(name)s', name=location.name) %}
 {% elif parent %}
-    {% set title=_('Add new child for ')+parent.name %}
-    {% set return_url = url_for('location.show', id=parent.id) %}
+    {% set title=_('Add new child for %(name)s', name=parent.name) %}
 {% else %}
     {% set title=_('Add a new location') %}
-    {% set return_url = url_for('location.browse') %}
 {% endif %}
 
 {% extends "_private.html" %}
@@ -58,13 +55,21 @@
 
                 {{ render_field(form.country, 'flag', field_class="dselect") }}
 
-                {{ render_field(form.type, 'house-door', field_class="dselect", required=False) }}
-                {{ render_field(form.materials, 'minecart-loaded', field_class="dselect", required=False) }}
-                {{ render_field(form.state, 'wrench', field_class="dselect", required=False) }}
-                {{ render_field(form.accessibility, 'door-closed', field_class="dselect", required=False) }}
-                {{ render_field(form.length, 'signpost') }}
-                {{ render_field(form.abandoned, 'watch') }}
-                {{ render_field(form.geofond_id, 'globe2') }}
+                {% if 'underground' in request.url or (location and location.underground) %}
+                    {{ render_field(form.type, 'house-door', field_class="dselect", required=False) }}
+                    {{ render_field(form.materials, 'minecart-loaded', field_class="dselect", required=False) }}
+                    {{ render_field(form.state, 'wrench', field_class="dselect", required=False) }}
+                    {{ render_field(form.accessibility, 'door-closed', field_class="dselect", required=False) }}
+                    {{ render_field(form.length, 'signpost') }}
+                    {{ render_field(form.abandoned, 'watch') }}
+                    {{ render_field(form.geofond_id, 'globe2') }}
+                    {{ render_field(form.tools, 'wrench') }}
+                {% else %}
+                    {{ render_field(form.type, 'house-door', field_class="dselect", required=False) }}
+                    {{ render_field(form.state, 'wrench', field_class="dselect", required=False) }}
+                    {{ render_field(form.accessibility, 'door-closed', field_class="dselect", required=False) }}
+                    {{ render_field(form.abandoned, 'watch') }}
+                {% endif %}
 
                 <div class="form-group">
                     {{ render_label(form.published, 'share', 'form-label me-4') }}

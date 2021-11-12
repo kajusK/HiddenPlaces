@@ -1,4 +1,6 @@
 {% from '_helpers.html' import link_button %}
+
+{% if location.has_photos() %}
 <div class="card content-card">
     <div class="card-header">
         {{ _('Gallery') }}
@@ -28,3 +30,4 @@
         {% endfor %}
     </div>
 </div>
+{% endif %}

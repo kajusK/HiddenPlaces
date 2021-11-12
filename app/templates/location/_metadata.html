@@ -14,14 +14,22 @@
         {{ _('Last updated') }}: {{ location.modified.date() }}<br>
         {{ _('Maintainer') }}: <a href="{{ url_for('user.profile', id=location.owner_id) }}">{{ location.owner.first_name }} {{ location.owner.last_name }}</a><br>
         <hr>
-        {{ _('Materials') }}:
-        {% for material in location.materials %}
-        <a href="#" class="badge bg-secondary text-decoration-none">{{ material.type }}</a>
-        {% endfor %}
+        {{ _('State') }}: {{ location.underground.state or location.urbex.state }}</br>
 
-        <br>
-        {{ _('State') }}: {{ location.state }}</br>
-        {{ _('Abandoned') }}: {{ 'Unknown' if location.abandoned_year == None else location.abandoned_year }} <br>
-        {{ _('Length') }}: {{ 'Unknown' if location.length == None else location.length }} m <br>
+        {% if location.underground %}
+            {{ _('Length') }}: {{ _('Unknown') if location.underground.length == None else location.underground.length }} m <br>
+            {% if location.underground.tools %}
+            {{ _('Tools required') }}: {{ location.underground.tools }} <br>
+            {% endif %}
+            {{ _('Abandoned') }}: {{ _('Unknown') if location.underground.abandoned_year == None else location.underground.abandoned_year }} <br>
+
+            {{ _('Materials') }}:
+            {% for material in location.underground.materials %}
+            <a href="#" class="badge bg-secondary text-decoration-none">{{ material.type }}</a>
+            {% endfor %}
+            <br>
+        {% else %}
+            {{ _('Abandoned') }}: {{ _('Unknown') if location.urbex.abandoned_year == None else location.urbex.abandoned_year }} <br>
+        {% endif %}
     </div>
 </div>

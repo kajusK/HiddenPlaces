@@ -98,7 +98,7 @@ def register_template_context(app: Flask) -> None:
     def get_bookmarks():
         """Registers function for obtaining list of bookmarks for user."""
         def _get_bookmarks():
-            return Bookmarks.get_by_user(current_user)
+            return Bookmarks.get_by_user(current_user).all()
         return dict(get_bookmarks=_get_bookmarks)
 
 

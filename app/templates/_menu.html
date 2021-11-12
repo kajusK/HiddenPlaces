@@ -8,18 +8,30 @@
     <hr/>
 
     <ul class="list-unstyled">
-        {{ menu_block(_("Location"), "geo-alt", [
-            menu_item(_("Create new"), "plus-lg", url_for('location.add')),
-            menu_item(_("Browse"), "book", url_for('location.browse')),
+        {{ menu_item(_("Browse"), 'book', url_for('location.browse')) }}
+        {{ menu_item(_("Map"), 'map', '#') }}
+
+        {{ menu_block(_("Underground"), "minecart-loaded", [
+            menu_item(_("Create new"), "plus-lg", url_for('location.add', type_str='underground')),
+            menu_item(_("Browse"), "book", url_for('location.browse', type_str='underground')),
             menu_item(_("Show on map"), "map", '#'),
-            menu_item(_("My locations"), "geo", url_for('location.owned')),
-            menu_item(_("Visited"), "pin", url_for('location.visited')),
+            menu_item(_("My locations"), "geo", url_for('location.owned', type_str='underground')),
+            menu_item(_("Visited"), "pin", url_for('location.visited', type_str='underground')),
+            ], show=True)
+        }}
+
+        {{ menu_block(_("Urbex"), "building", [
+            menu_item(_("Create new"), "plus-lg", url_for('location.add', type_str='urbex')),
+            menu_item(_("Browse"), "book", url_for('location.browse', type_str='urbex')),
+            menu_item(_("Show on map"), "map", '#'),
+            menu_item(_("My locations"), "geo", url_for('location.owned', type_str='urbex')),
+            menu_item(_("Visited"), "pin", url_for('location.visited', type_str='urbex')),
             ], show=True)
         }}
 
         {% set bookmark_items = [] %}
         {% for bookmark in get_bookmarks() %}
-            {{ bookmark_items.append(menu_item(bookmark.name, "", url_for('location.bookmarks', bookmarks_id=bookmark.id))) or "" }}
+            {{ bookmark_items.append(menu_item(bookmark.name, "", url_for('location.bookmark_show', name=bookmark.name))) or "" }}
         {% endfor %}
         {{ menu_block(_("Bookmarks"), "star", bookmark_items) }}
 

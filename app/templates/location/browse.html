@@ -5,14 +5,14 @@
 {% block content %}
 {% if locations | length == 0 %}
 <div class="text-center">
-    <h1>{{ _('No locations are here yet, add some') }}</h1>
+    <h1>{{ _('No locations found') }}</h1>
 </div>
 {% else %}
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
 {% for location in locations %}
     <div class="col">
         <div class="card h-100 shadow">
-            <a href="{{ url_for('location.show', id=location.id) }}" class="stretched-link"></a>
+            <a href="{{ url_for('location.show', location_id=location.id) }}" class="stretched-link"></a>
 
             {% set image_url = url_for('static', filename='images/favicon.ico') %}
             {% if location.photo %}
@@ -21,9 +21,9 @@
             <img src="{{ image_url }}" class="card-img-top" alt="Location title image">
             <div class="card-body">
                 <h4 class="card-title">
-                    <a href="{{ url_for('location.show', id=location.id) }}" class="text-decoration-none link-dark"></a>{{ location.name }}</a>
+                    <a href="{{ url_for('location.show', location_id=location.id) }}" class="text-decoration-none link-dark"></a>{{ location.name }}</a>
                 </h4>
-                <p class="card-text text-muted">{{ location.description }}</p>
+                <p class="card-text text-muted text-truncate">{{ location.description }}</p>
             </div>
         </div>
     </div>

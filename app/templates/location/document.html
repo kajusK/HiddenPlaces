@@ -1,3 +1,9 @@
+{% if location %}
+    {% set title=_('Add document for %(name)s', name=location.name) %}
+{% else %}
+    {% set title=_('Edit document') %}
+{% endif %}
+
 {% extends "_private.html" %}
 {% from '_helpers.html' import render_field, link_button %}
 
@@ -5,11 +11,7 @@
 
 <div class="card">
     <h4 class="card-header">
-        {% if location %}
-            {{ _('Add document for') }} {{ location.name }}
-        {% else %}
-            {{ _('Edit document') }}
-        {% endif %}
+        {{ title }}
     </h4>
     <div class="card-body">
         <form method="POST" action="" role="form" enctype="multipart/form-data">
