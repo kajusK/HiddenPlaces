@@ -17,7 +17,7 @@
             menu_item(_("Show on map"), "map", '#'),
             menu_item(_("My locations"), "geo", url_for('location.owned', type_str='underground')),
             menu_item(_("Visited"), "pin", url_for('location.visited', type_str='underground')),
-            ], show=True)
+            ], show=('underground' in request.url))
         }}
 
         {{ menu_block(_("Urbex"), "building", [
@@ -26,14 +26,14 @@
             menu_item(_("Show on map"), "map", '#'),
             menu_item(_("My locations"), "geo", url_for('location.owned', type_str='urbex')),
             menu_item(_("Visited"), "pin", url_for('location.visited', type_str='urbex')),
-            ], show=True)
+            ], show=('urbex' in request.url))
         }}
 
         {% set bookmark_items = [] %}
         {% for bookmark in get_bookmarks() %}
             {{ bookmark_items.append(menu_item(bookmark.name, "", url_for('location.bookmark_show', name=bookmark.name))) or "" }}
         {% endfor %}
-        {{ menu_block(_("Bookmarks"), "star", bookmark_items) }}
+        {{ menu_block(_("Bookmarks"), "star", bookmark_items, show=('bookmark' in request.url)) }}
 
         {{ menu_block(_("Admin"), "shield", [
             menu_item(_("Locations"), "geo-alt", url_for('admin.locations')),
@@ -41,7 +41,7 @@
             menu_item(_("Invitations"), "people-fill", url_for('admin.invitations')),
             menu_item(_("Logins"), "door-open", url_for('admin.logins')),
             menu_item(_("Settings"), "gear", url_for('admin.settings')),
-            ])
+            ], show=('admin' in request.url))
         }}
 
         {{ menu_block(_("Page"), "signpost", [
@@ -49,7 +49,7 @@
             menu_item(_("Support"), "currency-dollar", url_for('page.support')),
             menu_item(_("Rules"), "book", url_for('page.rules')),
             menu_item(_("About"), "question-lg", url_for('page.about')),
-            ])
+            ], show=True)
         }}
     </ul>
 </nav>
