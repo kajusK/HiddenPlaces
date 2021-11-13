@@ -223,7 +223,7 @@ class Pagination:
         self.pages = {}
         self.show = True
 
-        if pages == 1:
+        if pages <= 1:
             self.show = False
             return
 

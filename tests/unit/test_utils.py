@@ -292,6 +292,7 @@ def test_pagination_middle(mocker):
     assert pag.prev
     assert list(pag.pages.keys()) == [1, 2, 4, 5, 6, 7, 8, 10]
 
+
 def test_pagination_small(mocker):
     mocker.patch('app.utils.url_for')
     pag = Pagination(3, 5, 'foo', bar=2)
@@ -305,4 +306,7 @@ def test_pagination_small(mocker):
 def test_pagination_none(mocker):
     mocker.patch('app.utils.url_for')
     pag = Pagination(1, 1, 'foo', bar=2)
+    assert not pag.show
+
+    pag = Pagination(1, 0, 'foo', bar=2)
     assert not pag.show
