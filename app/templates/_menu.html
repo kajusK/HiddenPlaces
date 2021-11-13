@@ -46,9 +46,9 @@
 
         {{ menu_block(_("Page"), "signpost", [
             menu_item(_("Contact admins"), "envelope", url_for('page.contact')),
-            menu_item(_("Support"), "currency-dollar", url_for('page.support')),
-            menu_item(_("Rules"), "book", url_for('page.rules')),
-            menu_item(_("About"), "question-lg", url_for('page.about')),
+            menu_item(_("Support"), "currency-dollar", url_for('page.show', page='support')),
+            menu_item(_("Rules"), "book", url_for('page.show', page='rules')),
+            menu_item(_("About"), "question-lg", url_for('page.show', page='about')),
             ], show=True)
         }}
     </ul>

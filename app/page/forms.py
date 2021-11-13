@@ -1,18 +1,18 @@
-import re
-from datetime import datetime
+"""Forms for page module."""
 from flask_wtf import FlaskForm
 from flask_babel import _
-from wtforms import StringField, SelectField, TextAreaField, SubmitField, FileField, BooleanField, SelectMultipleField, RadioField, SelectField
-from wtforms.fields.html5 import DateField, IntegerField
+from wtforms import StringField, TextAreaField, SubmitField
 from wtforms.validators import InputRequired, Length
 
 
 class ContactForm(FlaskForm):
-    subject = StringField(_('Subject'), [InputRequired()])
+    """Contact form for sending messages to admins."""
+    subject = StringField(_('Subject'), [InputRequired(), Length(max=64)])
     text = TextAreaField(_('Your message'), [InputRequired()])
     submit = SubmitField(_('Send'))
 
 
 class EditForm(FlaskForm):
+    """Edit page form."""
     text = TextAreaField(_('Page content'), [InputRequired()])
     submit = SubmitField(_('Save'))

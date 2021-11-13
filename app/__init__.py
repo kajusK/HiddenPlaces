@@ -7,6 +7,7 @@ from flask_login import current_user
 
 from app import errors, user, location, admin, page, message, upload
 from app.commands import user_cli
+from app.utils import url_for_return, url_return
 from app.user.models import User
 from app.location.models import Bookmarks
 from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka
@@ -80,22 +81,17 @@ def create_app(config_object: str = 'app.config.Config',
 def register_template_context(app: Flask) -> None:
     """Registers additional global Jinja2 functions and variables."""
     @app.context_processor
-    def url_with_return():
+    def jinja_url_for_return():
         """Registers url generator with return to prev page ability."""
-        def _url_for_return(*args, **kwargs):
-            session['return_url'] = request.path
-            return url_for(*args, **kwargs)
-        return dict(url_for_return=_url_for_return)
+        return dict(url_for_return=url_for_return)
 
     @app.context_processor
-    def url_return():
+    def jinja_url_return():
         """Registers function for generating return to prev page url."""
-        def _url_return():
-            return session['return_url'] or url_for('user.login')
-        return dict(url_return=_url_return)
+        return dict(url_return=url_return)
 
     @app.context_processor
-    def get_bookmarks():
+    def jinja_get_bookmarks():
         """Registers function for obtaining list of bookmarks for user."""
         def _get_bookmarks():
             return Bookmarks.get_by_user(current_user).all()
