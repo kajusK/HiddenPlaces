@@ -97,6 +97,18 @@ class Location(DBItem):
         return cls._filter(query, loc_type)
 
     @classmethod
+    def get_unpublished(cls, loc_type: LocationType) -> Query:
+        """Query for locations that are not published
+
+        Args:
+            loc_type: Type of the location to query for
+
+        Returns:
+            Location query
+        """
+        return cls.get(loc_type).filter_by(published=False)
+
+    @classmethod
     def get_by_owner(cls, loc_type: LocationType, owner: User) -> Query:
         """Query for locations owned by  user
 
@@ -111,7 +123,7 @@ class Location(DBItem):
 
     @classmethod
     def get_unique_visits(cls, loc_type: LocationType, user: User) -> Query:
-        """Query for locations owned by  user
+        """Query for users unique visits
 
         Args:
             loc_type: Type of the location to query for

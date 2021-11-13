@@ -3,14 +3,15 @@
 
 {% block content %}
 <div class="row">
-    {{ card_count(_('Locations'), locations | length, 'geo-alt', 'text-success') }}
-    {{ card_count(_('Published'), locations | length, 'people', 'text-warning') }}
-    {{ card_count(_('Private'), 0, 'shield', 'text-primary') }}
+    {{ card_count(_('All'), locations_count, 'geo-alt', 'text-success', url_for('admin.locations')) }}
+    {{ card_count(_('Underground'), underground_count, 'building', 'text-success', url_for('admin.locations', location='underground')) }}
+    {{ card_count(_('Urbex'), urbex_count, 'minecart-loaded', 'text-success', url_for('admin.locations', location='urbex')) }}
+    {{ card_count(_('Private'), private_count, 'shield', 'text-warning', url_for('admin.locations', location='private')) }}
 </div>
 
 <div class="card">
     <div class="card-header">
-        <h3>{{ _('Locations') }}</h3>
+        <h3>{{ title }}</h3>
     </div>
     <div class="card-body pb-0">
         <table class="table">
@@ -25,23 +26,24 @@
                 </tr>
             </thead>
             <tbody class="align-middle">
-        {% for location in locations %}
+            {% for location in locations %}
                 <tr>
                     <td>{{ location.name }}</td>
-                    <td><a href="{{ url_for('user.profile', id=location.owner.id) }}">{{ location.owner.first_name}} {{ location.owner.last_name }}</a></td>
-                    <td>{{ location.created_on.date() }}</td>
-                    <td class="text-success">Published</td>
-                    <td>Mine</td>
+                    <td><a href="{{ url_for('user.profile', user_id=location.owner.id) }}">{{ location.owner.first_name}} {{ location.owner.last_name }}</a></td>
+                    <td>{{ location.created.date() }}</td>
+                    <td>{{ location.underground.state or location.urbex.state }}</td>
+                    <td>{{ location.underground.type or location.urbex.type }}</td>
                     <td class="text-end">
-                        {{ link_button(_('Show'), url_for('location.show', id=location.id), 'eye', 'success') }}
-                        {{ link_button(_('Edit'), url_for('location.edit', id=location.id), 'pencil', 'warning') }}
+                        {{ link_button('', url_for('location.show', location_id=location.id), 'eye', 'success') }}
+                        {{ link_button('', url_for_return('location.edit', location_id=location.id), 'pencil', 'warning') }}
+                        {{ link_button('', url_for_return('location.delete', location_id=location.id), 'trash', 'danger') }}
                     </td>
                 </tr>
-        {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
 
-        {{ render_pagination() }}
+        {{ render_pagination(pagination) }}
     </div>
 </div>
 

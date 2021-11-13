@@ -1,12 +1,11 @@
-{% set title=_("Logins log") %}
 {% extends '_private.html' %}
 {% from '_helpers.html' import render_pagination, card_count, link_button %}
 
 {% block content %}
 <div class="row">
-    {{ card_count(_('Failed'), failed, 'shield', 'text-danger') }}
-    {{ card_count(_('Unique IPs'), unique, 'share', 'text-success') }}
-    {{ card_count(_('Day'), per_day, 'clock', 'text-success') }}
+    {{ card_count(_('All'), attempts, 'clock', 'text-success', url_for('admin.logins')) }}
+    {{ card_count(_('Failed'), failed, 'shield', 'text-danger', url_for('admin.logins', login_type='failed')) }}
+    {{ card_count(_('Unique IPs'), unique, 'share', 'text-success', url_for('admin.logins', login_type='unique')) }}
     {{ card_count(_('Month'), per_month, 'calendar', 'text-success') }}
 </div>
 
@@ -61,7 +60,7 @@
             </tbody>
         </table>
 
-        {{ render_pagination() }}
+        {{ render_pagination(pagination) }}
     </div>
 </div>
 

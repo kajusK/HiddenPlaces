@@ -1,6 +1,8 @@
 """Modes for user module."""
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timedelta
+from sqlalchemy import or_
+from sqlalchemy.orm import Query
 from flask import request
 from flask_login import UserMixin
 import uuid
@@ -27,6 +29,23 @@ class User(DBItem, UserMixin):
     about = db.Column(db.String(constants.MAX_ABOUT_LEN), default="")
     photo_path = db.Column(db.String(64))
     role = db.Column(db.Enum(UserRole), default=UserRole.NEWBIE)
+
+    @classmethod
+    def get(cls) -> Query:
+        return cls.query.order_by(cls.created.desc())
+
+    @classmethod
+    def get_admins(cls) -> Query:
+        return cls.get().filter(or_(
+            cls.role == UserRole.ADMIN, cls.role == UserRole.ROOT))
+
+    @classmethod
+    def get_moderators(cls) -> Query:
+        return cls.get().filter_by(role=UserRole.MODERATOR)
+
+    @classmethod
+    def get_banned(cls) -> Query:
+        return cls.get().filter_by(active=False)
 
     def __init__(self, password: str = None, **kwargs):
         """Initializes the User object
@@ -104,7 +123,16 @@ class Invitation(DBItem):
 
     invited_by = db.relationship("User", foreign_keys=invited_by_id)
     approved_by = db.relationship("User", foreign_keys=approved_by_id)
-    user = db.relationship("User", foreign_keys=user_id)
+    user = db.relationship("User", foreign_keys=user_id,
+                           backref='invitation')
+
+    @classmethod
+    def get(cls):
+        return cls.query.order_by(cls.created.desc())
+
+    @classmethod
+    def get_by_state(cls, state: InvitationState) -> Query:
+        return cls.get().filter_by(state=state)
 
     def is_valid(self) -> bool:
         """Checks if the invitation is approved and valid for registration. """
@@ -128,6 +156,28 @@ class LoginLog(DBItem):
     browser = db.Column(db.String(64))
     country = db.Column(db.String(64))
     timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
+
+    @classmethod
+    def get(cls) -> Query:
+        return cls.query.order_by(cls.timestamp.desc())
+
+    @classmethod
+    def get_failed(cls) -> Query:
+        return cls.get().filter(cls.result != LoginResult.SUCCESS)
+
+    @classmethod
+    def get_unique(cls) -> Query:
+        return cls.get().distinct(cls.ip)
+
+    @classmethod
+    def get_last_day(cls) -> Query:
+        return cls.get().filter(
+            cls.timestamp >= datetime.utcnow() - timedelta(days=1))
+
+    @classmethod
+    def get_last_month(cls) -> Query:
+        return cls.get().filter(
+            cls.timestamp >= datetime.utcnow() - timedelta(days=30))
 
     @classmethod
     def create_log(cls, email: str, result: LoginResult,

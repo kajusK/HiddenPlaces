@@ -31,7 +31,11 @@
                 <tr>
                     <td>{{ user.created.date() }}</td>
                     <td>{{ user.first_name }} {{ user.last_name }}</td>
-                    <td><a href="#">Someone Somename</a></td>
+                    {% if user.invitation %}
+                    <td><a href="{{ url_for('user.profile', user_id=user.invitation.invited_by.id) }}">{{ user.invitation.invited_by.first_name }} {{ user.invitation.invited_by.last_name }}</a></td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
                     <td>{{ user.last_seen.date() }}</td>
                     <td>
                         <span class="badge bg-secondary">{{ user.role.name.lower() }}</span>
@@ -44,16 +48,16 @@
                         {% endif %}
                     </td>
                     <td class="text-end">
-                        {{ link_button(_('Show'), url_for('user.profile', user_id=user.id), 'eye', 'success') }}
-                        {{ link_button(_('Role'), url_for('user.role', user_id=user.id), 'unlock', 'warning') }}
-                        {{ link_button(_('Ban'), url_for('user.ban', user_id=user.id), 'exclamation-triangle', 'danger') }}
+                        {{ link_button('', url_for('user.profile', user_id=user.id), 'eye', 'success') }}
+                        {{ link_button(_('Role'), url_for_return('user.role', user_id=user.id), 'unlock', 'warning') }}
+                        {{ link_button(_('Ban'), url_for_return('user.ban', user_id=user.id), 'exclamation-triangle', 'danger') }}
                     </td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
 
-        {{ render_pagination() }}
+        {{ render_pagination(pagination) }}
     </div>
 </div>
 

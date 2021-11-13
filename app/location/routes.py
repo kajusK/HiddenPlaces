@@ -8,6 +8,7 @@ from flask_login import current_user
 from flask_babel import _
 
 from app.database import db
+from app.decorators import moderator
 from app.utils import redirect_return, Pagination
 from app.location.forms import VisitForm, DocumentForm, PhotoForm, LinkForm, \
      PhotoEditForm, BookmarkForm, DocumentEditForm
@@ -142,6 +143,24 @@ def add(type_str: str, parent_id: Optional[int] = None):
         return redirect(url_for('location.show', location_id=location.id))
 
     return render_template('location/edit.html', form=form, parent=parent)
+
+
+@blueprint.route('/delete/<int:location_id>')
+@moderator
+def delete(location_id: int):
+    """Deletes the location record
+
+    Args:
+        location_id: ID of the location to be deleted
+    """
+    location = Location.get_by_id(location_id)
+    if not location:
+        abort(404)
+
+    location.delete()
+    db.session.commit()
+    flash(_("Location was deleted"), 'warning')
+    return redirect_return()
 
 
 @blueprint.route('/edit/<int:location_id>', methods=['GET', 'POST'])

@@ -41,15 +41,15 @@
                     {% else %}<td class="text-danger">{{ _('Denied') }}</td>{% endif %}
                     <td>{{ invite.reason }}</td>
                     <td class="text-end">
-                        {% if invite.state.name in ('WAITING', 'DENIED') %}{{ link_button(_('Approve'), url_for('admin.invite_approve', invite_id=invite.id), 'check-lg', 'warning') }}{% endif %}
-                        {% if invite.state.name in ('WAITING', 'APPROVED') %}{{ link_button(_('Deny'), url_for('admin.invite_deny', invite_id=invite.id), 'x-lg', 'danger') }}{% endif %}
+                        {% if invite.state.name in ('WAITING', 'DENIED') %}{{ link_button(_('Approve'), url_for_return('admin.invite_approve', invite_id=invite.id), 'check-lg', 'warning') }}{% endif %}
+                        {% if invite.state.name in ('WAITING', 'APPROVED') %}{{ link_button(_('Deny'), url_for_return('admin.invite_deny', invite_id=invite.id), 'x-lg', 'danger') }}{% endif %}
                     </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        {{ render_pagination() }}
+        {{ render_pagination(pagination) }}
     </div>
 </div>
 

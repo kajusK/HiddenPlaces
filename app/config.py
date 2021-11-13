@@ -45,3 +45,5 @@ class Config:
 
     # amount of items to show on single page
     ITEMS_PER_PAGE = 8
+    # amount of items to show in admin interface
+    ADMIN_PER_PAGE = 20

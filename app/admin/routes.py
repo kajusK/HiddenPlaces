@@ -1,127 +1,194 @@
 """Admin interface."""
-from datetime import datetime, timedelta
 from typing import Optional
-from flask import Blueprint, render_template, redirect, url_for, abort
+from flask import Blueprint, render_template, abort
+from flask import current_app as app
 from flask_login import current_user
 from flask_babel import _
-from sqlalchemy import or_, desc, sql
 
-from app.user.models import User, Invitation, LoginLog
-from app.user.constants import InvitationState, UserRole, LoginResult
-from app.location.models import Location
-from app.decorators import moderator, admin
 from app.database import db
+from app.utils import Pagination, redirect_return
+from app.decorators import moderator, admin
+from app.location.models import Location
+from app.location.constants import LocationType
+from app.user.models import User, Invitation, LoginLog
+from app.user.constants import InvitationState
 
 
-blueprint = Blueprint('admin', __name__, url_prefix="/admin")
+blueprint = Blueprint('admin', __name__, url_prefix='/admin')
 
 
 @blueprint.route('/locations')
+@blueprint.route('/locations/<int:page>')
+@blueprint.route('/locations/<string:location>')
+@blueprint.route('/locations/<string:location>/<int:page>')
 @moderator
-def locations():
-    """Lists existing locations with admin tasks. """
-    locs = Location.query.all()
-    return render_template("admin/locations.html", locations=locs)
+def locations(page: int = 1, location: Optional[str] = None):
+    """Lists existing locations.
+
+    Args:
+        page: Page number for results pagination
+        location: Location type (urbex, underground, private)
+    """
+    if location is None:
+        query = Location.get(LocationType.ALL)
+        title = _("All locations")
+    elif location == 'urbex':
+        query = Location.get(LocationType.URBEX)
+        title = _("Urbex locations")
+    elif location == 'underground':
+        query = Location.get(LocationType.UNDERGROUND)
+        title = _("Underground locations")
+    elif location == 'private':
+        query = Location.get_unpublished(LocationType.ALL)
+        title = _("Private locations")
+    else:
+        abort(404)
+
+    query = query.paginate(page, app.config['ADMIN_PER_PAGE'], True)
+    pagination = Pagination(page, query.pages, 'admin.locations',
+                            location=location)
+
+    locations_count = Location.get(LocationType.ALL).count()
+    urbex_count = Location.get(LocationType.URBEX).count()
+    underground_count = Location.get(LocationType.UNDERGROUND).count()
+    private_count = Location.get_unpublished(LocationType.ALL).count()
+
+    return render_template('admin/locations.html', locations=query.items,
+                           title=title, locations_count=locations_count,
+                           underground_count=underground_count,
+                           urbex_count=urbex_count,
+                           private_count=private_count, pagination=pagination)
 
 
 @blueprint.route('/users')
+@blueprint.route('/users/<int:page>')
 @blueprint.route('/users/<string:role>')
+@blueprint.route('/users/<string:role>/<int:page>')
 @admin
-def users(role: str = 'users'):
+def users(page: int = 1, role: Optional[str] = None):
     """Lists existing users.
 
     Args:
-        role: Select specific users (admins, moderators, bans, users)
+        page: Page number for results pagination
+        role: Select specific users (admins, moderators, bans)
     """
-    if role == 'admins':
-        data = User.query.filter(or_(
-            User.role == UserRole.ADMIN, User.role == UserRole.ROOT))
+    if role is None:
+        query = User.get()
+        title = _("Users")
+    elif role == 'admins':
+        query = User.get_admins()
         title = _("Admins")
     elif role == 'moderators':
-        data = User.query.filter_by(role=UserRole.ADMIN)
+        query = User.get_moderators()
         title = _("Moderators")
     elif role == 'bans':
-        data = User.query.filter_by(active=False)
+        query = User.get_banned()
         title = _("Banned users")
     else:
-        data = User.query.all()
-        title = _("Users")
+        abort(404)
 
-    users_count = User.query.count()
-    admins_count = User.query.filter(or_(
-        User.role == UserRole.ADMIN, User.role == UserRole.ROOT)).count()
-    moderators_count = User.query.filter_by(role=UserRole.MODERATOR).count()
-    bans_count = User.query.filter_by(active=False).count()
+    query = query.paginate(page, app.config['ADMIN_PER_PAGE'], True)
+    pagination = Pagination(page, query.pages, 'admin.users', role=role)
 
-    return render_template("admin/users.html", users=data, title=title,
+    users_count = User.get().count()
+    admins_count = User.get_admins().count()
+    moderators_count = User.get_moderators().count()
+    bans_count = User.get_banned().count()
+
+    return render_template('admin/users.html', users=query.items, title=title,
                            users_count=users_count, admins_count=admins_count,
                            moderators_count=moderators_count,
-                           bans_count=bans_count)
+                           bans_count=bans_count, pagination=pagination)
 
 
 @blueprint.route('/invitations')
+@blueprint.route('/invitations/<int:page>')
 @blueprint.route('/invitations/<string:state>')
+@blueprint.route('/invitations/<string:state>/<int:page>')
 @admin
-def invitations(state: Optional[str] = None):
+def invitations(page: int = 1, state: Optional[str] = None):
     """Lists invitations
 
     Args:
+        page: Page number for results pagination
         state: State of the invitation (waiting, approved, denied, registered)
     """
-    if state == 'waiting':
-        data = Invitation.query.filter_by(state=InvitationState.WAITING)
+    if state is None:
+        query = Invitation.get()
+        title = _("Invitations")
+    elif state == 'waiting':
+        query = Invitation.get_by_state(InvitationState.WAITING)
         title = _("Waiting for approval")
     elif state == 'approved':
-        data = Invitation.query.filter_by(
-            state=InvitationState.APPROVED)
+        query = Invitation.get_by_state(InvitationState.APPROVED)
         title = _("Approved invitations")
     elif state == 'denied':
-        data = Invitation.query.filter_by(
-            state=InvitationState.DENIED)
+        query = Invitation.get_by_state(InvitationState.DENIED)
         title = _("Denied invitations")
     elif state == 'registered':
-        data = Invitation.query.filter_by(
-            state=InvitationState.REGISTERED)
+        query = Invitation.get_by_state(InvitationState.REGISTERED)
         title = _("Registered users")
     else:
-        data = Invitation.query.all()
-        title = _("Invitations")
+        abort(404)
 
-    waiting = Invitation.query.filter_by(state=InvitationState.WAITING).count()
-    approved = Invitation.query.filter_by(
-        state=InvitationState.APPROVED).count()
-    denied = Invitation.query.filter_by(state=InvitationState.DENIED).count()
-    registered = Invitation.query.filter_by(
-        state=InvitationState.REGISTERED).count()
+    query = query.paginate(page, app.config['ADMIN_PER_PAGE'], True)
+    pagination = Pagination(page, query.pages, 'admin.invitations',
+                            state=state)
 
-    return render_template("admin/invitations.html", invitations=data,
+    waiting = Invitation.get_by_state(InvitationState.WAITING).count()
+    approved = Invitation.get_by_state(InvitationState.APPROVED).count()
+    denied = Invitation.get_by_state(InvitationState.DENIED).count()
+    registered = Invitation.get_by_state(InvitationState.REGISTERED).count()
+
+    return render_template('admin/invitations.html', invitations=query.items,
                            waiting=waiting, approved=approved, denied=denied,
-                           registered=registered, title=title)
+                           registered=registered, title=title,
+                           pagination=pagination)
 
 
 @blueprint.route('/settings')
 @admin
 def settings():
     """Shows system settings."""
-    return render_template("admin/settings.html")
+    return render_template('admin/settings.html')
 
 
 @blueprint.route('/logins')
+@blueprint.route('/logins/<int:page>')
+@blueprint.route('/logins/<string:login_type>')
+@blueprint.route('/logins/<string:login_type>/<int:page>')
 @admin
-def logins():
-    """Shows log of login attempts."""
-    data = LoginLog.query.order_by(desc(LoginLog.id))
-    failed = LoginLog.query.filter(
-        LoginLog.result != LoginResult.SUCCESS).count()
-    unique = db.session.query(
-        sql.func.count(sql.func.distinct(LoginLog.ip))).count()
-    per_day = LoginLog.query.filter(
-        LoginLog.timestamp >= datetime.utcnow() - timedelta(days=1)).count()
-    per_month = LoginLog.query.filter(
-        LoginLog.timestamp >= datetime.utcnow() - timedelta(days=30)).count()
+def logins(page: int = 1, login_type: Optional[str] = None):
+    """Shows log of login attempts.
 
-    return render_template("admin/logins.html", logins=data, failed=failed,
-                           unique=unique, per_day=per_day, per_month=per_month)
+    Args:
+        page: Page number for results pagination
+        login_type: Login type (unique, failed)
+    """
+    if login_type is None:
+        query = LoginLog.get()
+        title = _("Logins")
+    elif login_type == 'unique':
+        query = LoginLog.get_unique()
+        title = _("Unique IPs")
+    elif login_type == 'failed':
+        query = LoginLog.get_failed()
+        title = _("Failed logins")
+    else:
+        abort(404)
+
+    attempts = LoginLog.get().count()
+    failed = LoginLog.get_failed().count()
+    unique = LoginLog.get_unique().count()
+    per_month = LoginLog.get_last_month().count()
+
+    query = query.paginate(page, app.config['ADMIN_PER_PAGE'], True)
+    pagination = Pagination(page, query.pages, 'admin.logins')
+
+    return render_template('admin/logins.html', logins=query.items,
+                           failed=failed, unique=unique, attempts=attempts,
+                           per_month=per_month, pagination=pagination,
+                           title=title)
 
 
 @blueprint.route('invitations/approve/<int:invite_id>')
@@ -134,12 +201,14 @@ def invite_approve(invite_id: int):
     """
     invite = Invitation.get_by_id(invite_id)
     if not invite:
-        return abort(404, _("Invitation not found."))
+        abort(404)
+
     if invite.state in (InvitationState.WAITING, InvitationState.DENIED):
         invite.state = InvitationState.APPROVED
         invite.approved_by = current_user
         db.session.commit()
-    return redirect(url_for('admin.invitations'))
+
+    return redirect_return()
 
 
 @blueprint.route('invitation/deny/<int:invite_id>')
@@ -152,9 +221,11 @@ def invite_deny(invite_id: int):
     """
     invite = Invitation.get_by_id(invite_id)
     if not invite:
-        return abort(404, _("Invitation not found."))
+        abort(404)
+
     if invite.state in (InvitationState.WAITING, InvitationState.APPROVED):
         invite.state = InvitationState.DENIED
         invite.approved_by = current_user
         db.session.commit()
-    return redirect(url_for('admin.invitations'))
+
+    return redirect_return()
