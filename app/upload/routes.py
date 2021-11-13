@@ -1,6 +1,6 @@
 """Routes for uploaded files."""
 import os
-from flask import Blueprint, send_from_directory, send_file, safe_join
+from flask import Blueprint, send_from_directory
 from flask import current_app as app
 
 blueprint = Blueprint('upload', __name__, url_prefix='/upload')

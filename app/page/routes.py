@@ -92,4 +92,5 @@ def show(page: str):
 def contact():
     """Renders a contact form."""
     form = ContactForm()
+    # TODO process form and send mail
     return render_template('page/contact.html', form=form)

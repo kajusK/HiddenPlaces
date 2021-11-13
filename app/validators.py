@@ -2,8 +2,8 @@
 import re
 import os
 from datetime import datetime
-from flask import current_app as app
 from typing import Optional, Callable, Any
+from flask import current_app as app
 from flask_babel import _
 from wtforms import ValidationError
 
@@ -53,6 +53,7 @@ def image_file(message: Optional[str] = None) -> Callable[[Any, Any], None]:
         message = _("Not a supported image type")
 
     def _image_file(form, field):
+        # pylint: disable=unused-argument
         _validate_extension(field, allowed=app.config['IMAGE_EXTENSIONS'],
                             message=message)
 
@@ -69,6 +70,7 @@ def allowed_file(message: Optional[str] = None) -> Callable[[Any, Any], None]:
         message = _("Files of this type are not allowed")
 
     def _allowed_file(form, field):
+        # pylint: disable=unused-argument
         _validate_extension(field,
                             not_allowed=app.config['DISABLED_EXTENSIONS'],
                             message=message)
@@ -85,10 +87,11 @@ def latitude(message: Optional[str] = None) -> Callable[[Any, Any], None]:
         message = _("Invalid latitude format")
 
     def _latitude(form, field):
+        # pylint: disable=unused-argument
         try:
             field.data = LatLon.from_str(field.data)
-        except ValueError:
-            raise ValidationError(message)
+        except ValueError as e:
+            raise ValidationError(message) from e
         if not field.data.is_latitude:
             raise ValidationError(message)
     return _latitude
@@ -104,10 +107,11 @@ def longitude(message: Optional[str] = None) -> Callable[[Any, Any], None]:
         message = _("Invalid longitude format")
 
     def _longitude(form, field):
+        # pylint: disable=unused-argument
         try:
             field.data = LatLon.from_str(field.data)
-        except ValueError:
-            raise ValidationError(message)
+        except ValueError as e:
+            raise ValidationError(message) from e
         if not field.data.is_longitude:
             raise ValidationError(message)
     return _longitude
@@ -123,6 +127,7 @@ def date_in_past(message: Optional[str] = None) -> Callable[[Any, Any], None]:
         message = _("Date cannot be in the future")
 
     def _date_in_past(form, field):
+        # pylint: disable=unused-argument
         if field.data > datetime.utcnow().date():
             raise ValidationError(message)
     return _date_in_past

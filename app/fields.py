@@ -11,6 +11,7 @@ class MultipleFileField(_MultipleFileField):
         valuelist = [x for x in valuelist if isinstance(x, FileStorage) and x]
 
         if len(valuelist):
+            # pylint: disable=attribute-defined-outside-init
             self.data = list(valuelist)
         else:
             self.raw_data = ()

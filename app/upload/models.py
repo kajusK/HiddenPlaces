@@ -26,7 +26,7 @@ class Upload(DBItem):
     object_uuid = db.Column(UUID, index=True)
     created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'),
                               nullable=False)
-    created_by = db.relationship("User")
+    created_by = db.relationship('User')
 
     def _delete_file(self):
         """Deletes file related to this object."""

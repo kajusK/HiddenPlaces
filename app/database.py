@@ -6,6 +6,8 @@ from sqlalchemy import types, dialects
 from app.extensions import db
 from app.utils import LatLon
 
+# pylint: disable=abstract-method
+
 
 class DBItem(db.Model):
     """Parent class for all database items.
@@ -84,12 +86,10 @@ class _LatLonDb(types.TypeDecorator):
 
 class Latitude(_LatLonDb):
     """Custom database type for latitude data."""
-    pass
 
 
 class Longitude(_LatLonDb):
     """Custom database type for longitude data."""
-    pass
 
 
 class UUID(types.TypeDecorator):
