@@ -6,9 +6,8 @@
 {% endif %}
 
 {% block content %}
-    <h1>404</h1>
     <div class="container-fluid col-2 text-center align-middle">
         <img src="{{ url_for('static', filename='images/404.jpg') }}" style="max-width: 100%; border-radius: 100%;">
     </div>
-    {{_('Page not found, was it demolished already?')}}
+    {{ _('Page not found, was it demolished already?') }}
 {% endblock %}

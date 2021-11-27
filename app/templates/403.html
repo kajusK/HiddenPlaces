@@ -1,5 +1,5 @@
-{% set title=_('Internal server error') %}
-{% if current_user %}
+{% set title=_('Access forbidden') %}
+{% if current_user.is_authenticated %}
     {% extends "_private.html" %}
 {% else %}
     {% extends "_public.html" %}
@@ -9,5 +9,5 @@
     <div class="container-fluid col-2 text-center align-middle">
         <img src="{{ url_for('static', filename='images/404.jpg') }}" style="max-width: 100%; border-radius: 100%;">
     </div>
-    {{_('Internal server error, our team of trained monkeys was notified.')}}
+    {{ _('You don\'t have sufficient persmissions to access this page!') }}
 {% endblock %}

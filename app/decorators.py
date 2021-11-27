@@ -2,7 +2,6 @@
 from functools import wraps
 from flask import abort
 from flask_login import current_user
-from flask_babel import _
 
 from app.user.constants import UserRole
 
@@ -18,8 +17,7 @@ def admin(function):
     @wraps(function)
     def _admin(*args, **kwargs):
         if current_user.role > UserRole.ADMIN:
-            return abort(503,
-                         _("You don't have sufficient access permissions"))
+            abort(403)
         return function(*args, **kwargs)
     return _admin
 
@@ -30,7 +28,6 @@ def moderator(function):
     def _moderator(*args, **kwargs):
         """Allows only users with admin role to access this route."""
         if current_user.role > UserRole.MODERATOR:
-            return abort(503,
-                         _("You don't have sufficient access permissions"))
+            abort(403)
         return function(*args, **kwargs)
     return _moderator
