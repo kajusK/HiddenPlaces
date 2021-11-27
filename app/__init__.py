@@ -119,7 +119,7 @@ def register_before_requests(app: Flask) -> None:
         Require logged-in user to access every endpoint with exception of
         static files and pages explicitly marked as public
         """
-        if is_public or current_user.is_authenticated:
+        if is_public() or current_user.is_authenticated:
             return None
         return unauthorized()
 
@@ -129,7 +129,7 @@ def register_before_requests(app: Flask) -> None:
 
         Keeps track of user actions on the page - stores last user access
         """
-        if not is_public and current_user.is_authenticated:
+        if not is_public() and current_user.is_authenticated:
             current_user.update_last_seen()
             db.session.commit()
 
