@@ -1,4 +1,4 @@
-{% set title=_('Register') %}
+{% set title=_('Register new user') %}
 {% extends "_public.html" %}
 {% from "_helpers.html" import render_floating_field, render_field %}
 
@@ -16,7 +16,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" if="rulesModalTitle">{{ rules.title }}</h5>
+                <h2 class="modal-title" if="rulesModalTitle">{{ rules.title }}</h2>
             </div>
             <div class="modal-body">
                 {{ rules.text | markdown }}
@@ -33,18 +33,18 @@
 <form method="POST" action="" role="form">
     <img class="mb-2" src="{{ url_for('static', filename='images/favicon.ico') }}" alt="">
     <h1 class="mb-3 fw-bold">{{ _('Hidden places') }}</h1>
-    <h3 class="mb-3 fw-bold">{{ _('Register new user') }}</h3>
+    <h3 class="mb-3 fw-bold">{{ title }}</h3>
 
     {{ form.hidden_tag() }}
 
     {{ render_floating_field(form.first_name, placeholder=form.first_name.label.text) }}
-    {{ render_floating_field(form.last_name, placeholder=form.last_name.label.text }}
+    {{ render_floating_field(form.last_name, placeholder=form.last_name.label.text) }}
     {{ render_floating_field(form.email, placeholder='name@example.com', class="mb-4") }}
     {{ render_floating_field(form.password, placeholder=form.password.label.text) }}
     {{ render_floating_field(form.confirm, placeholder=form.confirm.label.text) }}
     {% set rules_btn = '<a data-bs-toggle="modal" href="#rulesModal" role="button">' | safe %}
     {% set rules_btn = rules_btn+_('Page rules')+'</a>' | safe %}
-    {{ render_field(form.rules_agree, label=_('I will follow the ')+rules_btn) }}
+    {{ render_field(form.rules_agree, label=_('I will follow the %(rules)s', rules_btn)) }}
     {{ form.submit(class_="btn btn-primary mb-3 w-100 btn-lg") }}
 
     <a href="{{ url_for('user.login') }}">{{_('Log In')}}</a>

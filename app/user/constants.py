@@ -1,6 +1,7 @@
 """ Constants for user module. """
-from enum import Enum
-from app.utils import OrderedEnum
+from flask_babel import _
+from app.utils import StringEnum
+
 
 # Lengths of the various DB strings
 MAX_FIRST_NAME_LEN = 20
@@ -10,30 +11,29 @@ MAX_ABOUT_LEN = 10000
 MAX_REASON_LEN = 1024
 
 
-class LoginResult(Enum):
+class LoginResult(StringEnum):
     """Error codes for user tried to login event. """
-    SUCCESS = 0
-    NOT_ACTIVE = 1
-    BANNED = 2
-    INVALID_PASSWORD = 3
-    INVALID_EMAIL = 4
+    SUCCESS = 0, _("Success")
+    NOT_ACTIVE = 1, _("Not active")
+    BANNED = 2, _("Banned")
+    INVALID_PASSWORD = 3, _("Invalid password")
+    INVALID_EMAIL = 4, _("Invalid email")
 
 
-class InvitationState(Enum):
+class InvitationState(StringEnum):
     """State of the invitation record. """
-    WAITING = 0
-    APPROVED = 1
-    REGISTERED = 2
-    TIMED_OUT = 3
-    DENIED = 4
+    WAITING = 0, _("Waiting for approval")
+    APPROVED = 1, _("Approved")
+    REGISTERED = 2, _("Registered")
+    TIMED_OUT = 3, _("Timed out")
+    DENIED = 4,  _("Denied")
 
 
-class UserRole(OrderedEnum):
+class UserRole(StringEnum):
     """Available user roles. """
-    ROOT = 0
-    ADMIN = 1
-    MODERATOR = 2
-    CONTRIBUTOR = 3
-    USER = 4
-    NEWBIE = 5
-    GUEST = 6
+    ROOT = 0, _("Root")
+    ADMIN = 1, _("Admin")
+    MODERATOR = 2, _("Moderator")
+    CONTRIBUTOR = 3, _("Contributor")
+    USER = 4, _("User")
+    NEWBIE = 5, _("Newbie")

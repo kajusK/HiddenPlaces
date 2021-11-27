@@ -1,6 +1,6 @@
-{% set title=_('Invite new user') %}
+{% set title=_('Change role for %(first)s %(last)s', first=user.first_name, last=user.last_name) %}
 {% extends '_private.html' %}
-{% from '_helpers.html' import render_field %}
+{% from '_helpers.html' import render_label, render_field, link_button %}
 
 {% block content %}
 <div class="card">
@@ -10,10 +10,10 @@
     <div class="card-body">
         <form method="POST" action="" role="form">
             {{ form.hidden_tag() }}
-            {{ render_field(form.name, 'person', placeholder=_('Real name of the person invited')) }}
-            {{ render_field(form.email, 'envelope', placeholder='name@example.com') }}
-            {{ render_field(form.reason, 'pencil', placeholder=_('Why are you inviting this guy?')) }}
+            {{ render_field(form.role, 'unlock', field_class="dselect", required=False) }}
+
             <div class="mt-2 text-end">
+                {{ link_button(_('Cancel'), url_return(), None, 'danger') }}
                 {{ form.submit(class="btn btn-success") }}
             </div>
         </form>

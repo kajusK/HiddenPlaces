@@ -122,19 +122,26 @@ class Location(DBItem):
         return cls.get(loc_type).filter_by(owner=owner)
 
     @classmethod
+    def get_visits(cls, loc_type: LocationType, user: User) -> Query:
+        """Query for users visits
+
+        Args:
+            loc_type: Type of the location to query for
+            user: User to get visits for
+        """
+        query = cls.query.join(Visit).filter_by(user=user).order_by(
+            Visit.visited_on.desc())
+        return cls._filter(query, loc_type)
+
+    @classmethod
     def get_unique_visits(cls, loc_type: LocationType, user: User) -> Query:
         """Query for users unique visits
 
         Args:
             loc_type: Type of the location to query for
             user: User to get visits for
-
-        Returns:
-            Locations owned by user query
         """
-        query = cls.query.join(Visit).filter_by(user=user).order_by(
-            Visit.visited_on.desc()).distinct()
-        return cls._filter(query, loc_type)
+        return cls.get_visits(loc_type, user).distinct()
 
     @classmethod
     def search(cls, string) -> Query:

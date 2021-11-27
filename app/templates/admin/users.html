@@ -38,13 +38,17 @@
                     {% endif %}
                     <td>{{ user.last_seen.date() }}</td>
                     <td>
-                        <span class="badge bg-secondary">{{ user.role.name.lower() }}</span>
+                        {% if user.role.name in ("ROOT, ADMIN") %}<span class="badge bg-danger">
+                        {% elif user.role.name == "MODERATOR" %}<span class="badge bg-primary">
+                        {% elif user.role.name == "NEWBIE" %}<span class="badge bg-secondary">
+                        {% else %}<span class="badge bg-success">
+                        {% endif %}
+                        {{ user.role }}</span>
                     </td>
                     <td>
-                        {% if user.active %}
-                        <span class="badge bg-success">{{ _("Active") }}</span>
-                        {% else %}
-                        <span class="badge bg-danger">{{ _("Banned") }}</span>
+                        {% if user.banned %} <span class="badge bg-danger">{{ _("Banned") }}</span>
+                        {% elif not user.active %} <span class="badge bg-warning">{{ _("Inactive") }}</span>
+                        {% else %} <span class="badge bg-success">{{ _("Active") }}</span>
                         {% endif %}
                     </td>
                     <td class="text-end">

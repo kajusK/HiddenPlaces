@@ -1,4 +1,4 @@
-{% set title=_('Ban')+" "+user.first_name+" "+user.last_name %}
+{% set title=_('Ban %(first)s %(last)s', first=user.first_name, last=user.last_name) %}
 {% extends '_private.html' %}
 {% from '_helpers.html' import render_label, render_field, link_button %}
 
@@ -25,7 +25,7 @@
                 </div>
 
                 <div class="mt-2 text-end">
-                    {{ link_button(_('Cancel'), url_for('user.profile', user_id=user.id), color='danger') }}
+                    {{ link_button(_('Cancel'), url_return(), None, 'danger') }}
                     {{ form.submit(class="btn btn-success") }}
                 </div>
             </div>

@@ -1,17 +1,16 @@
-{% set title=_('Edit')+" "+user.first_name+" "+user.last_name %}
+{% set title=_('Edit profile') %}
 {% extends '_private.html' %}
-{% from "_helpers.html" import render_field, link_button %}
+{% from "_helpers.html" import render_field, link_button, markdown_description %}
 
 {% block content %}
 <div class="card">
     <h4 class="card-header">
-        {{ _('Edit profile of') }} {{ user.first_name }} {{ user.last_name }}
+        {{ title }}
     </h4>
     <div class="card-body">
         <form method="POST" action="" role="form" enctype="multipart/form-data">
             {{ form.hidden_tag() }}
-            {% set description = _('Supports markdown formatting, check the <a href="https://www.markdownguide.org/basic-syntax/">syntax</a>') %}
-            {{ render_field(form.about, style="min-height: 20em", placeholder=_('Write something about yourself'), description=description) }}
+            {{ render_field(form.about, style="min-height: 20em", placeholder=_('Write something about yourself'), description=markdown_description) }}
             {{ render_field(form.photo) }}
 
             <div class="mt-2 text-end">

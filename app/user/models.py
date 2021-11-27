@@ -1,11 +1,11 @@
 """Modes for user module."""
+import uuid
 from typing import Optional
 from datetime import datetime, timedelta
 from sqlalchemy import or_
-from sqlalchemy.orm import Query
+from sqlalchemy.orm import Query, backref
 from flask import request
 from flask_login import UserMixin
-import uuid
 
 from app.database import DBItem, db, UUID
 from app.extensions import bcrypt
@@ -23,36 +23,56 @@ class User(DBItem, UserMixin):
                           nullable=False)
     email = db.Column(db.String(constants.MAX_EMAIL_LEN), index=True,
                       unique=True, nullable=False)
-    created = db.Column(db.DateTime(), default=datetime.utcnow)
+    created = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
-    active = db.Column(db.Boolean(), default=True)
-    about = db.Column(db.String(constants.MAX_ABOUT_LEN), default="")
+    active = db.Column(db.Boolean(), default=True, nullable=False)
+    about = db.Column(db.String(constants.MAX_ABOUT_LEN), default='')
     photo_path = db.Column(db.String(64))
-    role = db.Column(db.Enum(UserRole), default=UserRole.NEWBIE)
+    role = db.Column(db.Enum(UserRole), default=UserRole.NEWBIE,
+                     nullable=False)
 
     @classmethod
     def get(cls) -> Query:
+        """Gets all users query ordered by created date"""
         return cls.query.order_by(cls.created.desc())
 
     @classmethod
     def get_admins(cls) -> Query:
+        """Gets admin users query."""
         return cls.get().filter(or_(
             cls.role == UserRole.ADMIN, cls.role == UserRole.ROOT))
 
     @classmethod
     def get_moderators(cls) -> Query:
+        """Gets moderator users query."""
         return cls.get().filter_by(role=UserRole.MODERATOR)
 
     @classmethod
     def get_banned(cls) -> Query:
-        return cls.get().filter_by(active=False)
+        """Gets banned users."""
+        return cls.get().join(Ban, (cls.id == Ban.user_id)).filter(
+            Ban.until > datetime.utcnow())
 
-    def __init__(self, password: str = None, **kwargs):
+    @classmethod
+    def get_by_email(cls, email: str):
+        """Gets user by email address.
+
+        Args:
+            email: Email of the user
+        """
+        return cls.query.filter_by(email=email).first()
+
+    @property
+    def banned(self) -> bool:
+        """Checks if the user is currently banned."""
+        return self.get_ban() is not None
+
+    def __init__(self, *args, password: str = None, **kwargs):
         """Initializes the User object
 
-        If the password is set in here, it will hash it before storing
+        If the password is set in here, it will be hashed it before storing
         """
-        super().__init__(**kwargs)
+        super().__init__(*args, **kwargs)
         if password:
             self.set_password(password)
         else:
@@ -78,27 +98,25 @@ class User(DBItem, UserMixin):
         """Updates last seen record to current time. """
         self.last_seen = datetime.utcnow()
 
-    def is_banned(self) -> bool:
-        """Checks if the user is currently banned."""
-        # TODO - handle ban timed out and change the active flag
-        # Also force user to be logged out when banned
-        return not self.active
-
     def get_ban(self):
-        """Gets latest ban entry if any"""
-        return Ban.query.filter_by(user=self).order_by(
-            db.desc(Ban.until)).first()
+        """Gets active ban entry if any"""
+        return Ban.query.filter_by(user=self).filter(
+            Ban.until > datetime.utcnow()).order_by(Ban.until.desc()).first()
 
 
 class Ban(DBItem):
     """Ban record model"""
-    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    creator = db.relationship("User", foreign_keys=creator_id)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    user = db.relationship("User", foreign_keys=user_id)
     reason = db.Column(db.String(constants.MAX_REASON_LEN), nullable=False)
     until = db.Column(db.DateTime(), nullable=False)
-    permanent = db.Column(db.Boolean(), default=False)
+    permanent = db.Column(db.Boolean(), default=False, nullable=False)
+
+    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+                           nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+                        nullable=False)
+
+    creator = db.relationship('User', foreign_keys=creator_id)
+    user = db.relationship('User', foreign_keys=user_id)
 
 
 class Invitation(DBItem):
@@ -121,19 +139,36 @@ class Invitation(DBItem):
     approved_by_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
 
-    invited_by = db.relationship("User", foreign_keys=invited_by_id)
-    approved_by = db.relationship("User", foreign_keys=approved_by_id)
-    user = db.relationship("User", foreign_keys=user_id,
-                           backref='invitation')
+    invited_by = db.relationship('User', foreign_keys=invited_by_id,
+                                 backref='invited')
+    approved_by = db.relationship('User', foreign_keys=approved_by_id)
+    user = db.relationship('User', foreign_keys=user_id,
+                           backref=backref('invitation', uselist=False))
 
     @classmethod
-    def get(cls):
+    def get(cls) -> Query:
+        """Gets the Invitations query ordered by created date."""
         return cls.query.order_by(cls.created.desc())
 
     @classmethod
     def get_by_state(cls, state: InvitationState) -> Query:
+        """Gets the Invitations query by the state.
+
+        Args:
+            state: State to filter for
+        """
         return cls.get().filter_by(state=state)
 
+    @classmethod
+    def get_by_email(cls, email: str):
+        """Gets invitation by invite email.
+
+        Args:
+            email: Email show in invitation
+        """
+        return cls.query.filter_by(email=email).first()
+
+    @property
     def is_valid(self) -> bool:
         """Checks if the invitation is approved and valid for registration. """
         if self.state != InvitationState.APPROVED:
@@ -155,33 +190,39 @@ class LoginLog(DBItem):
     system = db.Column(db.String(64))
     browser = db.Column(db.String(64))
     country = db.Column(db.String(64))
-    timestamp = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime(), default=datetime.utcnow,
+                          nullable=False)
 
     @classmethod
     def get(cls) -> Query:
+        """Gets the Login logs query ordere by timestamp."""
         return cls.query.order_by(cls.timestamp.desc())
 
     @classmethod
     def get_failed(cls) -> Query:
+        """Gets failed login attempts."""
         return cls.get().filter(cls.result != LoginResult.SUCCESS)
 
     @classmethod
     def get_unique(cls) -> Query:
+        """Gets unique IP login attempts."""
         return cls.get().distinct(cls.ip)
 
     @classmethod
     def get_last_day(cls) -> Query:
+        """Get attempts from last 24 hours."""
         return cls.get().filter(
             cls.timestamp >= datetime.utcnow() - timedelta(days=1))
 
     @classmethod
     def get_last_month(cls) -> Query:
+        """Get attempts from last 30 days."""
         return cls.get().filter(
             cls.timestamp >= datetime.utcnow() - timedelta(days=30))
 
     @classmethod
-    def create_log(cls, email: str, result: LoginResult,
-                   user: Optional[User] = None):
+    def create(cls, email: str, result: LoginResult,
+               user: Optional[User] = None):
         """Create a new login attempt entry
 
         Args:
@@ -189,7 +230,7 @@ class LoginLog(DBItem):
             result: Resulting of the login operation
             user: Use that was logged in (if succeeded)
         """
-        # pylint: disable=too-many-function-args
+        # pylint: disable=arguments-differ
         user_id = user.id if user else None
         ip = get_visitor_ip()
         country = GeoIp(ip).country if ip else None
@@ -198,7 +239,7 @@ class LoginLog(DBItem):
         if browser is not None and request.user_agent.version is not None:
             browser += ' ' + request.user_agent.version
 
-        return cls.create(
+        return super().create(
             email=email,
             result=result,
             ip=ip,

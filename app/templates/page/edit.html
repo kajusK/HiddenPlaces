@@ -1,5 +1,5 @@
 {% extends '_private.html' %}
-{% from "_helpers.html" import render_label, render_submit %}
+{% from "_helpers.html" import render_field, link_button, markdown_description %}
 
 {% block content %}
 <div class="card content-card">
@@ -7,16 +7,10 @@
     <div class="card-body">
         <form method="POST" action="" role="form" method="POST">
             {{ form.hidden_tag() }}
+            {{ render_field(form.text, style="min-height: 30em", placeholder=_('Page content'), description=markdown_description) }}
 
-            <div class="form-group">
-                {{ render_label(form.text, 'pencil') }}
-                {{ form.text(class_="form-control", style="min-height: 30em", placeholder=_('Page content')) }}
-                <div class="form-text">
-                    {{ _('Supports markdown formatting, check the') }}<a href="https://www.markdownguide.org/basic-syntax/">{{ _('syntax') }}</a>
-                </div>
-            </div>
-
-            <div class='text-end mt-2'>
+            <div class="mt-2 text-end">
+                {{ link_button(_('Cancel'), url_for('user.profile'), color='danger') }}
                 {{ form.submit(class="btn btn-success") }}
             </div>
         </form>

@@ -7,7 +7,7 @@
 {% endif %}
 
 {% extends "_private.html" %}
-{% from '_helpers.html' import render_field, render_label, link_button  %}
+{% from '_helpers.html' import render_field, render_label, link_button, markdown_description  %}
 
 {% block content %}
 
@@ -26,9 +26,8 @@
             <div class="card-body">
                 {{ render_field(form.name, 'pencil', placeholder=_('Location name')) }}
 
-                {% set description = _('Supports markdown formatting, check the <a href="https://www.markdownguide.org/basic-syntax/">syntax</a>') %}
-                {{ render_field(form.description, 'card-text', style="min-height: 5em", placeholder=_('Short description of the location and its current state'), description=description) }}
-                {{ render_field(form.about, 'file-earmark-text', style="min-height: 15em", placeholder=_('Location description, history,...'), description=description) }}
+                {{ render_field(form.description, 'card-text', style="min-height: 5em", placeholder=_('Short description of the location and its current state'), description=markdown_description) }}
+                {{ render_field(form.about, 'file-earmark-text', style="min-height: 15em", placeholder=_('Location description, history,...'), description=markdown_description) }}
 
                 <div class='text-end mt-2'>
                     {{ link_button(_('Cancel'), url_return(), None, 'danger') }}

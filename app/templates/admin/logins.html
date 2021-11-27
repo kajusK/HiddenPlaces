@@ -29,19 +29,14 @@
             <tbody class="align-middle">
                 {% for login in logins %}
                 {% if login.result.name == 'SUCCESS' %}
-                    {% set state = _('Success') %}
                     <tr class="table-success">
                 {% elif login.result.name == 'BANNED' %}
-                    {% set state = _('Banned') %}
                     <tr class="table-secondary">
                 {% elif login.result.name == 'INVALID_EMAIL' %}
-                    {% set state = _('Invalid email') %}
                     <tr class="table-danger">
                 {% elif login.result.name == 'INVALID_PASSWORD' %}
-                    {% set state = _('Invalid password') %}
                     <tr class="table-warning">
                 {% else %}
-                    {% set state = _('Not active') %}
                     <tr class="table-secondary">
                 {% endif %}
                     <td>{{ login.timestamp }}</td>
@@ -54,7 +49,7 @@
                     {% else %}
                     <td>{{ login.email }}</td>
                     {% endif %}
-                    <td>{{ state }}</td>
+                    <td>{{ login.result }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

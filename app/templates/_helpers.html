@@ -111,10 +111,6 @@
     </li>
 {%- endmacro %}
 
-{%- macro render_alert(text, type) -%}
-<!-- TODO - show alert with icon and close button, close infos automatically after timeout-->
-{%- endmacro %}
-
 {%- macro link_button(text, url, image=None, color=None, class='') -%}
     <a class="btn {{ 'btn-'+color if color else '' }} m-1 {{ class }}" href="{{ url }}">
         {% if image %}
@@ -162,3 +158,5 @@
 </nav>
 {% endif %}
 {%- endmacro %}
+
+{% set markdown_description=_('Supports markdown formatting, check the <a href="https://www.markdownguide.org/basic-syntax/">syntax</a>') %}

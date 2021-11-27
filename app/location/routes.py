@@ -20,6 +20,7 @@ from app.location.urbex.forms import UrbexForm
 from app.location.urbex.utils import UrbexUtil
 from app.upload.models import Upload
 from app.upload.constants import UploadType
+from app.user.models import User
 
 
 blueprint = Blueprint('location', __name__, url_prefix='/location')
@@ -247,7 +248,7 @@ def search(string: str = None, page: int = 1):
 @blueprint.route('/mine/<string:type_str>')
 @blueprint.route('/mine/<string:type_str>/<int:page>')
 def owned(type_str: str, page: int = 1):
-    """Renders locations owned by user.
+    """Renders locations owned by current user.
 
     Args:
         type_str: Type of the location
@@ -263,10 +264,32 @@ def owned(type_str: str, page: int = 1):
                            pagination=pagination)
 
 
+@blueprint.route('/user/<int:user_id>')
+@blueprint.route('/user/<int:user_id>/<int:page>')
+def by_user(user_id: int, page: int = 1):
+    """Renders locations owned by given user.
+
+    Args:
+        user_id: ID of the user
+        page: Page number for results pagination
+    """
+    user = User.get_by_id(user_id)
+    if not user:
+        abort(404)
+
+    query = Location.get_by_owner(LocationType.ALL, user).paginate(
+        page, app.config['ITEMS_PER_PAGE'], True)
+    pagination = Pagination(page, query.pages, 'location.by_user',
+                            user_id=user_id)
+
+    return render_template('location/browse.html', locations=query.items,
+                           pagination=pagination)
+
+
 @blueprint.route('/visited/<string:type_str>')
 @blueprint.route('/visited/<string:type_str>/<int:page>')
 def visited(type_str: str, page: int = 1):
-    """Renders locations visited by user.
+    """Renders locations visited by currentuser.
 
     Args:
         type_str: Type of the location
@@ -277,6 +300,28 @@ def visited(type_str: str, page: int = 1):
         page, app.config['ITEMS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'location.visited',
                             type_str=type_str)
+
+    return render_template('location/browse.html', locations=query.items,
+                           pagination=pagination)
+
+
+@blueprint.route('/user/visited/<int:user_id>')
+@blueprint.route('/user/visited/<int:user_id>/<int:page>')
+def visited_by_user(user_id: int, page: int = 1):
+    """Renders locations visited by given user.
+
+    Args:
+        user_id: ID of the user
+        page: Page number for results pagination
+    """
+    user = User.get_by_id(user_id)
+    if not user:
+        abort(404)
+
+    query = Location.get_unique_visits(LocationType.ALL, user).paginate(
+        page, app.config['ITEMS_PER_PAGE'], True)
+    pagination = Pagination(page, query.pages, 'location.visited_by_user',
+                            user_id=user_id)
 
     return render_template('location/browse.html', locations=query.items,
                            pagination=pagination)

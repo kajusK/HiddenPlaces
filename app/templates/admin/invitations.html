@@ -34,11 +34,13 @@
                     <td>{{ invite.name }}</td>
                     {% endif %}
 
-                    {% if invite.state.name == 'WAITING' %}<td class="text-warning">{{ _('Waiting for approval') }}</td>
-                    {% elif invite.state.name == 'APPROVED' %}<td class="text-primary">{{ _('Approved') }}</td>
-                    {% elif invite.state.name == 'REGISTERED' %}<td class="text-success">{{ _('Registered') }}</td>
-                    {% elif invite.state.name == 'TIMED_OUT' %}<td class="text-warning">{{ _('Timed out') }}</td>
-                    {% else %}<td class="text-danger">{{ _('Denied') }}</td>{% endif %}
+                    {% if invite.state.name == 'WAITING' %}<td class="text-warning">
+                    {% elif invite.state.name == 'APPROVED' %}<td class="text-primary">
+                    {% elif invite.state.name == 'REGISTERED' %}<td class="text-success">
+                    {% elif invite.state.name == 'TIMED_OUT' %}<td class="text-warning">
+                    {% else %}<td class="text-danger">{% endif %}
+                        {{ invite.state }}
+                    </td>
                     <td>{{ invite.reason }}</td>
                     <td class="text-end">
                         {% if invite.state.name in ('WAITING', 'DENIED') %}{{ link_button(_('Approve'), url_for_return('admin.invite_approve', invite_id=invite.id), 'check-lg', 'warning') }}{% endif %}

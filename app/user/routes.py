@@ -1,4 +1,5 @@
-"""Routing for /user pages."""
+"""Routing for user module."""
+from typing import Optional
 from datetime import datetime, timedelta
 from flask import Blueprint, render_template, request, flash, abort, url_for, \
     redirect
@@ -6,15 +7,18 @@ from flask_login import login_user, logout_user, current_user
 from flask_babel import _
 from is_safe_url import is_safe_url
 
-from app.user.models import User, Invitation, LoginLog, Ban
-from app.user.forms import LoginForm, RegisterForm, ChangePasswordForm, \
-    EditProfileForm, InviteForm, BanForm
-from app.user.constants import InvitationState, UserRole
-from app.location.models import Location, Visit
+from app.utils import redirect_return
 from app.database import db
+from app.decorators import public, moderator, admin
+from app.location.models import Location
+from app.location.constants import LocationType
 from app.upload.models import save_uploaded_file
 from app.page.models import Page
-from app.decorators import public, moderator, admin
+from app.page.constants import PageType
+from app.user.models import User, Invitation, LoginLog, Ban
+from app.user.forms import LoginForm, RegisterForm, ChangePasswordForm, \
+    EditProfileForm, InviteForm, BanForm, ResetPasswordForm, RoleForm
+from app.user.constants import InvitationState, UserRole
 
 blueprint = Blueprint('user', __name__, url_prefix="/user")
 
@@ -22,7 +26,7 @@ blueprint = Blueprint('user', __name__, url_prefix="/user")
 @blueprint.route('/login', methods=['GET', 'POST'])
 @public
 def login():
-    """Login page handling."""
+    """Renders login page."""
     next_hop = request.args.get('next')
     if next_hop and not is_safe_url(next_hop, request.host_url):
         next_hop = None
@@ -33,21 +37,23 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         login_user(form.user, remember=form.remember_me.data)
-        flash(_("You were logged in"), 'success')
-        LoginLog.create_log(form.email.data, form.result, form.user)
+        LoginLog.create(form.email.data, form.result, form.user)
         db.session.commit()
+
+        flash(_("You were logged in"), 'success')
         return redirect(next_hop or url_for('page.index'))
 
     if request.method == 'POST':
-        LoginLog.create_log(form.email.data, form.result, form.user)
+        LoginLog.create(form.email.data, form.result, form.user)
         db.session.commit()
+
     return render_template('user/login.html', form=form)
 
 
 @blueprint.route('/register/<int:invite_id>/<string:uuid>',
                  methods=['GET', 'POST'])
 @public
-def register(invite_id, uuid):
+def register(invite_id: int, uuid: str):
     """Register a new user.
 
     Invitation based system, the user has to be invited first.
@@ -58,8 +64,8 @@ def register(invite_id, uuid):
     """
     invitation = Invitation.get_by_id(invite_id)
     if not invitation:
-        return abort(404, _("Invitation not found"))
-    if not invitation.is_valid() or invitation.uuid != uuid:
+        abort(404)
+    if not invitation.is_valid() or str(invitation.uuid) != uuid:
         flash(_("The invitation is not valid."), 'danger')
         return redirect(url_for('user.login'))
 
@@ -77,8 +83,20 @@ def register(invite_id, uuid):
         flash(_("You were registered, you may now log-in"), 'success')
         return redirect(url_for('user.login'))
 
-    rules = Page.get_page_rules()
+    rules = Page.get(PageType.RULES)
     return render_template('user/register.html', form=form, rules=rules)
+
+
+@blueprint.route('/reset_password', methods=['GET', 'POST'])
+@public
+def reset_password():
+    """Reset user password."""
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        # TODO - send email with reset link, generate hash for pwd reset
+        flash(_("Password reset was requested, check your email"), 'warning')
+        return redirect_return()
+    return render_template('user/reset_password.html', form=form)
 
 
 @blueprint.route('/logout')
@@ -91,7 +109,7 @@ def logout():
 
 @blueprint.route('/profile')
 @blueprint.route('/<int:user_id>')
-def profile(user_id: int = None):
+def profile(user_id: Optional[int] = None):
     """Shows user profile.
 
     Args:
@@ -99,9 +117,10 @@ def profile(user_id: int = None):
     """
     user = current_user if not user_id else User.get_by_id(user_id)
     if not user:
-        return abort(404, _("Required user does not exist"))
-    locations = Location.get_by_owner(user)
-    visits = Visit.get_by_user(user)
+        abort(404)
+
+    locations = Location.get_by_owner(LocationType.ALL, user).count()
+    visits = Location.get_visits(LocationType.ALL, user).count()
     return render_template('user/profile.html', user=user, locations=locations,
                            visits=visits, user_id=user.id)
 
@@ -110,7 +129,9 @@ def profile(user_id: int = None):
 def edit():
     """Edit user profile."""
     form = EditProfileForm()
-    if form.validate_on_submit():
+    if request.method == 'GET':
+        form.about.data = current_user.about
+    elif form.validate_on_submit():
         # pylint: disable=assigning-non-slot
         current_user.about = form.about.data
         if form.photo.data:
@@ -119,9 +140,7 @@ def edit():
 
         db.session.commit()
         flash(_("Your profile changes were saved"), 'success')
-        return redirect(url_for('user.profile'))
-    if request.method == 'GET':
-        form.about.data = current_user.about
+        return redirect_return()
     return render_template('user/edit.html', form=form, user=current_user)
 
 
@@ -133,16 +152,8 @@ def change_password():
         current_user.set_password(form.password.data)
         db.session.commit()
         flash(_("Your password was changed"), 'warning')
-        return redirect(url_for('user.profile'))
+        return redirect_return()
     return render_template('user/password.html', form=form)
-
-
-@blueprint.route('/reset_password', methods=['GET', 'POST'])
-@public
-def reset_password():
-    """Reset user password."""
-    # TODO
-    pass
 
 
 @blueprint.route('/ban/<int:user_id>', methods=['GET', 'POST'])
@@ -155,10 +166,10 @@ def ban(user_id: int):
     """
     banned_user = User.get_by_id(user_id)
     if not banned_user:
-        return abort(404, _("Required user does not exist"))
+        abort(404)
     if banned_user.role == UserRole.ROOT or banned_user.id == 0:
         flash(_("Superuser cannot be banned"), 'danger')
-        return redirect(url_for('user.profile', user_id=banned_user.id))
+        return redirect_return()
 
     form = BanForm()
     if form.validate_on_submit():
@@ -169,18 +180,18 @@ def ban(user_id: int):
             permanent=bool(int(form.permanent.data)),
             until=datetime.utcnow() + timedelta(days=form.days.data)
         )
-        banned_user.active = False
         db.session.commit()
-        flash(_(f"User {banned_user.first_name} {banned_user.last_name}"
-                " was banned"), 'warning')
-        return redirect(url_for('user.profile', user_id=banned_user.id))
-    return render_template('user/ban.html', form=form, user=current_user)
+        flash(_("User %(first)s %(last)s was banned",
+                first=banned_user.first_name, last=banned_user.last_name),
+              'warning')
+        return redirect_return()
+    return render_template('user/ban.html', form=form, user=banned_user)
 
 
 @blueprint.route('/invite', methods=['GET', 'POST'])
 @moderator
 def invite():
-    """Invite new user."""
+    """Invite a new user."""
     form = InviteForm()
     if form.validate_on_submit():
         initial_state = InvitationState.WAITING
@@ -196,7 +207,7 @@ def invite():
             state=initial_state
         )
         db.session.commit()
-        flash(_(f"User {form.name.data} invited"), 'success')
+        flash(_("%(name)s invited", name=form.name.data), 'success')
         # TODO send email
         return redirect(url_for('user.invite'))
     return render_template('user/invite.html', form=form)
@@ -212,7 +223,22 @@ def role(user_id: int):
     """
     user = User.get_by_id(user_id)
     if not user:
-        return abort(404, _("Required user does not exist"))
+        abort(404)
+    if user.id == 0:
+        flash(_("You can't change root's role!"), 'danger')
+        return redirect_return()
+    if user == current_user:
+        flash(_("You can't change your own role!"), 'danger')
+        return redirect_return()
 
-    # TODO
-    return render_template('user/role.html')
+    form = RoleForm()
+    if request.method == 'GET':
+        form.role.data = user.role
+    elif form.validate_on_submit():
+        user.role = form.role.data
+        db.session.commit()
+        flash(_("Changed role of %(first)s %(last)s to %(role)s",
+                first=user.first_name, last=user.last_name, role=user.role),
+              'warning')
+        return redirect_return()
+    return render_template('user/role.html', form=form, user=user)

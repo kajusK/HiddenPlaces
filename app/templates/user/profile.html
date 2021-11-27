@@ -6,15 +6,12 @@
 <div class="row">
     <div class="col">
         <div class="text-end m-3">
-            <a href="#" class="btn btn-outline-primary">
-                {{ _('Send message') }}
-            </a>
-
-            {{ link_button(_('Edit'), url_for('user.edit'), color='outline-success') }}
-            {{ link_button(_('Change password'), url_for('user.change_password'), color='outline-success') }}
+            {{ link_button(_('Send message'), '#', color='outline-primary') }}
+            {{ link_button(_('Edit'), url_for_return('user.edit'), color='outline-success') }}
+            {{ link_button(_('Change password'), url_for_return('user.change_password'), color='outline-success') }}
             <!-- Admin section -->
-            {{ link_button(_('Ban'), url_for('user.ban', user_id=user.id), color='outline-danger') }}
-            {{ link_button(_('Set role'), url_for('user.role', user_id=user.id), color='outline-danger') }}
+            {{ link_button(_('Ban'), url_for_return('user.ban', user_id=user.id), color='outline-danger') }}
+            {{ link_button(_('Set role'), url_for_return('user.role', user_id=user.id), color='outline-danger') }}
         </div>
     </div>
 </div>
@@ -33,19 +30,34 @@
                     {{ _('Last seen') }}: {{ user.last_seen.date() }}<br>
 
                     <!-- Todo images -->
-                    <a href="#" class="badge bg-success">{{ visits | length }}</a>{{ _('Visits') }}<br/>
-                    <a href="#" class="badge bg-success">{{ locations | length }}</a>{{ _('Locations') }}<br>
+                    {{ _('Visits') }}: <a href="{{ url_for('location.visited_by_user', user_id=user.id) }}" class="badge bg-success">{{ visits }}</a><br>
+                    {{ _('Locations') }}: <a href="{{ url_for('location.by_user', user_id=user.id) }}" class="badge bg-success">{{ locations }}</a><br>
 
                     <!-- Admin section -->
-                    {{ user.email }}<br>
-                    {{ _('Status') }}: {{ _("Active") if user.active else _("Banned") }}<br>
-                    {{ _('Role') }}: Admin<br>
-                    {{ _('Invited by' )}}: <a href="#">Foo bar</a><br>
+                    {{ _('Email') }}: {{ user.email }}<br>
+                    {{ _('Status') }}:
+                        {% if user.banned %} <span class="badge bg-danger">{{ _("Banned") }}</span>
+                        {% elif not user.active %} <span class="badge bg-warning">{{ _("Inactive") }}</span>
+                        {% else %} <span class="badge bg-success">{{ _("Active") }}</span>
+                        {% endif %}<br>
+                    {{ _('Role') }}: <span class="badge bg-secondary">{{ user.role }}</span><br>
+
+                    {% if user.invitation %}
+                    {{ _('Invited by' )}}: <a href="{{ url_for('user.profile', user_id=user.invitation.invited_by_id) }}">{{ user.invitation.invited_by.first_name }} {{ user.invitation.invited_by.last_name }}</a><br>
+                    {% endif %}
+
+                    {% if user.invited | length %}
                     {{ _('Invited') }}:
-                    <div class="list-group">
-                        <a href="#" class="text-center list-group-item list-group-item-action">Name Surname</a>
-                        <a href="#" class="text-center list-group-item list-group-item-action">Name Surname</a>
-                    </div>
+                    <ul>
+                    {% for invite in user.invited %}
+                        {% if invite.user_id %}
+                        <li>
+                            <a href="{{ url_for('user.profile', user_id=invite.user_id) }}">{{ invite.user.first_name }} {{ invite.user.last_name }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                    {% endif %}
                 </div>
             </div>
         </div>
