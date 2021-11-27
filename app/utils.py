@@ -195,7 +195,8 @@ class StringEnum(OrderedEnum):
         if isinstance(item, cls):
             return item
         try:
-            return cls(int(item), '')
+            # pylint: disable=no-value-for-parameter
+            return cls(int(item))
         except KeyError as e:
             raise ValueError(item) from e
 
