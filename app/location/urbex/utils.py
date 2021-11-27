@@ -2,9 +2,10 @@
 from app.location.models import Location
 from app.location.urbex.models import Urbex
 from app.location.urbex.forms import UrbexForm
+from app.location.utils import LocationUtil
 
 
-class UrbexUtil:
+class UrbexUtil(LocationUtil):
     """Urbex location utilities."""
     @staticmethod
     def create(location: Location, form: UrbexForm) -> None:
@@ -27,7 +28,7 @@ class UrbexUtil:
 
         Args:
             location: Location to load data from
-            urbex: Urbex record
+            form: Form to load data to
         """
         form.type.data = location.urbex.type
         form.state.data = location.urbex.state

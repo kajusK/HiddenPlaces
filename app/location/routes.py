@@ -13,6 +13,7 @@ from app.utils import redirect_return, Pagination
 from app.location.forms import VisitForm, DocumentForm, PhotoForm, LinkForm, \
      PhotoEditForm, BookmarkForm, DocumentEditForm
 from app.location.models import Location, Visit, Link, Bookmarks
+from app.location.utils import LocationUtil
 from app.location.constants import LocationType
 from app.location.underground.forms import UndergroundForm
 from app.location.underground.utils import UndergroundUtil
@@ -106,6 +107,7 @@ def add(type_str: str, parent_id: Optional[int] = None):
         parent = Location.get_by_id(parent_id)
 
     loc_type = _get_loc_type(type_str)
+    util: LocationUtil
     if loc_type == LocationType.UNDERGROUND:
         form = UndergroundForm()
         util = UndergroundUtil()
@@ -175,6 +177,7 @@ def edit(location_id: int):
     if not location:
         return abort(404)
 
+    util: LocationUtil
     if location.underground_id is not None:
         form = UndergroundForm()
         util = UndergroundUtil()

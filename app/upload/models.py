@@ -82,9 +82,9 @@ def save_uploaded_file(file, subfolder: str, filename: str) -> str:
         filename += extension
 
     base_dir = os.path.join(app.instance_path, app.config['UPLOAD_DIR'])
-    directory = safe_join(base_dir, subfolder)
+    directory = os.path.join(base_dir, subfolder)
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    file.save(safe_join(directory, filename))
-    return safe_join(subfolder, filename)
+    file.save(os.path.join(directory, filename))
+    return os.path.join(subfolder, filename)

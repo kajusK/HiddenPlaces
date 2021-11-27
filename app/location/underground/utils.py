@@ -2,9 +2,10 @@
 from app.location.models import Location
 from app.location.underground.models import Underground, Material
 from app.location.underground.forms import UndergroundForm
+from app.location.utils import LocationUtil
 
 
-class UndergroundUtil:
+class UndergroundUtil(LocationUtil):
     """Underground location utilities."""
 
     @staticmethod

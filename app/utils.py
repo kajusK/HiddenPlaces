@@ -90,7 +90,7 @@ class LatLon:
             r'^([0-9.]+)(?:°([0-9.]+)\'(?:([0-9.]+)")?)?([NSEW])$', data)
         if not result:
             raise ValueError(f"Invalid latlon format: {data}")
-        degrees, minutes, seconds, direction = result.groups(default=0)
+        degrees, minutes, seconds, direction = result.groups(default='0')
 
         value = float(degrees) + float(minutes)/60 + float(seconds)/3600
         if direction in ('S', 'W'):
@@ -149,7 +149,9 @@ class StringEnum(OrderedEnum):
     Define items like:
     FOO = 0, _("Translated string")
     """
-    def __new__(cls, value, translation):
+    translation: str
+
+    def __new__(cls, value: int, translation: str):
         """Custom object creation.
 
         Args:
@@ -162,7 +164,7 @@ class StringEnum(OrderedEnum):
         return obj
 
     @classmethod
-    def choices(cls, skip=None):
+    def choices(cls, skip: Optional[list] = None):
         """Get list of choices for wtforms (Enum, translation).
 
         Args:
