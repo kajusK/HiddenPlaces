@@ -1,0 +1,26 @@
+<p>Dear {{ invitation.name }},</p>
+<p>you were given a trust to access the HiddenPlaces by {{ invitation.invited_by.first_name }} {{ invitation.invited_by.last_name }}.</p>
+
+<p>
+    To create a new account
+    <a href="{{ url_for('user.register', token=token, _external=True) }}">
+        click here
+    </a>.
+</p>
+
+<p>Alternatively, you can paste the following link in your browser's address bar:</p>
+<p>{{ url_for('user.register', token=token, _external=True) }}</p>
+
+<p>
+The HiddenPlaces is a database of urbex and underground locations and as
+such is considered <b>secret</b>, you may not share any positions, names and photos
+you find in this database. Violation of the rules you will need to agree upon
+registration will result in an imidiate acount <b>deletion</b>.
+</p>
+
+<p>
+If you are not interested in the HiddenPlaces or if you disagree with the rules,
+simply ingore this email.
+</p>
+<p>Sincerely,</p>
+<p>The HiddenPlaces Team</p>

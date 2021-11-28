@@ -15,9 +15,11 @@ from app.location.constants import LocationType
 from app.upload.models import save_uploaded_file
 from app.page.models import Page
 from app.page.constants import PageType
+from app.user import email
 from app.user.models import User, Invitation, LoginLog, Ban
 from app.user.forms import LoginForm, RegisterForm, ChangePasswordForm, \
-    EditProfileForm, InviteForm, BanForm, ResetPasswordForm, RoleForm
+    EditProfileForm, InviteForm, BanForm, ResetPasswordForm, RoleForm, \
+    ForgottenPasswordForm
 from app.user.constants import InvitationState, UserRole
 
 blueprint = Blueprint('user', __name__, url_prefix="/user")
@@ -50,23 +52,20 @@ def login():
     return render_template('user/login.html', form=form)
 
 
-@blueprint.route('/register/<int:invite_id>/<string:uuid>',
+@blueprint.route('/register/<string:token>',
                  methods=['GET', 'POST'])
 @public
-def register(invite_id: int, uuid: str):
+def register(token: str):
     """Register a new user.
 
     Invitation based system, the user has to be invited first.
 
     Args:
-        invite_id: ID of the invitation
-        key: Key that must match the one in the invitation
+        token: Invitation token
     """
-    invitation = Invitation.get_by_id(invite_id)
+    invitation = Invitation.check_token(token)
     if not invitation:
-        abort(404)
-    if not invitation.is_valid() or str(invitation.uuid) != uuid:
-        flash(_("The invitation is not valid."), 'danger')
+        flash(_("The invitation is no longer valid."), 'danger')
         return redirect(url_for('user.login'))
 
     form = RegisterForm()
@@ -87,15 +86,39 @@ def register(invite_id: int, uuid: str):
     return render_template('user/register.html', form=form, rules=rules)
 
 
-@blueprint.route('/reset_password', methods=['GET', 'POST'])
+@blueprint.route('/forgotten_password', methods=['GET', 'POST'])
 @public
-def reset_password():
-    """Reset user password."""
+def forgotten_password():
+    """Renders forgotten password form."""
+    form = ForgottenPasswordForm()
+    if form.validate_on_submit():
+        user = User.get_by_email(form.email.data)
+        email.send_password_reset(user)
+        flash(_("Password reset request was requested, check your email"),
+              'warning')
+        return redirect_return()
+    return render_template('user/forgotten_password.html', form=form)
+
+
+@blueprint.route('/password_reset/<string:token>', methods=['GET', 'POST'])
+@public
+def reset_password(token: str):
+    """Renders reset password form.
+
+    Args:
+        token: Token tied to password reset request
+    """
+    user = User.check_reset_token(token)
+    if not user:
+        flash(_("The password reset request is no longer valid."), 'danger')
+        return redirect(url_for('user.login'))
+
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        # TODO - send email with reset link, generate hash for pwd reset
-        flash(_("Password reset was requested, check your email"), 'warning')
-        return redirect_return()
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash(_("Your password was changed, you may now log in"), 'warning')
+        return redirect(url_for('user.login'))
     return render_template('user/reset_password.html', form=form)
 
 
@@ -198,17 +221,21 @@ def invite():
         if current_user.role <= UserRole.ADMIN:
             initial_state = InvitationState.APPROVED
 
-        Invitation.create(
+        invitation = Invitation.create(
             email=form.email.data,
             name=form.name.data,
             reason=form.reason.data,
-            valid_until=datetime.utcnow() + timedelta(days=120),
             invited_by=current_user,
             state=initial_state
         )
         db.session.commit()
-        flash(_("%(name)s invited", name=form.name.data), 'success')
-        # TODO send email
+
+        if initial_state == InvitationState.APPROVED:
+            email.send_invitation(invitation)
+            flash(_("%(name)s invited", name=form.name.data), 'success')
+        else:
+            flash(_("Invitation created, vaiting for approval by admins"),
+                  'warning')
         return redirect(url_for('user.invite'))
     return render_template('user/invite.html', form=form)
 

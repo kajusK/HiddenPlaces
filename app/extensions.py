@@ -5,7 +5,7 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_babel import Babel
 from flask_misaka import Misaka
-from flask_simple_geoip import SimpleGeoIP
+from flask_mail import Mail
 
 
 db = SQLAlchemy()
@@ -15,4 +15,4 @@ bcrypt = Bcrypt()
 babel = Babel()
 # markdown parser
 misaka = Misaka()
-simple_geoip = SimpleGeoIP()
+mail = Mail()

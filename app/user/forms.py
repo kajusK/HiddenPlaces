@@ -162,8 +162,16 @@ class InviteForm(FlaskForm):
             raise ValidationError(_("This email was already invited"))
 
 
-class ResetPasswordForm(FlaskForm):
-    """Reset users password form."""
+class RoleForm(FlaskForm):
+    """Change user role form."""
+    role = SelectField(_("Role"), [InputRequired()],
+                       coerce=UserRole.coerce,
+                       choices=UserRole.choices([UserRole.ROOT]))
+    submit = SubmitField(_("Set Role"))
+
+
+class ForgottenPasswordForm(FlaskForm):
+    """Request reset users password form."""
     email = EmailField(_("Email address"), [InputRequired(), Email()])
     submit = SubmitField(_("Request password reset"))
 
@@ -173,9 +181,12 @@ class ResetPasswordForm(FlaskForm):
             raise ValidationError(_("User does not exist."))
 
 
-class RoleForm(FlaskForm):
-    """Change user role form."""
-    role = SelectField(_("Role"), [InputRequired()],
-                       coerce=UserRole.coerce,
-                       choices=UserRole.choices([UserRole.ROOT]))
-    submit = SubmitField(_("Set Role"))
+class ResetPasswordForm(FlaskForm):
+    """Reset user password form."""
+    password = PasswordField(_("New password"),
+                             [InputRequired(), password_rules()])
+    confirm = PasswordField(_("Repeat new password"),
+                            [InputRequired(),
+                             EqualTo('password',
+                                     message=_("Passwords must match"))])
+    submit = SubmitField(_("Change password"))

@@ -10,7 +10,8 @@ from app.commands import user_cli
 from app.utils import url_for_return, url_return
 from app.user.models import User
 from app.location.models import Bookmarks
-from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka
+from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka,\
+    mail
 
 
 def create_app(config_object: str = 'app.config.Config',
@@ -45,6 +46,7 @@ def create_app(config_object: str = 'app.config.Config',
     bcrypt.init_app(app)
     babel.init_app(app)
     misaka.init_app(app)
+    mail.init_app(app)
 
     # register routes
     app.register_blueprint(user.routes.blueprint)

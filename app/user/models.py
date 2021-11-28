@@ -1,13 +1,14 @@
 """Modes for user module."""
-import uuid
+import jwt
 from typing import Optional
+from time import time
 from datetime import datetime, timedelta
 from sqlalchemy import or_
 from sqlalchemy.orm import Query, backref
-from flask import request
+from flask import request, current_app as app
 from flask_login import UserMixin
 
-from app.database import DBItem, db, UUID
+from app.database import DBItem, db
 from app.extensions import bcrypt
 from app.utils import GeoIp, get_visitor_ip
 from app.user import constants
@@ -62,6 +63,27 @@ class User(DBItem, UserMixin):
         """
         return cls.query.filter_by(email=email).first()
 
+    @classmethod
+    def check_reset_token(cls, token: str):
+        """Checks if the reset password token is valid
+
+        Args:
+            token: JWT reset password token
+        Returns:
+            User: Corresponding user which requested the password reset
+            None: Token is invalid
+        """
+        try:
+            user_id = jwt.decode(token, app.config['SECRET_KEY'],
+                                 algorithms=['HS256'])['user_id']
+        except (KeyError, jwt.exceptions.InvalidTokenError):
+            return None
+
+        user = cls.get_by_id(user_id)
+        if not user:
+            return None
+        return user
+
     @property
     def banned(self) -> bool:
         """Checks if the user is currently banned."""
@@ -103,6 +125,16 @@ class User(DBItem, UserMixin):
         return Ban.query.filter_by(user=self).filter(
             Ban.until > datetime.utcnow()).order_by(Ban.until.desc()).first()
 
+    def get_reset_token(self, expire_minutes: int = 60) -> str:
+        """Generates url token for password_reset
+
+        Args:
+            expire_minutes: Amount of minutes in which the token expires
+        """
+        return jwt.encode(
+            {'user_id': self.id, 'exp': time() + expire_minutes*60},
+            app.config['SECRET_KEY'], algorithm='HS256')
+
 
 class Ban(DBItem):
     """Ban record model"""
@@ -125,12 +157,9 @@ class Invitation(DBItem):
     name = db.Column(db.String(constants.MAX_FIRST_NAME_LEN +
                                constants.MAX_LAST_NAME_LEN+1),
                      nullable=False)
-    # code required in the register request
-    key = db.Column(UUID(), default=uuid.uuid4, nullable=False, index=True)
 
     reason = db.Column(db.String(constants.MAX_REASON_LEN), nullable=False)
     created = db.Column(db.DateTime(), nullable=False, default=datetime.utcnow)
-    valid_until = db.Column(db.DateTime(), nullable=False)
     state = db.Column(db.Enum(InvitationState), nullable=False,
                       default=InvitationState.WAITING)
 
@@ -168,16 +197,39 @@ class Invitation(DBItem):
         """
         return cls.query.filter_by(email=email).first()
 
-    @property
-    def is_valid(self) -> bool:
-        """Checks if the invitation is approved and valid for registration. """
-        if self.state != InvitationState.APPROVED:
-            return False
-        if datetime.utcnow() > self.valid_until:
-            return False
-        if self.user:
-            return False
-        return True
+    @classmethod
+    def check_token(cls, token: str):
+        """Checks if the token matches valid invitation
+
+        Args:
+            token: JWT invitation token tied to this invitation
+        Returns:
+            Invitation: Corresponding invitation
+            None: Token is invalid
+        """
+        try:
+            invite_id = jwt.decode(token, app.config['SECRET_KEY'],
+                                   algorithms=['HS256'])['invite_id']
+        except (KeyError, jwt.exceptions.InvalidTokenError):
+            return None
+
+        invitation = cls.get_by_id(invite_id)
+        if not invitation:
+            return None
+
+        if invitation.state != InvitationState.APPROVED or invitation.user:
+            return None
+        return invitation
+
+    def get_token(self, expire_days: int = 30) -> str:
+        """Generates url token for invitation link.
+
+        Args:
+            expire_days: Amount of days in which the token expires
+        """
+        return jwt.encode(
+            {'invite_id': self.id, 'exp': time() + expire_days*24*3600},
+            app.config['SECRET_KEY'], algorithm='HS256')
 
 
 class LoginLog(DBItem):

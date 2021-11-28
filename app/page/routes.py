@@ -3,15 +3,18 @@
 The page module contains a few generic information pages (about, rules,...)
 """
 from typing import Optional
-from flask import Blueprint, render_template, request, abort, redirect, url_for
+from flask import Blueprint, render_template, request, abort, redirect, \
+    url_for, flash
 from flask_babel import _
+from flask_login import current_user
 
 from app.database import db
 from app.utils import redirect_return, url_for_return
 from app.decorators import admin
+from app.page import email
 from app.page.models import Page
 from app.page.constants import PageType
-from .forms import ContactForm, EditForm
+from app.page.forms import ContactForm, EditForm
 
 blueprint = Blueprint('page', __name__, url_prefix="/")
 
@@ -88,9 +91,13 @@ def show(page: str):
                            title=str(ptype), content=content)
 
 
-@blueprint.route('/page/contact')
+@blueprint.route('/page/contact', methods=['GET', 'POST'])
 def contact():
     """Renders a contact form."""
     form = ContactForm()
-    # TODO process form and send mail
+    if form.validate_on_submit():
+        email.send_message(current_user, form.subject.data, form.text.data)
+        flash(_("Your message was sent"), 'success')
+        return redirect(url_for('page.index'))
+
     return render_template('page/contact.html', form=form)

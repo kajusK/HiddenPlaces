@@ -47,3 +47,11 @@ class Config:
     ITEMS_PER_PAGE = 8
     # amount of items to show in admin interface
     ADMIN_PER_PAGE = 20
+
+    # EMail configuration (gmail)
+    MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    MAIL_PORT = os.environ.get('MAIL_PORT')
+    MAIL_USE_TLS = 1
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = ('HiddenPlaces', os.environ.get('MAIL_USERNAME'))

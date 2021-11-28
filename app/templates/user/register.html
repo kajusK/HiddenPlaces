@@ -44,7 +44,7 @@
     {{ render_floating_field(form.confirm, placeholder=form.confirm.label.text) }}
     {% set rules_btn = '<a data-bs-toggle="modal" href="#rulesModal" role="button">' | safe %}
     {% set rules_btn = rules_btn+_('Page rules')+'</a>' | safe %}
-    {{ render_field(form.rules_agree, label=_('I will follow the %(rules)s', rules_btn)) }}
+    {{ render_field(form.rules_agree, label=_('I will follow the %(rules)s', rules=rules_btn)) }}
     {{ form.submit(class_="btn btn-primary mb-3 w-100 btn-lg") }}
 
     <a href="{{ url_for('user.login') }}">{{_('Log In')}}</a>

@@ -10,6 +10,7 @@ from app.utils import Pagination, redirect_return
 from app.decorators import moderator, admin
 from app.location.models import Location
 from app.location.constants import LocationType
+from app.user import email
 from app.user.models import User, Invitation, LoginLog
 from app.user.constants import InvitationState
 
@@ -207,6 +208,7 @@ def invite_approve(invite_id: int):
         invite.state = InvitationState.APPROVED
         invite.approved_by = current_user
         db.session.commit()
+        email.send_invitation(invite)
 
     return redirect_return()
 
