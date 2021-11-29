@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_babel import Babel
 from flask_misaka import Misaka
 from flask_mail import Mail
+from flask_moment import Moment
 
 
 db = SQLAlchemy()
@@ -16,3 +17,4 @@ babel = Babel()
 # markdown parser
 misaka = Misaka()
 mail = Mail()
+moment = Moment()

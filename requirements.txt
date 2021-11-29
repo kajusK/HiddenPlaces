@@ -6,6 +6,9 @@ flask-login
 flask-bcrypt
 flask-misaka
 flask-migrate
+flask-mail
+flask-moment
+pyjwt
 gunicorn
 is_safe_url
 email-validator
