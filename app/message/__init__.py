@@ -1,2 +1,2 @@
-# -*- coding: utf-8 -*-
-from . import routes
+"""Private messages handling."""
+from app.message import routes

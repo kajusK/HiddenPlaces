@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col">
         <div class="text-end m-3">
-            {{ link_button(_('Send message'), '#', color='outline-primary') }}
+            {{ link_button(_('Send message'), url_for('message.write', user_id=user.id), color='outline-primary') }}
             {{ link_button(_('Edit'), url_for_return('user.edit'), color='outline-success') }}
             {{ link_button(_('Change password'), url_for_return('user.change_password'), color='outline-success') }}
             <!-- Admin section -->

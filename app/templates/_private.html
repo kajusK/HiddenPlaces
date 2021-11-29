@@ -15,12 +15,15 @@
         <div class="dropdown">
             <button type="button" class="btn position-relative me-3" id="dropdownAlerts" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-bell h4"></i>
+                {% set alerts_count=msg_count %}
+                {% if alerts_count %}
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    99+
+                    {{ alerts_count }}
                 </span>
+                {% endif %}
             </button>
             <div class="dropdown-menu shadow dropdown-menu-end" aria-labelledby="dropdownAlerts">
-                {{ dropdown_link(_("Unreaded messages"), 'envelope', url_for('message.list'), '12') }}
+                {{ dropdown_link(_("Unreaded messages"), 'envelope', url_for('message.browse'), msg_count) }}
                 {{ dropdown_link(_("Latest changes"), 'journal-check', '#', '12') }}
                 {{ dropdown_link(_("New locations"), 'geo-alt', url_for('admin.locations'), '12') }}
                 {{ dropdown_link(_("New invitations"), 'person', url_for('admin.invitations'), '12') }}
@@ -35,7 +38,7 @@
             </button>
 
             <ul class="dropdown-menu shadow dropdown-menu-end" aria-labelledby="dropdownUser">
-                {{ dropdown_link(_("Messages"), 'envelope', url_for('message.list'), '12') }}
+                {{ dropdown_link(_("Messages"), 'envelope', url_for('message.browse'), msg_count) }}
                 {{ dropdown_link(_("Profile"), 'person', url_for('user.profile')) }}
                 {{ dropdown_link(_("Change password"), 'key', url_for('user.change_password')) }}
                 <li><hr class="dropdown-divider"></li>

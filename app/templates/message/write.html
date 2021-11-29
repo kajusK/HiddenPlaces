@@ -1,0 +1,21 @@
+{% set title=_('New message') %}
+{% extends '_private.html' %}
+{% from "_helpers.html" import render_field, link_button %}
+
+{% block content %}
+<div class="card content-card">
+    <h2 class="card-header">{{ title }} - {{ user.first_name }} {{ user.last_name }}</h2>
+    <div class="card-body">
+        <form method="POST" action="" role="form" method="POST">
+            {{ form.hidden_tag() }}
+            {{ render_field(form.subject, 'card-text', placeholder=_('Subject')) }}
+            {{ render_field(form.message, 'pencil', placeholder=_('Your message'), style='min-height: 20em') }}
+
+            <div class="mt-2 text-end">
+                {{ link_button(_('Cancel'), url_return(), None, 'danger') }}
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% set title=_('Messages') %}
+{% extends '_private.html' %}
+{% from '_helpers.html' import render_pagination, card_count, link_button %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h2>{{ title }}</h2>
+    </div>
+    <div class="card-body pb-0">
+        {% if threads|length %}
+        <table class="table">
+            <thead class="bg-light">
+                <tr>
+                    <th scope="col">{{ _('Date') }}</th>
+                    <th scope="col">{{ _('Subject') }}</th>
+                    <th scope="col">{{ _('User') }}</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle">
+                {% for thread in threads %}
+                {% if (thread.sender == current_user and not thread.sender_seen) or (thread.recipient == current_user and not thread.recipient_seen) %}
+                <tr class="table-warning">
+                {% else %}
+                <tr>
+                {% endif %}
+                    <td>{{ moment(thread.timestamp).fromNow() }}</td>
+                    <td>
+                        <a href="{{ url_for('message.show', thread_id=thread.id) }}">{{ thread.subject }}</a>
+                    </td>
+                    <td>
+                        {% if thread.sender == current_user %}
+                            {% set user=thread.recipient %}
+                        {% else %}
+                            {% set user=thread.sender %}
+                        {% endif %}
+                        <a href="{{ url_for('user.profile', user_id=user.id) }}">{{ user.first_name }} {{ user.last_name }}</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {{ render_pagination(pagination) }}
+        {% else %}
+        <h3>
+            {{ _('No messages received yet') }}
+        </h3>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

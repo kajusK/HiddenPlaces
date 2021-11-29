@@ -27,7 +27,7 @@
                     <i class="bi bi-star"></i>
                 </button>
                 <ul class="dropdown-menu shadow" aria-labelledby="dropdownBookmarks">
-                    {% for bookmark in get_bookmarks() %}
+                    {% for bookmark in user_bookmarks %}
                         {% if location in bookmark.locations %}
                             {{ dropdown_link(bookmark.name, 'star-fill', url_for_return('location.bookmark_remove', bookmarks_id=bookmark.id, location_id=location.id)) }}
                         {% else %}

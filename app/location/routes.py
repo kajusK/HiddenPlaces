@@ -240,7 +240,7 @@ def search(string: str = None, page: int = 1):
         string = request.form.get('search')
 
     query = Location.search(string).paginate(
-        page, app.config['ITEMS_PER_PAGE'], True)
+        page, app.config['LOCATIONS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'location.search',
                             string=string)
 
@@ -259,7 +259,7 @@ def owned(type_str: str, page: int = 1):
     """
     loc_type = _get_loc_type(type_str)
     query = Location.get_by_owner(loc_type, current_user).paginate(
-        page, app.config['ITEMS_PER_PAGE'], True)
+        page, app.config['LOCATIONS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'location.owned',
                             type_str=type_str)
 
@@ -281,7 +281,7 @@ def by_user(user_id: int, page: int = 1):
         abort(404)
 
     query = Location.get_by_owner(LocationType.ALL, user).paginate(
-        page, app.config['ITEMS_PER_PAGE'], True)
+        page, app.config['LOCATIONS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'location.by_user',
                             user_id=user_id)
 
@@ -300,7 +300,7 @@ def visited(type_str: str, page: int = 1):
     """
     loc_type = _get_loc_type(type_str)
     query = Location.get_unique_visits(loc_type, current_user).paginate(
-        page, app.config['ITEMS_PER_PAGE'], True)
+        page, app.config['LOCATIONS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'location.visited',
                             type_str=type_str)
 
@@ -322,7 +322,7 @@ def visited_by_user(user_id: int, page: int = 1):
         abort(404)
 
     query = Location.get_unique_visits(LocationType.ALL, user).paginate(
-        page, app.config['ITEMS_PER_PAGE'], True)
+        page, app.config['LOCATIONS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'location.visited_by_user',
                             user_id=user_id)
 
@@ -344,7 +344,7 @@ def bookmark_show(name: str, page: int = 1):
         abort(404)
 
     query = bookmarks.locations.paginate(
-        page, app.config['ITEMS_PER_PAGE'], True)
+        page, app.config['LOCATIONS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'location.bookmarks',
                             name=name)
 
@@ -365,7 +365,7 @@ def browse(type_str: Optional[str] = None, page: int = 1):
     """
     loc_type = _get_loc_type(type_str)
     query = Location.get(loc_type).paginate(
-        page, app.config['ITEMS_PER_PAGE'], True)
+        page, app.config['LOCATIONS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'location.browse',
                             type_str=type_str)
 

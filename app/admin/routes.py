@@ -45,7 +45,7 @@ def locations(page: int = 1, location: Optional[str] = None):
     else:
         abort(404)
 
-    query = query.paginate(page, app.config['ADMIN_PER_PAGE'], True)
+    query = query.paginate(page, app.config['ITEMS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'admin.locations',
                             location=location)
 
@@ -88,7 +88,7 @@ def users(page: int = 1, role: Optional[str] = None):
     else:
         abort(404)
 
-    query = query.paginate(page, app.config['ADMIN_PER_PAGE'], True)
+    query = query.paginate(page, app.config['ITEMS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'admin.users', role=role)
 
     users_count = User.get().count()
@@ -132,7 +132,7 @@ def invitations(page: int = 1, state: Optional[str] = None):
     else:
         abort(404)
 
-    query = query.paginate(page, app.config['ADMIN_PER_PAGE'], True)
+    query = query.paginate(page, app.config['ITEMS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'admin.invitations',
                             state=state)
 
@@ -183,7 +183,7 @@ def logins(page: int = 1, login_type: Optional[str] = None):
     unique = LoginLog.get_unique().count()
     per_month = LoginLog.get_last_month().count()
 
-    query = query.paginate(page, app.config['ADMIN_PER_PAGE'], True)
+    query = query.paginate(page, app.config['ITEMS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'admin.logins')
 
     return render_template('admin/logins.html', logins=query.items,

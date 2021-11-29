@@ -44,9 +44,9 @@ class Config:
     }
 
     # amount of items to show on single page
-    ITEMS_PER_PAGE = 8
-    # amount of items to show in admin interface
-    ADMIN_PER_PAGE = 20
+    ITEMS_PER_PAGE = 20
+    # amount of locations to show on single page
+    LOCATIONS_PER_PAGE = 8
 
     # EMail configuration (gmail)
     MAIL_SERVER = os.environ.get('MAIL_SERVER')

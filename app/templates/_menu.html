@@ -30,7 +30,7 @@
         }}
 
         {% set bookmark_items = [] %}
-        {% for bookmark in get_bookmarks() %}
+        {% for bookmark in user_bookmarks %}
             {{ bookmark_items.append(menu_item(bookmark.name, "", url_for('location.bookmark_show', name=bookmark.name))) or "" }}
         {% endfor %}
         {{ menu_block(_("Bookmarks"), "star", bookmark_items, show=('bookmark' in request.url)) }}

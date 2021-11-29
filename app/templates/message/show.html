@@ -1,28 +1,34 @@
+{% set title=thread.subject %}
 {% extends '_private.html' %}
-{% from "_helpers.html" import render_label, render_submit %}
+{% from "_helpers.html" import render_field %}
 
 {% block content %}
+{% if thread.sender == current_user %}
+    {% set user=thread.recipient %}
+{% else %}
+    {% set user=thread.sender %}
+{% endif %}
 <div class="card content-card">
-    <div class="card-header">Some User: Some subject</div>
+    <div class="card-header">{{ user.first_name }} {{ user.last_name }}: {{ title }}</div>
 
     <div class="list-group list-group-flush">
         <div class="list-group-item">
             <form class="form" method="POST" action="" role="form">
                 {{ form.hidden_tag() }}
-                {{ form.message(placeholder=_('Message'), class_="form-control") }}
+                {{ render_field(form.message, 'pencil', placeholder=_('Your response')) }}
                 <div class="text-end mt-2">
                     {{ form.submit(class="btn btn-success") }}
                 </div>
             </form>
         </div>
 
-        {% for message in msgs %}
-        <div class="list-group-item">
+        {% for message in thread.messages %}
+        <div class="list-group-item bg-{{ 'body' if message.user == current_user else 'light' }}">
             <div class="d-flex w-100 justify-content-between">
                 <strong>{{ message.user.first_name }} {{ message.user.last_name }}</strong>
-                <small>{{ message.date.date() }}</small>
+                <small>{{ moment(message.timestamp).fromNow() }}</small>
             </div>
-            <p class="mb-0">{{ message.text }}</p>
+            <p class="mb-0">{{ message.message }}</p>
         </div>
         {% endfor %}
     </div>

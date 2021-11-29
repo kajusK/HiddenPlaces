@@ -10,6 +10,7 @@ from app.commands import user_cli
 from app.utils import url_for_return, url_return
 from app.user.models import User
 from app.location.models import Bookmarks
+from app.message.models import Thread
 from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka,\
     mail, moment
 
@@ -94,11 +95,16 @@ def register_template_context(app: Flask) -> None:
         return dict(url_return=url_return)
 
     @app.context_processor
-    def jinja_get_bookmarks():
-        """Registers function for obtaining list of bookmarks for user."""
-        def _get_bookmarks():
-            return Bookmarks.get_by_user(current_user).all()
-        return dict(get_bookmarks=_get_bookmarks)
+    def jinja_user_bookmarks():
+        """Registers list of user bookmarks."""
+        bookmarks = Bookmarks.get_by_user(current_user).all()
+        return dict(user_bookmarks=bookmarks)
+
+    @app.context_processor
+    def jinja_msg_count():
+        """Registers unreaded messages count."""
+        msg_count = Thread.get_unreaded(current_user).count()
+        return dict(msg_count=msg_count)
 
 
 def register_before_requests(app: Flask) -> None:
