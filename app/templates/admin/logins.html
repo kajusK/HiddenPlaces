@@ -44,7 +44,7 @@
                     <td>{{ login.country }}</td>
                     <td>{{ login.system }}</td>
                     <td>{{ login.browser }}</td>
-                    {% if login.user_id %}
+                    {% if login.user_id is not none %}
                     <td><a href="{{ url_for('user.profile', user_id=login.user_id) }}">{{ login.email }}</a></td>
                     {% else %}
                     <td>{{ login.email }}</td>
