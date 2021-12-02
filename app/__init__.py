@@ -5,10 +5,17 @@ from flask import Flask, request, redirect, url_for, flash, current_app,\
     session
 from flask_login import current_user
 
-from app import errors, user, location, admin, page, message, upload
+import app.user.routes as user
+import app.location.routes as location
+import app.admin.routes as admin
+import app.page.routes as page
+import app.message.routes as message
+import app.upload.routes as upload
+from app import errors
 from app.commands import user_cli
 from app.utils import url_for_return, url_return
-from app.user.models import User
+from app.user.models import User, Invitation
+from app.user.constants import InvitationState
 from app.location.models import Bookmarks
 from app.message.models import Thread
 from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka,\
@@ -51,12 +58,12 @@ def create_app(config_object: str = 'app.config.Config',
     moment.init_app(app)
 
     # register routes
-    app.register_blueprint(user.routes.blueprint)
-    app.register_blueprint(location.routes.blueprint)
-    app.register_blueprint(upload.routes.blueprint)
-    app.register_blueprint(admin.routes.blueprint)
-    app.register_blueprint(page.routes.blueprint)
-    app.register_blueprint(message.routes.blueprint)
+    app.register_blueprint(user.blueprint)
+    app.register_blueprint(location.blueprint)
+    app.register_blueprint(upload.blueprint)
+    app.register_blueprint(admin.blueprint)
+    app.register_blueprint(page.blueprint)
+    app.register_blueprint(message.blueprint)
 
     # register error handlers
     app.register_error_handler(403, errors.error_403)
@@ -97,14 +104,20 @@ def register_template_context(app: Flask) -> None:
     @app.context_processor
     def jinja_user_bookmarks():
         """Registers list of user bookmarks."""
-        bookmarks = Bookmarks.get_by_user(current_user).all()
+        bookmarks = []
+        if current_user.is_authenticated:
+            bookmarks = Bookmarks.get_by_user(current_user).all()
         return dict(user_bookmarks=bookmarks)
 
     @app.context_processor
-    def jinja_msg_count():
-        """Registers unreaded messages count."""
-        msg_count = Thread.get_unreaded(current_user).count()
-        return dict(msg_count=msg_count)
+    def jinja_alerts_count():
+        """Registers count of various alerts events."""
+        msg = 0
+        invite = 0
+        if current_user.is_authenticated:
+            msg = Thread.get_unreaded(current_user).count()
+            invite = Invitation.get_by_state(InvitationState.WAITING).count()
+        return dict(msg_alerts=msg, invite_alerts=invite)
 
 
 def register_before_requests(app: Flask) -> None:

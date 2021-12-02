@@ -1,0 +1,42 @@
+{% set title=_('Event log') %}
+{% extends '_private.html' %}
+{% from '_helpers.html' import render_pagination, card_count, link_button %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>{{ title }}</h3>
+    </div>
+    <div class="card-body pb-0">
+        <table class="table">
+            <thead class="bg-light">
+                <tr>
+                    <th scope="col">{{ _('Time') }}</th>
+                    <th scope="col">{{ _('User') }}</th>
+                    <th scope="col">{{ _('Description') }}</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle">
+                {% for event in events %}
+                {% if event.severity.name == 'NORMAL' %}
+                    <tr class="table-primary">
+                {% elif event.severity.name == 'HIGH' %}
+                    <tr class="table-warning">
+                {% elif event.severity.name == 'CRITICAL' %}
+                    <tr class="table-danger">
+                {% else %}
+                    <tr class="table-secondary">
+                {% endif %}
+                    <td>{{ moment(event.timestamp).calendar() }}</td>
+                    <td><a href="{{ url_for('user.profile', user_id=event.user.id) }}">{{ event.user }}</a></td>
+                    <td>{{ event.text }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {{ render_pagination(pagination) }}
+    </div>
+</div>
+
+{% endblock %}

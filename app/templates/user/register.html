@@ -19,7 +19,7 @@
                 <h2 class="modal-title" if="rulesModalTitle">{{ rules.title }}</h2>
             </div>
             <div class="modal-body">
-                {{ rules.text | markdown }}
+                {{ rules.text | markdown if rules else _("No rules defined!") }}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">

@@ -32,6 +32,14 @@ class User(DBItem, UserMixin):
     role = db.Column(db.Enum(UserRole), default=UserRole.NEWBIE,
                      nullable=False)
 
+    # Time when the corresponding table was last checked
+    #invitation_check_ts = db.Column(db.DateTime(), default=datetime.utcnow,
+    #                                nullable=False)
+    #location_check_ts = db.Column(db.DateTime(), default=datetime.utcnow,
+    #                              nullable=False)
+    #login_check_ts = db.Column(db.DateTime(), default=datetime.utcnow,
+    #                           nullable=False)
+
     @classmethod
     def get(cls) -> Query:
         """Gets all users query ordered by created date"""
@@ -99,6 +107,9 @@ class User(DBItem, UserMixin):
             self.set_password(password)
         else:
             self.password = None
+
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name}"
 
     def set_password(self, password: str) -> None:
         """Hashes the plaintext password

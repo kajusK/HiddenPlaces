@@ -40,6 +40,7 @@
             menu_item(_("Users"), "people", url_for('admin.users')),
             menu_item(_("Invitations"), "people-fill", url_for('admin.invitations')),
             menu_item(_("Logins"), "door-open", url_for('admin.logins')),
+            menu_item(_("Events"), "list", url_for('admin.events')),
             menu_item(_("Settings"), "gear", url_for('admin.settings')),
             ], show=('admin' in request.url))
         }}

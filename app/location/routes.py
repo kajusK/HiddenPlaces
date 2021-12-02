@@ -21,6 +21,8 @@ from app.location.urbex.forms import UrbexForm
 from app.location.urbex.utils import UrbexUtil
 from app.upload.models import Upload
 from app.upload.constants import UploadType
+from app.admin import events
+from app.admin.models import EventLog
 from app.user.models import User
 
 
@@ -70,6 +72,7 @@ def show(location_id: int, name: str = None):
             visited_on=form.date.data,
             location=location,
             user_id=current_user.id)
+        EventLog.log(current_user, events.AddVisitEvent(visit))
         db.session.commit()
 
         if form.photos.data:
@@ -130,6 +133,7 @@ def add(type_str: str, parent_id: Optional[int] = None):
             owner=current_user,
         )
         util.create(location, form)
+        EventLog.log(current_user, events.CreateLocationEvent(location))
         db.session.commit()
 
         if form.photo.data:
@@ -161,6 +165,7 @@ def delete(location_id: int):
         abort(404)
 
     location.delete()
+    EventLog.log(current_user, events.DeleteLocationEvent(location))
     db.session.commit()
     flash(_("Location was deleted"), 'warning')
     return redirect_return()
@@ -218,6 +223,7 @@ def edit(location_id: int):
                 )
             else:
                 location.photo.replace(form.photo.data)
+        EventLog.log(current_user, events.ModifyLocationEvent(location))
         db.session.commit()
 
         flash(_("Location saved"), 'success')
@@ -401,6 +407,7 @@ def visit_edit(visit_id: int):
                     created_by=current_user,
                     object_uuid=visit.uuid,
                 )
+        EventLog.log(current_user, events.ModifyVisitEvent(visit))
         db.session.commit()
         flash(_("Visit was saved"), 'success')
         return redirect_return()
@@ -420,6 +427,7 @@ def visit_remove(visit_id: int):
         return abort(404)
 
     visit.delete()
+    EventLog.log(current_user, events.DeleteVisitEvent(visit))
     db.session.commit()
     flash(_("Visit was deleted"), 'success')
     return redirect_return()

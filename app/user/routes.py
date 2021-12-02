@@ -15,6 +15,8 @@ from app.location.constants import LocationType
 from app.upload.models import save_uploaded_file
 from app.page.models import Page
 from app.page.constants import PageType
+from app.admin import events
+from app.admin.models import EventLog
 from app.user import email
 from app.user.models import User, Invitation, LoginLog, Ban
 from app.user.forms import LoginForm, RegisterForm, ChangePasswordForm, \
@@ -40,6 +42,7 @@ def login():
     if form.validate_on_submit():
         login_user(form.user, remember=form.remember_me.data)
         LoginLog.create(form.email.data, form.result, form.user)
+        EventLog.log(current_user, events.LogInEvent())
         db.session.commit()
 
         flash(_("You were logged in"), 'success')
@@ -78,6 +81,7 @@ def register(token: str):
         )
         invitation.user = user
         invitation.state = InvitationState.REGISTERED
+        EventLog.log(user, events.RegisterEvent())
         db.session.commit()
         flash(_("You were registered, you may now log-in"), 'success')
         return redirect(url_for('user.login'))
@@ -93,6 +97,8 @@ def forgotten_password():
     form = ForgottenPasswordForm()
     if form.validate_on_submit():
         user = User.get_by_email(form.email.data)
+        EventLog.log(user, events.PasswordResetRequestEvent())
+        db.session.commit()
         email.send_password_reset(user)
         flash(_("Password reset request was requested, check your email"),
               'warning')
@@ -116,6 +122,7 @@ def reset_password(token: str):
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
+        EventLog.log(user, events.PasswordResetEvent())
         db.session.commit()
         flash(_("Your password was changed, you may now log in"), 'warning')
         return redirect(url_for('user.login'))
@@ -125,6 +132,8 @@ def reset_password(token: str):
 @blueprint.route('/logout')
 def logout():
     """Logout user and redirect to login page again."""
+    EventLog.log(current_user, events.LogOutEvent())
+    db.session.commit()
     logout_user()
     flash(_("You were logged out."), 'info')
     return redirect(url_for('user.login'))
@@ -173,6 +182,7 @@ def change_password():
     form = ChangePasswordForm()
     if form.validate_on_submit():
         current_user.set_password(form.password.data)
+        EventLog.log(current_user, events.PasswordChangeEvent())
         db.session.commit()
         flash(_("Your password was changed"), 'warning')
         return redirect_return()
@@ -196,13 +206,14 @@ def ban(user_id: int):
 
     form = BanForm()
     if form.validate_on_submit():
-        Ban.create(
+        ban = Ban.create(
             creator=current_user,
             user=banned_user,
             reason=form.reason.data,
             permanent=bool(int(form.permanent.data)),
             until=datetime.utcnow() + timedelta(days=form.days.data)
         )
+        EventLog.log(current_user, events.BanEvent(ban))
         db.session.commit()
         flash(_("User %(first)s %(last)s was banned",
                 first=banned_user.first_name, last=banned_user.last_name),
@@ -228,6 +239,7 @@ def invite():
             invited_by=current_user,
             state=initial_state
         )
+        EventLog.log(current_user, events.InviteEvent(invitation))
         db.session.commit()
 
         if initial_state == InvitationState.APPROVED:
@@ -262,6 +274,7 @@ def role(user_id: int):
     if request.method == 'GET':
         form.role.data = user.role
     elif form.validate_on_submit():
+        EventLog.log(current_user, events.RoleChangeEvent(user, form.role.data))
         user.role = form.role.data
         db.session.commit()
         flash(_("Changed role of %(first)s %(last)s to %(role)s",

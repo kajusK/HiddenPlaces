@@ -13,6 +13,8 @@ from app.location.constants import LocationType
 from app.user import email
 from app.user.models import User, Invitation, LoginLog
 from app.user.constants import InvitationState
+from app.admin.events import ApproveInviteEvent, DenyInviteEvent
+from app.admin.models import EventLog
 
 
 blueprint = Blueprint('admin', __name__, url_prefix='/admin')
@@ -207,6 +209,7 @@ def invite_approve(invite_id: int):
     if invite.state in (InvitationState.WAITING, InvitationState.DENIED):
         invite.state = InvitationState.APPROVED
         invite.approved_by = current_user
+        EventLog.log(current_user, ApproveInviteEvent(invite))
         db.session.commit()
         email.send_invitation(invite)
 
@@ -228,6 +231,25 @@ def invite_deny(invite_id: int):
     if invite.state in (InvitationState.WAITING, InvitationState.APPROVED):
         invite.state = InvitationState.DENIED
         invite.approved_by = current_user
+        EventLog.log(current_user, DenyInviteEvent(invite))
         db.session.commit()
 
     return redirect_return()
+
+
+@blueprint.route('/events')
+@blueprint.route('/events/<int:page>')
+@admin
+def events(page: int = 1):
+    """Shows log of events
+
+    Args:
+        page: Page number for results pagination
+    """
+    query = EventLog.get()
+
+    query = query.paginate(page, app.config['ITEMS_PER_PAGE'], True)
+    pagination = Pagination(page, query.pages, 'admin.events')
+
+    return render_template('admin/events.html', events=query.items,
+                           pagination=pagination)

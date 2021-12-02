@@ -3,6 +3,10 @@ from flask import render_template, request
 from flask import current_app as app
 from flask_login import current_user
 
+from app.database import db
+from app.admin.models import EventLog
+from app.admin.events import UnauthorizedEvent
+
 
 def error_403(e: Exception):
     """Shows error page for user with insufficient priviledges.
@@ -13,6 +17,8 @@ def error_403(e: Exception):
         A page content and error code.
     """
     app.logger.error(f'403: {request.path} by {current_user.email}: %s', e)
+    EventLog.log(current_user, UnauthorizedEvent(request.path))
+    db.session.commit()
     return render_template('403.html'), 403
 
 

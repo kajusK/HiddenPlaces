@@ -11,6 +11,8 @@ from flask_login import current_user
 from app.database import db
 from app.utils import redirect_return, url_for_return
 from app.decorators import admin
+from app.admin import events
+from app.admin.models import EventLog
 from app.page import email
 from app.page.models import Page
 from app.page.constants import PageType
@@ -65,6 +67,7 @@ def edit(page: str):
             item.text = form.text.data
         else:
             Page.create(ptype, text=form.text.data)
+        EventLog.log(current_user, events.PageEditEvent(ptype))
         db.session.commit()
         return redirect_return()
 
