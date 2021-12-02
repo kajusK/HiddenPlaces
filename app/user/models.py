@@ -33,12 +33,12 @@ class User(DBItem, UserMixin):
                      nullable=False)
 
     # Time when the corresponding table was last checked
-    #invitation_check_ts = db.Column(db.DateTime(), default=datetime.utcnow,
-    #                                nullable=False)
-    #location_check_ts = db.Column(db.DateTime(), default=datetime.utcnow,
-    #                              nullable=False)
-    #login_check_ts = db.Column(db.DateTime(), default=datetime.utcnow,
-    #                           nullable=False)
+    event_check_ts = db.Column(db.DateTime(), default=datetime.utcnow,
+                               nullable=False)
+    location_check_ts = db.Column(db.DateTime(), default=datetime.utcnow,
+                                  nullable=False)
+    login_check_ts = db.Column(db.DateTime(), default=datetime.utcnow,
+                               nullable=False)
 
     @classmethod
     def get(cls) -> Query:
@@ -282,6 +282,15 @@ class LoginLog(DBItem):
         """Get attempts from last 30 days."""
         return cls.get().filter(
             cls.timestamp >= datetime.utcnow() - timedelta(days=30))
+
+    @classmethod
+    def get_since(cls, since: datetime) -> Query:
+        """Query logs added since date
+
+        Args:
+            since: Start date to filter from
+        """
+        return cls.get().filter(cls.timestamp > since)
 
     @classmethod
     def create(cls, email: str, result: LoginResult,

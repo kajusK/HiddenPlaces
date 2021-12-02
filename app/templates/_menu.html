@@ -29,11 +29,13 @@
             ], show=('urbex' in request.url))
         }}
 
-        {% set bookmark_items = [] %}
-        {% for bookmark in user_bookmarks %}
-            {{ bookmark_items.append(menu_item(bookmark.name, "", url_for('location.bookmark_show', name=bookmark.name))) or "" }}
-        {% endfor %}
-        {{ menu_block(_("Bookmarks"), "star", bookmark_items, show=('bookmark' in request.url)) }}
+        {% if user_bookmarks|length %}
+            {% set bookmark_items = [] %}
+            {% for bookmark in user_bookmarks %}
+                {{ bookmark_items.append(menu_item(bookmark.name, "", url_for('location.bookmark_show', name=bookmark.name))) or "" }}
+            {% endfor %}
+            {{ menu_block(_("Bookmarks"), "star", bookmark_items, show=('bookmark' in request.url)) }}
+        {% endif %}
 
         {{ menu_block(_("Admin"), "shield", [
             menu_item(_("Locations"), "geo-alt", url_for('admin.locations')),
@@ -41,7 +43,6 @@
             menu_item(_("Invitations"), "people-fill", url_for('admin.invitations')),
             menu_item(_("Logins"), "door-open", url_for('admin.logins')),
             menu_item(_("Events"), "list", url_for('admin.events')),
-            menu_item(_("Settings"), "gear", url_for('admin.settings')),
             ], show=('admin' in request.url))
         }}
 

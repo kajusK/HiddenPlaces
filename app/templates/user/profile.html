@@ -1,4 +1,4 @@
-{% set title=user.first_name+" "+user.last_name %}
+{% set title=user %}
 {% extends "_private.html" %}
 {% from "_helpers.html" import link_button %}
 
@@ -25,7 +25,7 @@
             <img class="card-img-top" src="{{ image_url }}" alt="Profile photo">
             <div class="row card-body">
                 <div class="col">
-                    <h3 class="card-title">{{ user.first_name }} {{ user.last_name }}</h3>
+                    <h3 class="card-title">{{ user }}</h3>
                     {{ _('Created') }}: {{ user.created.date() }}<br>
                     {{ _('Last seen') }}: {{ user.last_seen.date() }}<br>
 
@@ -43,7 +43,7 @@
                     {{ _('Role') }}: <span class="badge bg-secondary">{{ user.role }}</span><br>
 
                     {% if user.invitation %}
-                    {{ _('Invited by' )}}: <a href="{{ url_for('user.profile', user_id=user.invitation.invited_by_id) }}">{{ user.invitation.invited_by.first_name }} {{ user.invitation.invited_by.last_name }}</a><br>
+                    {{ _('Invited by' )}}: <a href="{{ url_for('user.profile', user_id=user.invitation.invited_by_id) }}">{{ user.invitation.invited_by }}</a><br>
                     {% endif %}
 
                     {% if user.invited | length %}
@@ -52,7 +52,7 @@
                     {% for invite in user.invited %}
                         {% if invite.user_id %}
                         <li>
-                            <a href="{{ url_for('user.profile', user_id=invite.user_id) }}">{{ invite.user.first_name }} {{ invite.user.last_name }}</a>
+                            <a href="{{ url_for('user.profile', user_id=invite.user_id) }}">{{ invite.user }}</a>
                         </li>
                         {% endif %}
                     {% endfor %}

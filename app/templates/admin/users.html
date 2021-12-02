@@ -29,14 +29,14 @@
             <tbody class="align-middle">
             {% for user in users %}
                 <tr>
-                    <td>{{ user.created.date() }}</td>
-                    <td>{{ user.first_name }} {{ user.last_name }}</td>
+                    <td>{{ moment(user.created).calendar() }}</td>
+                    <td>{{ user }}</td>
                     {% if user.invitation %}
-                    <td><a href="{{ url_for('user.profile', user_id=user.invitation.invited_by.id) }}">{{ user.invitation.invited_by.first_name }} {{ user.invitation.invited_by.last_name }}</a></td>
+                    <td><a href="{{ url_for('user.profile', user_id=user.invitation.invited_by.id) }}">{{ user.invitation.invited_by }}</a></td>
                     {% else %}
                     <td></td>
                     {% endif %}
-                    <td>{{ user.last_seen.date() }}</td>
+                    <td>{{ moment(user.last_seen).fromNow() }}</td>
                     <td>
                         {% if user.role.name in ("ROOT, ADMIN") %}<span class="badge bg-danger">
                         {% elif user.role.name == "MODERATOR" %}<span class="badge bg-primary">

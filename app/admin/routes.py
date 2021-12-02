@@ -1,4 +1,5 @@
 """Admin interface."""
+from datetime import datetime
 from typing import Optional
 from flask import Blueprint, render_template, abort
 from flask import current_app as app
@@ -55,6 +56,9 @@ def locations(page: int = 1, location: Optional[str] = None):
     urbex_count = Location.get(LocationType.URBEX).count()
     underground_count = Location.get(LocationType.UNDERGROUND).count()
     private_count = Location.get_unpublished(LocationType.ALL).count()
+
+    current_user.location_check_ts = datetime.utcnow()
+    db.session.commit()
 
     return render_template('admin/locations.html', locations=query.items,
                            title=title, locations_count=locations_count,
@@ -149,13 +153,6 @@ def invitations(page: int = 1, state: Optional[str] = None):
                            pagination=pagination)
 
 
-@blueprint.route('/settings')
-@admin
-def settings():
-    """Shows system settings."""
-    return render_template('admin/settings.html')
-
-
 @blueprint.route('/logins')
 @blueprint.route('/logins/<int:page>')
 @blueprint.route('/logins/<string:login_type>')
@@ -187,6 +184,9 @@ def logins(page: int = 1, login_type: Optional[str] = None):
 
     query = query.paginate(page, app.config['ITEMS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'admin.logins')
+
+    current_user.login_check_ts = datetime.utcnow()
+    db.session.commit()
 
     return render_template('admin/logins.html', logins=query.items,
                            failed=failed, unique=unique, attempts=attempts,
@@ -250,6 +250,9 @@ def events(page: int = 1):
 
     query = query.paginate(page, app.config['ITEMS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'admin.events')
+
+    current_user.event_check_ts = datetime.utcnow()
+    db.session.commit()
 
     return render_template('admin/events.html', events=query.items,
                            pagination=pagination)

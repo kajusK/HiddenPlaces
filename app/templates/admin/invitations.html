@@ -27,9 +27,9 @@
             <tbody class="align-middle">
                 {% for invite in invitations %}
                 <tr>
-                    <td><a href="{{ url_for('user.profile', user_id=invite.invited_by_id) }}">{{ invite.invited_by.first_name }} {{ invite.invited_by.last_name }}</a></td>
+                    <td><a href="{{ url_for('user.profile', user_id=invite.invited_by_id) }}">{{ invite.invited_by }}</a></td>
                     {% if invite.state.name == 'REGISTERED' %}
-                    <td><a href="{{ url_for('user.profile', user_id=invite.user_id)}}">{{ invite.user.first_name }} {{ invite.user.last_name }}</a></td>
+                    <td><a href="{{ url_for('user.profile', user_id=invite.user_id)}}">{{ invite.user }}</a></td>
                     {% else %}
                     <td>{{ invite.name }}</td>
                     {% endif %}

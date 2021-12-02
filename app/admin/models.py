@@ -25,6 +25,15 @@ class EventLog(DBItem):
         return cls.query.order_by(cls.timestamp.desc())
 
     @classmethod
+    def get_since(cls, since: datetime) -> Query:
+        """Query logs added since date
+
+        Args:
+            since: Start date to filter from
+        """
+        return cls.get().filter(cls.timestamp > since)
+
+    @classmethod
     def log(cls, user: User, event: Event) -> None:
         """Creates a log record
 

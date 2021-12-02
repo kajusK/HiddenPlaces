@@ -4,9 +4,9 @@
 {% block content %}
 <div class="row">
     {{ card_count(_('All'), locations_count, 'geo-alt', 'text-success', url_for('admin.locations')) }}
-    {{ card_count(_('Underground'), underground_count, 'building', 'text-success', url_for('admin.locations', location='underground')) }}
-    {{ card_count(_('Urbex'), urbex_count, 'minecart-loaded', 'text-success', url_for('admin.locations', location='urbex')) }}
-    {{ card_count(_('Private'), private_count, 'shield', 'text-warning', url_for('admin.locations', location='private')) }}
+    {{ card_count(_('Underground'), underground_count, 'minecart-loaded', 'text-success', url_for('admin.locations', location='underground')) }}
+    {{ card_count(_('Urbex'), urbex_count, 'building', 'text-success', url_for('admin.locations', location='urbex')) }}
+    {{ card_count(_('Private'), private_count, 'shield', 'text-danger', url_for('admin.locations', location='private')) }}
 </div>
 
 <div class="card">
@@ -29,8 +29,8 @@
             {% for location in locations %}
                 <tr>
                     <td>{{ location.name }}</td>
-                    <td><a href="{{ url_for('user.profile', user_id=location.owner.id) }}">{{ location.owner.first_name}} {{ location.owner.last_name }}</a></td>
-                    <td>{{ location.created.date() }}</td>
+                    <td><a href="{{ url_for('user.profile', user_id=location.owner.id) }}">{{ location.owner }}</a></td>
+                    <td>{{ moment(location.created).format('LL') }}</td>
                     <td>{{ location.underground.state or location.urbex.state }}</td>
                     <td>{{ location.underground.type or location.urbex.type }}</td>
                     <td class="text-end">

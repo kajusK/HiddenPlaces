@@ -20,7 +20,7 @@
                        data-caption="<b>{{ image.name }}</b>{% if image.description %}<br><br>{{ image.description }}{% endif %}" >
                         <img src="{{ url_for('upload.get', path=image.path) }}" class="img-fluid" alt="{{ image.name }}">
                         <div class="image-caption d-flex justify-content-between">
-                            {{ image.created_by.first_name }} {{ image.created_by.last_name}}
+                            {{ image.created_by }}
                             <span>{{ image.created.date() }}</span>
                         </div>
                     </a>

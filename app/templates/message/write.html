@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="card content-card">
-    <h2 class="card-header">{{ title }} - {{ user.first_name }} {{ user.last_name }}</h2>
+    <h2 class="card-header">{{ title }} - {{ user }}</h2>
     <div class="card-body">
         <form method="POST" action="" role="form" method="POST">
             {{ form.hidden_tag() }}

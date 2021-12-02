@@ -1,4 +1,4 @@
-{% set title=_('Change role for %(first)s %(last)s', first=user.first_name, last=user.last_name) %}
+{% set title=_('Change role for %(user)s', user=user) %}
 {% extends '_private.html' %}
 {% from '_helpers.html' import render_label, render_field, link_button %}
 

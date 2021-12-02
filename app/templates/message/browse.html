@@ -34,7 +34,7 @@
                         {% else %}
                             {% set user=thread.sender %}
                         {% endif %}
-                        <a href="{{ url_for('user.profile', user_id=user.id) }}">{{ user.first_name }} {{ user.last_name }}</a>
+                        <a href="{{ url_for('user.profile', user_id=user.id) }}">{{ user }}</a>
                     </td>
                 </tr>
                 {% endfor %}

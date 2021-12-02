@@ -215,9 +215,7 @@ def ban(user_id: int):
         )
         EventLog.log(current_user, events.BanEvent(ban))
         db.session.commit()
-        flash(_("User %(first)s %(last)s was banned",
-                first=banned_user.first_name, last=banned_user.last_name),
-              'warning')
+        flash(_("User %(user)s was banned", user=banned_user), 'warning')
         return redirect_return()
     return render_template('user/ban.html', form=form, user=banned_user)
 
@@ -274,11 +272,11 @@ def role(user_id: int):
     if request.method == 'GET':
         form.role.data = user.role
     elif form.validate_on_submit():
-        EventLog.log(current_user, events.RoleChangeEvent(user, form.role.data))
+        EventLog.log(current_user, events.RoleChangeEvent(
+            user, form.role.data))
         user.role = form.role.data
         db.session.commit()
-        flash(_("Changed role of %(first)s %(last)s to %(role)s",
-                first=user.first_name, last=user.last_name, role=user.role),
-              'warning')
+        flash(_("Changed role of %(user)s to %(role)s", user=user,
+                role=user.role), 'warning')
         return redirect_return()
     return render_template('user/role.html', form=form, user=user)

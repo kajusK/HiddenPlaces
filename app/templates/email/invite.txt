@@ -1,6 +1,6 @@
 Dear {{ invitation.name }},
 
-you were given a trust to access the HiddenPlaces by {{ invitation.invited_by.first_name }} {{ invitation.invited_by.last_name }}.
+you were given a trust to access the HiddenPlaces by {{ invitation.invited_by }}.
 
 To create a new account, click on the following link:
 

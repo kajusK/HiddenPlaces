@@ -39,7 +39,7 @@
                 {% else %}
                     <tr class="table-secondary">
                 {% endif %}
-                    <td>{{ login.timestamp }}</td>
+                    <td>{{ moment(login.timestamp).format('LL') }}</td>
                     <td>{{ login.ip }} </td>
                     <td>{{ login.country }}</td>
                     <td>{{ login.system }}</td>

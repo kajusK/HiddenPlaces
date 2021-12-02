@@ -14,9 +14,10 @@ import app.upload.routes as upload
 from app import errors
 from app.commands import user_cli
 from app.utils import url_for_return, url_return
-from app.user.models import User, Invitation
+from app.user.models import User, Invitation, LoginLog
 from app.user.constants import InvitationState
-from app.location.models import Bookmarks
+from app.location.models import Bookmarks, Location
+from app.admin.models import EventLog
 from app.message.models import Thread
 from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka,\
     mail, moment
@@ -117,7 +118,13 @@ def register_template_context(app: Flask) -> None:
         if current_user.is_authenticated:
             msg = Thread.get_unreaded(current_user).count()
             invite = Invitation.get_by_state(InvitationState.WAITING).count()
-        return dict(msg_alerts=msg, invite_alerts=invite)
+            location = Location.get_since(
+                current_user.location_check_ts).count()
+            login = LoginLog.get_since(current_user.login_check_ts).count()
+            event = EventLog.get_since(current_user.event_check_ts).count()
+        return dict(msg_alerts=msg, invite_alerts=invite,
+                    location_alerts=location, login_alerts=login,
+                    event_alerts=event)
 
 
 def register_before_requests(app: Flask) -> None:

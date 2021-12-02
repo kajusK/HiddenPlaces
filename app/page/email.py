@@ -21,7 +21,6 @@ def send_message(user: User, subject: str, message: str) -> None:
 
     send_email(
         recipients, subject,
-        _('User %(first)s %(last)s (%(url)s) sent you a message:\n\n%(msg)s',
-          first=user.first_name, last=user.last_name,
-          url=url_for('user.profile', user_id=user.id, _external=True),
-          msg=message))
+        _('User %(user)s (%(url)s) sent you a message:\n\n%(msg)s',
+          user=user, msg=message,
+          url=url_for('user.profile', user_id=user.id, _external=True))

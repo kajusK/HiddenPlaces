@@ -15,7 +15,7 @@
         <div class="dropdown">
             <button type="button" class="btn position-relative me-3" id="dropdownAlerts" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-bell h4"></i>
-                {% set alerts_count=msg_alerts + invite_alerts %}
+                {% set alerts_count=msg_alerts + invite_alerts + location_alerts + event_alerts + login_alerts %}
                 {% if alerts_count %}
                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {{ alerts_count }}
@@ -23,22 +23,22 @@
                 {% endif %}
             </button>
             <div class="dropdown-menu shadow dropdown-menu-end" aria-labelledby="dropdownAlerts">
-                {{ dropdown_link(_("Unreaded messages"), 'envelope', url_for('message.browse'), msg_count) }}
-                {{ dropdown_link(_("Latest changes"), 'journal-check', '#', '12') }}
-                {{ dropdown_link(_("New locations"), 'geo-alt', url_for('admin.locations'), '12') }}
+                {{ dropdown_link(_("Unreaded messages"), 'envelope', url_for('message.browse'), msg_alerts) }}
+                {{ dropdown_link(_("Latest changes"), 'journal-check', url_for('admin.events'), event_alerts) }}
+                {{ dropdown_link(_("New locations"), 'geo-alt', url_for('admin.locations'), location_alerts) }}
                 {{ dropdown_link(_("Invitations pending"), 'person', url_for('admin.invitations'), invite_alerts) }}
-                {{ dropdown_link(_("Failed logins"), 'exclamation-octagon', url_for('admin.logins'), '12') }}
+                {{ dropdown_link(_("Failed logins"), 'exclamation-octagon', url_for('admin.logins'), login_alerts) }}
             </div>
         </div>
 
         <div class="dropdown">
             <button href="#" class="btn" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-person h4"></i>
-                <strong>{{ current_user.first_name }} {{ current_user.last_name }}</strong>
+                <strong>{{ current_user }}</strong>
             </button>
 
             <ul class="dropdown-menu shadow dropdown-menu-end" aria-labelledby="dropdownUser">
-                {{ dropdown_link(_("Messages"), 'envelope', url_for('message.browse'), msg_count) }}
+                {{ dropdown_link(_("Messages"), 'envelope', url_for('message.browse'), msg_alerts) }}
                 {{ dropdown_link(_("Profile"), 'person', url_for('user.profile')) }}
                 {{ dropdown_link(_("Change password"), 'key', url_for('user.change_password')) }}
                 <li><hr class="dropdown-divider"></li>

@@ -12,7 +12,7 @@
     <div class="card-body">
         {{ _('Created') }}: {{ location.created.date() }}<br>
         {{ _('Last updated') }}: {{ location.modified.date() }}<br>
-        {{ _('Maintainer') }}: <a href="{{ url_for('user.profile', id=location.owner_id) }}">{{ location.owner.first_name }} {{ location.owner.last_name }}</a><br>
+        {{ _('Maintainer') }}: <a href="{{ url_for('user.profile', id=location.owner_id) }}">{{ location.owner }}</a><br>
         <hr>
         {{ _('State') }}: {{ location.underground.state or location.urbex.state }}</br>
 

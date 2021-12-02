@@ -109,6 +109,18 @@ class Location(DBItem):
         return cls.get(loc_type).filter_by(published=False)
 
     @classmethod
+    def get_since(cls, since: datetime) -> Query:
+        """Query locations added since date
+
+        Args:
+            since: Start date to filter locations from
+
+        Returns:
+            Location query
+        """
+        return cls.get(LocationType.ALL).filter(cls.created > since)
+
+    @classmethod
     def get_by_owner(cls, loc_type: LocationType, owner: User) -> Query:
         """Query for locations owned by  user
 
