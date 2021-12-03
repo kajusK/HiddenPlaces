@@ -8,7 +8,7 @@
         <h1>
             {{ location.name }}
             {% if location.parent %}
-            (<a href="{{ url_for('location.show', location_id=location.parent.id) }}">{{ location.parent.name }}</a>)
+            (<a href="{{ Url.get('location.show', location_id=location.parent.id) }}">{{ location.parent.name }}</a>)
             {% endif %}
             {% if not location.published %}
             <span class="text-danger">{{ _('Not published') }}</span>
@@ -29,14 +29,14 @@
                 <ul class="dropdown-menu shadow" aria-labelledby="dropdownBookmarks">
                     {% for bookmark in user_bookmarks %}
                         {% if location in bookmark.locations %}
-                            {{ dropdown_link(bookmark.name, 'star-fill', url_for_return('location.bookmark_remove', bookmarks_id=bookmark.id, location_id=location.id)) }}
+                            {{ dropdown_link(bookmark.name, 'star-fill', Url.for_return('location.bookmark_remove', bookmarks_id=bookmark.id, location_id=location.id)) }}
                         {% else %}
-                            {{ dropdown_link(bookmark.name, '', url_for_return('location.bookmark_add', bookmarks_id=bookmark.id, location_id=location.id)) }}
+                            {{ dropdown_link(bookmark.name, '', Url.for_return('location.bookmark_add', bookmarks_id=bookmark.id, location_id=location.id)) }}
                         {% endif %}
                     {% endfor %}
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                        <form method="POST", role="form" action="{{ url_for_return('location.bookmark_create', location_id=location.id) }}" class="dropdown-item d-flex align-items-center">
+                        <form method="POST", role="form" action="{{ Url.for_return('location.bookmark_create', location_id=location.id) }}" class="dropdown-item d-flex align-items-center">
                             {{ bookmark_form.hidden_tag() }}
                             {{ render_field(bookmark_form.name, skip_label=True, class="mb-0", style="min-width: 7em") }}
                             {{ bookmark_form.submit(class="btn btn-success ms-2") }}
@@ -44,10 +44,10 @@
                     </li>
                 </ul>
             </div>
-            {{ link_button(_('Edit'), url_for_return('location.edit', location_id=location.id), 'pencil', 'outline-success') }}
-            {{ link_button(_('Document'), url_for_return('location.document_add', location_id=location.id), 'file-earmark-plus', 'outline-success') }}
-            {{ link_button(_('Photo'), url_for_return('location.photo_add', location_id=location.id), 'camera-fill', 'outline-success') }}
-            {{ link_button(_('Link'), url_for_return('location.link_add', location_id=location.id), 'link', 'outline-success') }}
+            {{ link_button(_('Edit'), Url.for_return('location.edit', location_id=location.id), 'pencil', 'outline-success') }}
+            {{ link_button(_('Document'), Url.for_return('location.document_add', location_id=location.id), 'file-earmark-plus', 'outline-success') }}
+            {{ link_button(_('Photo'), Url.for_return('location.photo_add', location_id=location.id), 'camera-fill', 'outline-success') }}
+            {{ link_button(_('Link'), Url.for_return('location.link_add', location_id=location.id), 'link', 'outline-success') }}
             <!-- TODO add parent, child -->
         </div>
     </div>
@@ -112,7 +112,7 @@
                 {% endif %}
                 {% for link in location.links %}
                 <div class="list-group-item list-group-item-action position-relative control-hover">
-                    {{ link_button('', url_for_return('location.link_remove', link_id=link.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0 foreground-item control-hide') }}
+                    {{ link_button('', Url.for_return('location.link_remove', link_id=link.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0 foreground-item control-hide') }}
                     <strong>{{ link.name }}</strong>
                     <p class="mb-0 text-muted text-truncate">{{ link.url }}</p>
                     <a href="{{ link.url }}" class="stretched-link"></a>
@@ -132,12 +132,12 @@
                     {% if item.type.name not in ('PHOTO', 'HISTORICAL_PHOTO') %}
                     <div class="list-group-item list-group-item-action position-relative control-hover">
                         <div class="position-absolute top-0 end-0 foreground-item control-hide">
-                            {{ link_button('', url_for_return('location.document_edit', document_id=item.id), 'pencil', 'warning', class='btn-sm') }}
-                            {{ link_button('', url_for_return('location.document_remove', document_id=item.id), 'trash', 'danger', class='btn-sm') }}
+                            {{ link_button('', Url.for_return('location.document_edit', document_id=item.id), 'pencil', 'warning', class='btn-sm') }}
+                            {{ link_button('', Url.for_return('location.document_remove', document_id=item.id), 'trash', 'danger', class='btn-sm') }}
                         </div>
                         <strong>{{ item.name }}</strong>
                         <p class="mb-0 text-muted">{{ item.description }}</p>
-                        <a href="{{ url_for('upload.get', path=item.path) }}" class="stretched-link"></a>
+                        <a href="{{ Url.get('upload.get', path=item.path) }}" class="stretched-link"></a>
                     </div>
                     {% endif %}
                 {% endfor %}

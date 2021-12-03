@@ -4,7 +4,7 @@ you were given a trust to access the HiddenPlaces by {{ invitation.invited_by }}
 
 To create a new account, click on the following link:
 
-{{ url_for('user.register', token=token, _external=True) }}
+{{ Url.get('user.register', token=token, _external=True) }}
 
 The HiddenPlaces is a database of urbex and underground locations and as
 such is considered secret, you may not share any positions, names and photos

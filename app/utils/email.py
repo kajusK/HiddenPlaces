@@ -1,8 +1,8 @@
 """Simple email framework."""
 from typing import List, Optional
+from threading import Thread
 from flask import Flask, current_app as app
 from flask_mail import Message
-from threading import Thread
 
 from app.extensions import mail
 
@@ -32,5 +32,6 @@ def send_email(recipients: List[str], subject: str, text_body: str,
     msg.body = text_body
     msg.html = html_body
     # Send email from thread for faster response
+    # pylint: disable=protected-access
     Thread(target=_send_email_async,
            args=(app._get_current_object(), msg)).start()

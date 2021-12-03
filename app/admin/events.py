@@ -7,6 +7,8 @@ from app.user.models import User, Invitation, Ban
 from app.user.constants import UserRole
 from app.admin.constants import EventType, EventSeverity
 
+# pylint: disable=missing-class-docstring
+
 
 class Event(ABC):
     """Abstract class for event description."""

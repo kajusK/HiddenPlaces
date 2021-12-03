@@ -31,7 +31,7 @@
 </div>
 
 <form method="POST" action="" role="form">
-    <img class="mb-2" src="{{ url_for('static', filename='images/favicon.ico') }}" alt="">
+    <img class="mb-2" src="{{ Url.get('static', filename='images/favicon.ico') }}" alt="">
     <h1 class="mb-3 fw-bold">{{ _('Hidden places') }}</h1>
     <h3 class="mb-3 fw-bold">{{ title }}</h3>
 
@@ -47,6 +47,6 @@
     {{ render_field(form.rules_agree, label=_('I will follow the %(rules)s', rules=rules_btn)) }}
     {{ form.submit(class_="btn btn-primary mb-3 w-100 btn-lg") }}
 
-    <a href="{{ url_for('user.login') }}">{{_('Log In')}}</a>
+    <a href="{{ Url.get('user.login') }}">{{_('Log In')}}</a>
 </form>
 {% endblock %}

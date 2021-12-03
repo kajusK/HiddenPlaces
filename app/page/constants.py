@@ -1,7 +1,7 @@
 """Constants for page module."""
 from flask_babel import _
 
-from app.utils import StringEnum
+from app.utils.enums import StringEnum
 
 
 class PageType(StringEnum):

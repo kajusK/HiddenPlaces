@@ -1,6 +1,6 @@
 """ Constants for uploads module. """
 from flask_babel import _
-from app.utils import StringEnum
+from app.utils.enums import StringEnum
 
 # DB strings lengths
 MAX_NAME_LEN = 32

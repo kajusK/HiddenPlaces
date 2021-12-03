@@ -4,7 +4,7 @@ from typing import Optional
 from sqlalchemy import types, dialects
 
 from app.extensions import db
-from app.utils import LatLon
+from app.utils.geolocation import LatLon
 
 # pylint: disable=abstract-method
 

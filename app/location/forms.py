@@ -13,9 +13,9 @@ from app.location import constants
 from app.location.models import Bookmarks
 from app.location.constants import Country
 from app.upload.constants import UploadType
-from app.fields import MultipleFileField
-from app.validators import image_file, allowed_file, latitude, longitude, \
-    date_in_past
+from app.utils.fields import MultipleFileField
+from app.utils.validators import image_file, allowed_file, latitude, \
+    longitude, date_in_past
 
 
 class LocationForm(FlaskForm):

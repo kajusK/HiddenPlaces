@@ -7,7 +7,8 @@ from flask_login import current_user
 from flask_babel import _
 
 from app.database import db
-from app.utils import Pagination, redirect_return
+from app.utils.utils import redirect_return
+from app.utils.pagination import Pagination
 from app.decorators import moderator, admin
 from app.location.models import Location
 from app.location.constants import LocationType

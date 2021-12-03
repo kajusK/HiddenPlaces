@@ -13,7 +13,7 @@
             {{ render_field(form.role, 'unlock', field_class="dselect", required=False) }}
 
             <div class="mt-2 text-end">
-                {{ link_button(_('Cancel'), url_return(), None, 'danger') }}
+                {{ link_button(_('Cancel'), Url.get_return(), None, 'danger') }}
                 {{ form.submit(class="btn btn-success") }}
             </div>
         </form>

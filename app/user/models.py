@@ -1,8 +1,8 @@
 """Modes for user module."""
-import jwt
 from typing import Optional
 from time import time
 from datetime import datetime, timedelta
+import jwt
 from sqlalchemy import or_
 from sqlalchemy.orm import Query, backref
 from flask import request, current_app as app
@@ -10,7 +10,8 @@ from flask_login import UserMixin
 
 from app.database import DBItem, db
 from app.extensions import bcrypt
-from app.utils import GeoIp, get_visitor_ip
+from app.utils.geolocation import GeoIp
+from app.utils.utils import get_visitor_ip
 from app.user import constants
 from app.user.constants import LoginResult, UserRole, InvitationState
 

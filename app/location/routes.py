@@ -9,7 +9,8 @@ from flask_babel import _
 
 from app.database import db
 from app.decorators import moderator
-from app.utils import redirect_return, Pagination
+from app.utils.pagination import Pagination
+from app.utils.utils import redirect_return
 from app.location.forms import VisitForm, DocumentForm, PhotoForm, LinkForm, \
      PhotoEditForm, BookmarkForm, DocumentEditForm
 from app.location.models import Location, Visit, Link, Bookmarks

@@ -3,9 +3,9 @@
 
 {% block content %}
 <div class="row">
-    {{ card_count(_('All'), attempts, 'clock', 'text-success', url_for('admin.logins')) }}
-    {{ card_count(_('Failed'), failed, 'shield', 'text-danger', url_for('admin.logins', login_type='failed')) }}
-    {{ card_count(_('Unique IPs'), unique, 'share', 'text-success', url_for('admin.logins', login_type='unique')) }}
+    {{ card_count(_('All'), attempts, 'clock', 'text-success', Url.get('admin.logins')) }}
+    {{ card_count(_('Failed'), failed, 'shield', 'text-danger', Url.get('admin.logins', login_type='failed')) }}
+    {{ card_count(_('Unique IPs'), unique, 'share', 'text-success', Url.get('admin.logins', login_type='unique')) }}
     {{ card_count(_('Month'), per_month, 'calendar', 'text-success') }}
 </div>
 
@@ -45,7 +45,7 @@
                     <td>{{ login.system }}</td>
                     <td>{{ login.browser }}</td>
                     {% if login.user_id is not none %}
-                    <td><a href="{{ url_for('user.profile', user_id=login.user_id) }}">{{ login.email }}</a></td>
+                    <td><a href="{{ Url.get('user.profile', user_id=login.user_id) }}">{{ login.email }}</a></td>
                     {% else %}
                     <td>{{ login.email }}</td>
                     {% endif %}

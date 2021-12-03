@@ -14,7 +14,7 @@
             {{ render_field(form.photo) }}
 
             <div class="mt-2 text-end">
-                {{ link_button(_('Cancel'), url_for('user.profile'), color='danger') }}
+                {{ link_button(_('Cancel'), Url.get('user.profile'), color='danger') }}
                 {{ form.submit(class="btn btn-success") }}
             </div>
         </form>

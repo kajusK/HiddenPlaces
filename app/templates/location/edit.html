@@ -30,7 +30,7 @@
                 {{ render_field(form.about, 'file-earmark-text', style="min-height: 15em", placeholder=_('Location description, history,...'), description=markdown_description) }}
 
                 <div class='text-end mt-2'>
-                    {{ link_button(_('Cancel'), url_return(), None, 'danger') }}
+                    {{ link_button(_('Cancel'), Url.get_return(), None, 'danger') }}
                     {{ form.submit(class="btn btn-success") }}
                 </div>
             </div>

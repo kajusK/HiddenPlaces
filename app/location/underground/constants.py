@@ -1,6 +1,6 @@
 """Constants for underground locations."""
 from flask_babel import _
-from app.utils import StringEnum
+from app.utils.enums import StringEnum
 
 
 MAX_TOOLS_LEN = 32

@@ -1,6 +1,6 @@
 """ Constants for user module. """
 from flask_babel import _
-from app.utils import StringEnum
+from app.utils.enums import StringEnum
 
 
 # Lengths of the various DB strings

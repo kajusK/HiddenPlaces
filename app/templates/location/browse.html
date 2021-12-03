@@ -12,16 +12,16 @@
 {% for location in locations %}
     <div class="col">
         <div class="card h-100 shadow">
-            <a href="{{ url_for('location.show', location_id=location.id) }}" class="stretched-link"></a>
+            <a href="{{ Url.get('location.show', location_id=location.id) }}" class="stretched-link"></a>
 
-            {% set image_url = url_for('static', filename='images/favicon.ico') %}
+            {% set image_url = Url.get('static', filename='images/favicon.ico') %}
             {% if location.photo %}
-                {% set image_url = url_for('upload.get', path=location.photo.path) %}
+                {% set image_url = Url.get('upload.get', path=location.photo.path) %}
             {% endif %}
             <img src="{{ image_url }}" class="card-img-top" alt="Location title image">
             <div class="card-body">
                 <h4 class="card-title">
-                    <a href="{{ url_for('location.show', location_id=location.id) }}" class="text-decoration-none link-dark"></a>{{ location.name }}</a>
+                    <a href="{{ Url.get('location.show', location_id=location.id) }}" class="text-decoration-none link-dark"></a>{{ location.name }}</a>
                 </h4>
                 <p class="card-text text-muted text-truncate">{{ location.description }}</p>
             </div>

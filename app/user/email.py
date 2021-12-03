@@ -3,7 +3,7 @@ from flask import render_template
 from flask_babel import _
 
 from app.user.models import User, Invitation
-from app.email import send_email
+from app.utils.email import send_email
 
 
 def send_password_reset(user: User) -> None:

@@ -3,10 +3,10 @@
 
 {% block content %}
 <div class="row">
-    {{ card_count(_('Waiting'), waiting, 'shield', 'text-warning', url_for('admin.invitations', state='waiting')) }}
-    {{ card_count(_('Approved'), approved, 'check-lg', 'text-success', url_for('admin.invitations', state='approved')) }}
-    {{ card_count(_('Denied'), denied, 'x-lg', 'text-danger', url_for('admin.invitations', state='denied')) }}
-    {{ card_count(_('Registered'), registered, 'person', 'text-primary', url_for('admin.invitations', state='registered')) }}
+    {{ card_count(_('Waiting'), waiting, 'shield', 'text-warning', Url.get('admin.invitations', state='waiting')) }}
+    {{ card_count(_('Approved'), approved, 'check-lg', 'text-success', Url.get('admin.invitations', state='approved')) }}
+    {{ card_count(_('Denied'), denied, 'x-lg', 'text-danger', Url.get('admin.invitations', state='denied')) }}
+    {{ card_count(_('Registered'), registered, 'person', 'text-primary', Url.get('admin.invitations', state='registered')) }}
 </div>
 
 <div class="card">
@@ -27,9 +27,9 @@
             <tbody class="align-middle">
                 {% for invite in invitations %}
                 <tr>
-                    <td><a href="{{ url_for('user.profile', user_id=invite.invited_by_id) }}">{{ invite.invited_by }}</a></td>
+                    <td><a href="{{ Url.get('user.profile', user_id=invite.invited_by_id) }}">{{ invite.invited_by }}</a></td>
                     {% if invite.state.name == 'REGISTERED' %}
-                    <td><a href="{{ url_for('user.profile', user_id=invite.user_id)}}">{{ invite.user }}</a></td>
+                    <td><a href="{{ Url.get('user.profile', user_id=invite.user_id)}}">{{ invite.user }}</a></td>
                     {% else %}
                     <td>{{ invite.name }}</td>
                     {% endif %}
@@ -43,8 +43,8 @@
                     </td>
                     <td>{{ invite.reason }}</td>
                     <td class="text-end">
-                        {% if invite.state.name in ('WAITING', 'DENIED') %}{{ link_button(_('Approve'), url_for_return('admin.invite_approve', invite_id=invite.id), 'check-lg', 'warning') }}{% endif %}
-                        {% if invite.state.name in ('WAITING', 'APPROVED') %}{{ link_button(_('Deny'), url_for_return('admin.invite_deny', invite_id=invite.id), 'x-lg', 'danger') }}{% endif %}
+                        {% if invite.state.name in ('WAITING', 'DENIED') %}{{ link_button(_('Approve'), Url.for_return('admin.invite_approve', invite_id=invite.id), 'check-lg', 'warning') }}{% endif %}
+                        {% if invite.state.name in ('WAITING', 'APPROVED') %}{{ link_button(_('Deny'), Url.for_return('admin.invite_deny', invite_id=invite.id), 'x-lg', 'danger') }}{% endif %}
                     </td>
                 </tr>
                 {% endfor %}

@@ -6,7 +6,8 @@ from flask_login import current_user
 from flask_babel import _
 
 from app.database import db
-from app.utils import redirect_return, Pagination
+from app.utils.pagination import Pagination
+from app.utils import utils
 from app.user.models import User
 from app.message.forms import WriteForm, ReplyForm
 from app.message.models import Message, Thread
@@ -50,7 +51,7 @@ def write(user_id: int):
         )
         db.session.commit()
         flash(_("Message sent"), 'success')
-        return redirect_return()
+        return utils.redirect_return()
     return render_template('message/write.html', form=form, user=user)
 
 

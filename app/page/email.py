@@ -3,7 +3,7 @@ from flask import url_for
 from flask_babel import _
 
 from app.user.models import User
-from app.email import send_email
+from app.utils.email import send_email
 
 
 def send_message(user: User, subject: str, message: str) -> None:
@@ -23,4 +23,4 @@ def send_message(user: User, subject: str, message: str) -> None:
         recipients, subject,
         _('User %(user)s (%(url)s) sent you a message:\n\n%(msg)s',
           user=user, msg=message,
-          url=url_for('user.profile', user_id=user.id, _external=True))
+          url=url_for('user.profile', user_id=user.id, _external=True)))

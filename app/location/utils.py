@@ -15,7 +15,6 @@ class LocationUtil(ABC):
             location: Location to add the data to
             form: Form to get data from
         """
-        pass
 
     @staticmethod
     @abstractmethod
@@ -26,7 +25,6 @@ class LocationUtil(ABC):
             location: Location to load data from
             form: Form to fill data to
         """
-        pass
 
     @staticmethod
     @abstractmethod
@@ -37,4 +35,3 @@ class LocationUtil(ABC):
             location: Location to save data to
             form: Form to fill data in
         """
-        pass

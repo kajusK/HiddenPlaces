@@ -1,1 +1,0 @@
-"""Textual pages handling."""

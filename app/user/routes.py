@@ -7,7 +7,7 @@ from flask_login import login_user, logout_user, current_user
 from flask_babel import _
 from is_safe_url import is_safe_url
 
-from app.utils import redirect_return
+from app.utils.utils import redirect_return
 from app.database import db
 from app.decorators import public, moderator, admin
 from app.location.models import Location
@@ -206,14 +206,14 @@ def ban(user_id: int):
 
     form = BanForm()
     if form.validate_on_submit():
-        ban = Ban.create(
+        ban_entry = Ban.create(
             creator=current_user,
             user=banned_user,
             reason=form.reason.data,
             permanent=bool(int(form.permanent.data)),
             until=datetime.utcnow() + timedelta(days=form.days.data)
         )
-        EventLog.log(current_user, events.BanEvent(ban))
+        EventLog.log(current_user, events.BanEvent(ban_entry))
         db.session.commit()
         flash(_("User %(user)s was banned", user=banned_user), 'warning')
         return redirect_return()

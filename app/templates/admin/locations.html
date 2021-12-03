@@ -3,10 +3,10 @@
 
 {% block content %}
 <div class="row">
-    {{ card_count(_('All'), locations_count, 'geo-alt', 'text-success', url_for('admin.locations')) }}
-    {{ card_count(_('Underground'), underground_count, 'minecart-loaded', 'text-success', url_for('admin.locations', location='underground')) }}
-    {{ card_count(_('Urbex'), urbex_count, 'building', 'text-success', url_for('admin.locations', location='urbex')) }}
-    {{ card_count(_('Private'), private_count, 'shield', 'text-danger', url_for('admin.locations', location='private')) }}
+    {{ card_count(_('All'), locations_count, 'geo-alt', 'text-success', Url.get('admin.locations')) }}
+    {{ card_count(_('Underground'), underground_count, 'minecart-loaded', 'text-success', Url.get('admin.locations', location='underground')) }}
+    {{ card_count(_('Urbex'), urbex_count, 'building', 'text-success', Url.get('admin.locations', location='urbex')) }}
+    {{ card_count(_('Private'), private_count, 'shield', 'text-danger', Url.get('admin.locations', location='private')) }}
 </div>
 
 <div class="card">
@@ -29,14 +29,14 @@
             {% for location in locations %}
                 <tr>
                     <td>{{ location.name }}</td>
-                    <td><a href="{{ url_for('user.profile', user_id=location.owner.id) }}">{{ location.owner }}</a></td>
+                    <td><a href="{{ Url.get('user.profile', user_id=location.owner.id) }}">{{ location.owner }}</a></td>
                     <td>{{ moment(location.created).format('LL') }}</td>
                     <td>{{ location.underground.state or location.urbex.state }}</td>
                     <td>{{ location.underground.type or location.urbex.type }}</td>
                     <td class="text-end">
-                        {{ link_button('', url_for('location.show', location_id=location.id), 'eye', 'success') }}
-                        {{ link_button('', url_for_return('location.edit', location_id=location.id), 'pencil', 'warning') }}
-                        {{ link_button('', url_for_return('location.delete', location_id=location.id), 'trash', 'danger') }}
+                        {{ link_button('', Url.get('location.show', location_id=location.id), 'eye', 'success') }}
+                        {{ link_button('', Url.for_return('location.edit', location_id=location.id), 'pencil', 'warning') }}
+                        {{ link_button('', Url.for_return('location.delete', location_id=location.id), 'trash', 'danger') }}
                     </td>
                 </tr>
             {% endfor %}

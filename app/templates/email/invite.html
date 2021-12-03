@@ -3,13 +3,13 @@
 
 <p>
     To create a new account
-    <a href="{{ url_for('user.register', token=token, _external=True) }}">
+    <a href="{{ Url.get('user.register', token=token, _external=True) }}">
         click here
     </a>.
 </p>
 
 <p>Alternatively, you can paste the following link in your browser's address bar:</p>
-<p>{{ url_for('user.register', token=token, _external=True) }}</p>
+<p>{{ Url.get('user.register', token=token, _external=True) }}</p>
 
 <p>
 The HiddenPlaces is a database of urbex and underground locations and as

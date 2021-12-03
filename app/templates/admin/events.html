@@ -1,6 +1,6 @@
 {% set title=_('Event log') %}
 {% extends '_private.html' %}
-{% from '_helpers.html' import render_pagination, card_count, link_button %}
+{% from '_helpers.html' import render_pagination %}
 
 {% block content %}
 <div class="card">
@@ -28,7 +28,7 @@
                     <tr class="table-secondary">
                 {% endif %}
                     <td>{{ moment(event.timestamp).calendar() }}</td>
-                    <td><a href="{{ url_for('user.profile', user_id=event.user.id) }}">{{ event.user }}</a></td>
+                    <td><a href="{{ Url.get('user.profile', user_id=event.user.id) }}">{{ event.user }}</a></td>
                     <td>{{ event.text }}</td>
                 </tr>
                 {% endfor %}

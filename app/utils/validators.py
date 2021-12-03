@@ -7,7 +7,7 @@ from flask import current_app as app
 from flask_babel import _
 from wtforms import ValidationError
 
-from app.utils import LatLon
+from app.utils.geolocation import LatLon
 
 
 def _validate_extension(field, allowed=None, not_allowed=None,

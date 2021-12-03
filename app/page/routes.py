@@ -9,7 +9,7 @@ from flask_babel import _
 from flask_login import current_user
 
 from app.database import db
-from app.utils import redirect_return, url_for_return
+from app.utils.utils import Url, redirect_return
 from app.decorators import admin
 from app.admin import events
 from app.admin.models import EventLog
@@ -90,7 +90,7 @@ def show(page: str):
     content = _("Nothing added yet") if not query else query.text
 
     return render_template('page/page.html',
-                           edit_url=url_for_return('page.edit', page=page),
+                           edit_url=Url.for_return('page.edit', page=page),
                            title=str(ptype), content=content)
 
 

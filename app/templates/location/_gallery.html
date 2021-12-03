@@ -11,14 +11,14 @@
             <div class="col-sm-4">
                 <div class="position-relative control-hover">
                     <div class="control-hide">
-                        {{ link_button('', url_for_return('location.photo_edit', photo_id=image.id), 'pencil', 'warning', class='btn-sm position-absolute top-0 start-0') }}
-                        {{ link_button('', url_for_return('location.photo_remove', photo_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0') }}
+                        {{ link_button('', Url.for_return('location.photo_edit', photo_id=image.id), 'pencil', 'warning', class='btn-sm position-absolute top-0 start-0') }}
+                        {{ link_button('', Url.for_return('location.photo_remove', photo_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0') }}
                     </div>
 
-                    <a href="{{ url_for('upload.get', path=image.path) }}"
+                    <a href="{{ Url.get('upload.get', path=image.path) }}"
                        data-toggle="lightbox" data-gallery="photo-gallery"
                        data-caption="<b>{{ image.name }}</b>{% if image.description %}<br><br>{{ image.description }}{% endif %}" >
-                        <img src="{{ url_for('upload.get', path=image.path) }}" class="img-fluid" alt="{{ image.name }}">
+                        <img src="{{ Url.get('upload.get', path=image.path) }}" class="img-fluid" alt="{{ image.name }}">
                         <div class="image-caption d-flex justify-content-between">
                             {{ image.created_by }}
                             <span>{{ image.created.date() }}</span>

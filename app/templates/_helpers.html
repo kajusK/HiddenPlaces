@@ -66,6 +66,7 @@
 {%- endmacro -%}
 
 {%- macro dropdown_link(name, image, url, badge=None) -%}
+{% if url is string or url.have_access %}
     <li>
         <a class="dropdown-item d-flex" href="{{ url }}">
             <span class="flex-grow-1">
@@ -77,11 +78,12 @@
             {% endif %}
         </a>
     </li>
+{% endif %}
 {%- endmacro %}
 
 {%- macro menu_block(name, image, items=[], url='', show=False) %}
+{% if ''.join(items).strip() | length %}
     <li class="mb-1">
-        {% if items|length != 0 %}
         <button class="btn btn-menu btn-toggle rounded" data-bs-toggle="collapse" data-bs-target="#{{ name }}" aria-expanded="{{ 'true' if show else 'false' }}">
             <i class="bi bi-{{ image }} me-2"></i>
             {{ name }}
@@ -93,31 +95,30 @@
                 {% endfor %}
             </ul>
         </div>
-        {% else %}
-        <a class="btn btn-menu rounded" href="{{ url }}">
-            <i class="bi bi-{{ image }} me-2"></i>
-            {{ name }}
-        </a>
-        {% endif %}
     </li>
+{% endif %}
 {%- endmacro %}
 
 {%- macro menu_item(name, image, url) %}
+{% if url is string or url.have_access %}
     <li>
         <a class="btn btn-menu rounded" href="{{ url }}">
             <i class="bi bi-{{ image }} me-2"></i>
             {{ name }}
         </a>
     </li>
+{% endif %}
 {%- endmacro %}
 
 {%- macro link_button(text, url, image=None, color=None, class='') -%}
+{% if url is string or url.have_access %}
     <a class="btn {{ 'btn-'+color if color else '' }} m-1 {{ class }}" href="{{ url }}">
         {% if image %}
         <i class="bi bi-{{ image }}"></i>
         {% endif %}
         {{ text }}
     </a>
+{% endif %}
 {%- endmacro -%}
 
 {%- macro card_count(name, number, image, color='', url=None) -%}

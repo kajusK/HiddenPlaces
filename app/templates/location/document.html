@@ -23,7 +23,7 @@
             {{ render_field(form.file, 'file-earmark-text') }}
 
             <div class='text-end mt-2'>
-                {{ link_button(_('Cancel'), url_return(), None, 'danger') }}
+                {{ link_button(_('Cancel'), Url.get_return(), None, 'danger') }}
                 {{ form.submit(class="btn btn-success") }}
             </div>
         </form>

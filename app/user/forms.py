@@ -9,11 +9,10 @@ from wtforms.fields.html5 import EmailField, IntegerField
 from wtforms.validators import InputRequired, EqualTo, Email, Length, \
     NumberRange
 
-from app.user.models import User, Invitation
-from app.user.constants import UserRole
-from app.validators import password_rules, image_file
+from app.utils.validators import password_rules, image_file
 from app.user import constants
-from app.user.constants import LoginResult
+from app.user.constants import UserRole, LoginResult
+from app.user.models import User, Invitation
 
 
 class LoginForm(FlaskForm):

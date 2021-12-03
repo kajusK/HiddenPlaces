@@ -3,16 +3,16 @@
         {{ _('Metadata') }}
     </div>
     {% if location.photo %}
-    <a href="{{ url_for('upload.get', path=location.photo.path) }}" data-toggle="lightbox" data-gallery="title">
-        <img class="card-img-top" src="{{ url_for('upload.get', path=location.photo.path) }}" alt="Location title image">
+    <a href="{{ Url.get('upload.get', path=location.photo.path) }}" data-toggle="lightbox" data-gallery="title">
+        <img class="card-img-top" src="{{ Url.get('upload.get', path=location.photo.path) }}" alt="Location title image">
     </a>
     {% else %}
-    <img class="card-img-top" src="{{ url_for('static', filename='images/favicon.ico') }}" alt="Location title image">
+    <img class="card-img-top" src="{{ Url.get('static', filename='images/favicon.ico') }}" alt="Location title image">
     {% endif %}
     <div class="card-body">
         {{ _('Created') }}: {{ location.created.date() }}<br>
         {{ _('Last updated') }}: {{ location.modified.date() }}<br>
-        {{ _('Maintainer') }}: <a href="{{ url_for('user.profile', id=location.owner_id) }}">{{ location.owner }}</a><br>
+        {{ _('Maintainer') }}: <a href="{{ Url.get('user.profile', id=location.owner_id) }}">{{ location.owner }}</a><br>
         <hr>
         {{ _('State') }}: {{ location.underground.state or location.urbex.state }}</br>
 

@@ -3,10 +3,10 @@
 
 {% block content %}
 <div class="row">
-    {{ card_count(_('Users'), users_count, 'person', 'text-success', url_for('admin.users')) }}
-    {{ card_count(_('Admins'), admins_count, 'gear', 'text-warning', url_for('admin.users', role='admins')) }}
-    {{ card_count(_('Moderators'), moderators_count, 'chat-left-text', 'text-primary', url_for('admin.users', role='moderators')) }}
-    {{ card_count(_('Bans'), bans_count, 'exclamation-triangle', 'text-danger', url_for('admin.users', role='bans')) }}
+    {{ card_count(_('Users'), users_count, 'person', 'text-success', Url.get('admin.users')) }}
+    {{ card_count(_('Admins'), admins_count, 'gear', 'text-warning', Url.get('admin.users', role='admins')) }}
+    {{ card_count(_('Moderators'), moderators_count, 'chat-left-text', 'text-primary', Url.get('admin.users', role='moderators')) }}
+    {{ card_count(_('Bans'), bans_count, 'exclamation-triangle', 'text-danger', Url.get('admin.users', role='bans')) }}
 </div>
 
 <div class="card">
@@ -32,7 +32,7 @@
                     <td>{{ moment(user.created).calendar() }}</td>
                     <td>{{ user }}</td>
                     {% if user.invitation %}
-                    <td><a href="{{ url_for('user.profile', user_id=user.invitation.invited_by.id) }}">{{ user.invitation.invited_by }}</a></td>
+                    <td><a href="{{ Url.get('user.profile', user_id=user.invitation.invited_by.id) }}">{{ user.invitation.invited_by }}</a></td>
                     {% else %}
                     <td></td>
                     {% endif %}
@@ -52,9 +52,9 @@
                         {% endif %}
                     </td>
                     <td class="text-end">
-                        {{ link_button('', url_for('user.profile', user_id=user.id), 'eye', 'success') }}
-                        {{ link_button(_('Role'), url_for_return('user.role', user_id=user.id), 'unlock', 'warning') }}
-                        {{ link_button(_('Ban'), url_for_return('user.ban', user_id=user.id), 'exclamation-triangle', 'danger') }}
+                        {{ link_button('', Url.get('user.profile', user_id=user.id), 'eye', 'success') }}
+                        {{ link_button(_('Role'), Url.get('user.role', user_id=user.id), 'unlock', 'warning') }}
+                        {{ link_button(_('Ban'), Url.get('user.ban', user_id=user.id), 'exclamation-triangle', 'danger') }}
                     </td>
                 </tr>
             {% endfor %}

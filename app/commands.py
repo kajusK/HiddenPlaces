@@ -8,7 +8,7 @@ from flask.cli import AppGroup
 from app.user.models import User
 from app.user.constants import UserRole
 from app.database import db
-from app.utils import random_string
+from app.utils.utils import random_string
 
 
 user_cli = AppGroup('user')

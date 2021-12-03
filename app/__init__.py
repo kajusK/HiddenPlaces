@@ -13,7 +13,7 @@ import app.message.routes as message
 import app.upload.routes as upload
 from app import errors
 from app.commands import user_cli
-from app.utils import url_for_return, url_return
+from app.utils.utils import Url
 from app.user.models import User, Invitation, LoginLog
 from app.user.constants import InvitationState
 from app.location.models import Bookmarks, Location
@@ -93,14 +93,9 @@ def create_app(config_object: str = 'app.config.Config',
 def register_template_context(app: Flask) -> None:
     """Registers additional global Jinja2 functions and variables."""
     @app.context_processor
-    def jinja_url_for_return():
-        """Registers url generator with return to prev page ability."""
-        return dict(url_for_return=url_for_return)
-
-    @app.context_processor
-    def jinja_url_return():
-        """Registers function for generating return to prev page url."""
-        return dict(url_return=url_return)
+    def jinja_endpoints():
+        """Registers endpoints relation helpers."""
+        return dict(Url=Url)
 
     @app.context_processor
     def jinja_user_bookmarks():
@@ -115,15 +110,18 @@ def register_template_context(app: Flask) -> None:
         """Registers count of various alerts events."""
         msg = 0
         invite = 0
+        loc = 0
+        login = 0
+        event = 0
         if current_user.is_authenticated:
             msg = Thread.get_unreaded(current_user).count()
             invite = Invitation.get_by_state(InvitationState.WAITING).count()
-            location = Location.get_since(
+            loc = Location.get_since(
                 current_user.location_check_ts).count()
             login = LoginLog.get_since(current_user.login_check_ts).count()
             event = EventLog.get_since(current_user.event_check_ts).count()
         return dict(msg_alerts=msg, invite_alerts=invite,
-                    location_alerts=location, login_alerts=login,
+                    location_alerts=loc, login_alerts=login,
                     event_alerts=event)
 
 

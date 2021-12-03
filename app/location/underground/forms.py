@@ -5,7 +5,7 @@ from wtforms import StringField, SelectField, ValidationError
 from wtforms.fields.html5 import IntegerField
 from wtforms.validators import InputRequired, Length, Optional, NumberRange
 
-from app.fields import CustomMultipleField
+from app.utils.fields import CustomMultipleField
 from app.location.forms import LocationForm
 from app.location.underground.constants import \
     UndergroundType, UndergroundState, MaterialType, \

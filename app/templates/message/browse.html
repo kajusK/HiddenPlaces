@@ -26,7 +26,7 @@
                 {% endif %}
                     <td>{{ moment(thread.timestamp).fromNow() }}</td>
                     <td>
-                        <a href="{{ url_for('message.show', thread_id=thread.id) }}">{{ thread.subject }}</a>
+                        <a href="{{ Url.get('message.show', thread_id=thread.id) }}">{{ thread.subject }}</a>
                     </td>
                     <td>
                         {% if thread.sender == current_user %}
@@ -34,7 +34,7 @@
                         {% else %}
                             {% set user=thread.sender %}
                         {% endif %}
-                        <a href="{{ url_for('user.profile', user_id=user.id) }}">{{ user }}</a>
+                        <a href="{{ Url.get('user.profile', user_id=user.id) }}">{{ user }}</a>
                     </td>
                 </tr>
                 {% endfor %}
