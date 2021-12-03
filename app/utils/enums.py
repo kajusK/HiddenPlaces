@@ -32,7 +32,7 @@ class StringEnum(OrderedEnum):
     Define items like:
     FOO = 0, _("Translated string")
     """
-    translation: str
+    translation: str # pylint: disable=invalid-name
 
     def __new__(cls, value: int, translation: str):
         """Custom object creation.
