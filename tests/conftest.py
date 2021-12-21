@@ -1,53 +1,88 @@
 import pytest
-import tempfile
-import os
-import flask
+import tests.helpers as helpers
+from sqlalchemy.orm import sessionmaker
 from app import create_app
-from app.database import db as _db
-from app.user.models import User
-from .helpers import user1, user2, login, logout
+from app.database import db
+from app.user.models import User, Invitation, Ban
+
+Session = sessionmaker()
 
 
 @pytest.fixture(scope='session')
 def app():
-    db_fd, db_path = tempfile.mkstemp()
-    overrides = {
-        'SQLALCHEMY_DATABASE_URI': f"sqlite:///{db_path}",
-        'SQLALCHEMY_ECHO': False,
-        'WTF_CSRF_ENABLED': False
-    }
-    app = create_app(config_override=overrides)
-    _db.init_app(app)
-    yield app
-    os.close(db_fd)
-    os.unlink(db_path)
+    """Createsflask application"""
+    app = create_app('tests.config.TestConfig')
+    with app.app_context():
+        db.create_all()
+        yield app
 
 
-#@pytest.fixture(scope='session')
-#def client(app):
-#    item1 = User(
-#        username=user1['name'],
-#        email=user1['email'],
-#        password=user1['pass']
-#    )
-#    item2 = User(
-#        username=user2['name'],
-#        email=user2['email'],
-#        password=user2['pass'],
-#        active=False
-#    )
-#    with app.test_client() as client:
-#        with app.app_context():
-#            _db.drop_all()
-#            _db.create_all()
-#            _db.session.add(item1)
-#            _db.session.add(item2)
-#            _db.session.commit()
-#            yield client
-#
-#
-#@pytest.fixture
-#def login_default_user(client):
-#    login(client, user1['name'], user1['pass'])
-#    yield
-#    logout(client)
+@pytest.fixture(scope='session')
+def filled_db(app):
+    """Prefills the database with testing data."""
+    items = []
+    items.append(map(lambda x: User(**x), helpers.users.values()))
+    items.append(map(lambda x: Ban(**x), helpers.bans))
+    items.append(map(lambda x: Invitation(**x), helpers.invitations))
+
+    for item in items:
+        for entry in item:
+            db.session.add(entry)
+    db.session.commit()
+
+
+@pytest.fixture
+def session(app, monkeypatch):
+    """Creates a new database session for test functions."""
+    connection = db.engine.connect()
+    transaction = connection.begin()
+
+    # Patch Flask-SQLAlchemy to use our connection
+    monkeypatch.setattr(db, 'get_engine', lambda *args, **kwargs: connection)
+    try:
+        yield db
+    finally:
+        db.session.remove()
+        transaction.rollback()
+        connection.close()
+
+
+@pytest.fixture
+def client(filled_db, app, session):
+    """Creates flask testing client."""
+    with app.test_client() as client:
+        yield client
+
+
+@pytest.fixture(scope='session')
+def req_context(app):
+    with app.test_request_context() as context:
+        yield context
+
+
+@pytest.fixture
+def login_root(client):
+    """Logs in as root user."""
+    user = helpers.users['root']
+    helpers.login(client, user['email'], user['password'])
+
+
+@pytest.fixture
+def login_admin(client):
+    """Logs in as admin user."""
+    user = helpers.users['admin1']
+    helpers.login(client, user['email'], user['password'])
+
+
+@pytest.fixture
+def login_moderator(client):
+    """Logs in as moderator user."""
+    user = helpers.users['moderator1']
+    helpers.login(client, user['email'], user['password'])
+
+
+@pytest.fixture
+def login_newbie(client):
+    """Logs in as newbie user."""
+    user = helpers.users['newbie1']
+    helpers.login(client, user['email'], user['password'])

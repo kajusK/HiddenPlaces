@@ -134,8 +134,9 @@ class User(DBItem, UserMixin):
 
     def get_ban(self):
         """Gets active ban entry if any"""
-        return Ban.query.filter_by(user=self).filter(
-            Ban.until > datetime.utcnow()).order_by(Ban.until.desc()).first()
+        return Ban.query.filter_by(user=self).filter(or_(
+            Ban.until > datetime.utcnow(), Ban.permanent)).order_by(
+            Ban.until.desc()).first()
 
     def get_reset_token(self, expire_minutes: int = 60) -> str:
         """Generates url token for password_reset

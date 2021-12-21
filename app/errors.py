@@ -16,7 +16,7 @@ def error_403(e: Exception):
     Returns:
         A page content and error code.
     """
-    app.logger.error(f'403: {request.path} by {current_user.email}: %s', e)
+    app.logger.error(f'403: {request.path} by {current_user.email}: {str(e)}')
     EventLog.log(current_user, UnauthorizedEvent(request.path))
     db.session.commit()
     return render_template('403.html'), 403
@@ -30,7 +30,7 @@ def error_404(e: Exception):
     Returns:
         A page content and error code.
     """
-    app.logger.error(f'404: {request.path}: %s', e)
+    app.logger.error(f'404: {request.path}: {str(e)}')
     return render_template('404.html'), 404
 
 

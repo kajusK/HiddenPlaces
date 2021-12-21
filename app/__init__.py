@@ -23,8 +23,7 @@ from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka,\
     mail, moment
 
 
-def create_app(config_object: str = 'app.config.Config',
-               config_override: Dict[str, Any] = {}) -> Flask:
+def create_app(config_object: str = 'app.config.Config') -> Flask:
     """Flask application factory.
 
     Initializes flask appliacation and return it.
@@ -34,12 +33,8 @@ def create_app(config_object: str = 'app.config.Config',
     Returns:
         Initialized Flask application object
     """
-    # pylint: disable=dangerous-default-value
-
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__)
     app.config.from_object(config_object)
-    for key, value in config_override.items():
-        app.config[key] = value
 
     # Configure logging
     handler = logging.FileHandler(app.config['LOGGING_LOCATION'])

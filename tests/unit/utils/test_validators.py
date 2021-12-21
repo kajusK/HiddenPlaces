@@ -2,7 +2,7 @@
 from wtforms import ValidationError
 import flask
 from pytest import raises
-from app.validators import password_rules, image_file, allowed_file
+from app.utils.validators import password_rules, image_file, allowed_file
 
 
 class DummyField(object):
@@ -56,7 +56,7 @@ def _run_validator_check(subtests, validator, valid, invalid):
                 validator(DummyForm(), field)
 
 
-def test_allowed_file(subtests, app):
+def test_allowed_file(subtests, req_context):
     validator = allowed_file()
     extensions = ['exe', 'html']
     valid = ['foo.jpg', 'exe', 'foo.exe.zip', 'foo']
@@ -64,13 +64,12 @@ def test_allowed_file(subtests, app):
 
     valid = [DummyFile(x) for x in valid]
     invalid = [DummyFile(x) for x in invalid]
-    with app.app_context():
-        flask.current_app.config['DISABLED_EXTENSIONS'] = extensions
-        with flask.current_app.test_request_context():
-            _run_validator_check(subtests, validator, valid, invalid)
+    flask.current_app.config['DISABLED_EXTENSIONS'] = extensions
+    with flask.current_app.test_request_context():
+        _run_validator_check(subtests, validator, valid, invalid)
 
 
-def test_allowed_file_multiple(subtests, app):
+def test_allowed_file_multiple(subtests, req_context):
     validator = allowed_file()
     extensions = ['exe', 'html']
     valid = ['foo.jpg', 'exe', 'foo.exe.zip', 'foo']
@@ -80,27 +79,25 @@ def test_allowed_file_multiple(subtests, app):
              [DummyFile(valid[0]), DummyFile(valid[1])]]
     invalid = [[DummyFile(x) for x in invalid], [DummyFile(invalid[0])],
                [DummyFile(invalid[0]), DummyFile(invalid[1])]]
-    with app.app_context():
-        flask.current_app.config['DISABLED_EXTENSIONS'] = extensions
-        with flask.current_app.test_request_context():
-            _run_validator_check(subtests, validator, valid, invalid)
+    flask.current_app.config['DISABLED_EXTENSIONS'] = extensions
+    with flask.current_app.test_request_context():
+        _run_validator_check(subtests, validator, valid, invalid)
 
 
-def test_allowed_file_message(app):
+def test_allowed_file_message(req_context):
     validator = allowed_file(message="custom message")
 
     field = DummyField()
     field.data = DummyFile("blah.foo")
 
-    with app.app_context():
-        flask.current_app.config['DISABLED_EXTENSIONS'] = ['foo']
-        with flask.current_app.test_request_context():
-            with raises(ValidationError) as e:
-                validator(DummyForm(), field)
+    flask.current_app.config['DISABLED_EXTENSIONS'] = ['foo']
+    with flask.current_app.test_request_context():
+        with raises(ValidationError) as e:
+            validator(DummyForm(), field)
     assert str(e.value) == "custom message"
 
 
-def test_image_file(subtests, app):
+def test_image_file(subtests, req_context):
     validator = image_file()
     extensions = ['jpg', 'png', 'tiff']
     valid = ['foo.jpg', 'foo.JPG', 'bar.png', 'blah.tiff', 'a.foo.jpg']
@@ -108,13 +105,12 @@ def test_image_file(subtests, app):
 
     valid = [DummyFile(x) for x in valid]
     invalid = [DummyFile(x) for x in invalid]
-    with app.app_context():
-        flask.current_app.config['IMAGE_EXTENSIONS'] = extensions
-        with flask.current_app.test_request_context():
-            _run_validator_check(subtests, validator, valid, invalid)
+    flask.current_app.config['IMAGE_EXTENSIONS'] = extensions
+    with flask.current_app.test_request_context():
+        _run_validator_check(subtests, validator, valid, invalid)
 
 
-def test_image_file_multiple(subtests, app):
+def test_image_file_multiple(subtests, req_context):
     validator = image_file()
     extensions = ['jpg', 'png', 'tiff']
     valid = ['foo.jpg', 'foo.JPG', 'bar.png', 'blah.tiff', 'a.foo.jpg']
@@ -124,23 +120,21 @@ def test_image_file_multiple(subtests, app):
              [DummyFile(valid[0]), DummyFile(valid[1])]]
     invalid = [[DummyFile(x) for x in invalid], [DummyFile(invalid[0])],
                [DummyFile(invalid[0]), DummyFile(invalid[1])]]
-    with app.app_context():
-        flask.current_app.config['IMAGE_EXTENSIONS'] = extensions
-        with flask.current_app.test_request_context():
-            _run_validator_check(subtests, validator, valid, invalid)
+    flask.current_app.config['IMAGE_EXTENSIONS'] = extensions
+    with flask.current_app.test_request_context():
+        _run_validator_check(subtests, validator, valid, invalid)
 
 
-def test_image_file_message(app):
+def test_image_file_message(req_context):
     validator = image_file(message="custom message")
 
     field = DummyField()
     field.data = DummyFile("blah")
 
-    with app.app_context():
-        flask.current_app.config['IMAGE_EXTENSIONS'] = ['foo']
-        with flask.current_app.test_request_context():
-            with raises(ValidationError) as e:
-                validator(DummyForm(), field)
+    flask.current_app.config['IMAGE_EXTENSIONS'] = ['foo']
+    with flask.current_app.test_request_context():
+        with raises(ValidationError) as e:
+            validator(DummyForm(), field)
     assert str(e.value) == "custom message"
 
 

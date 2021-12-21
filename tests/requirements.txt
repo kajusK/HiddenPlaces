@@ -3,4 +3,7 @@ pylint-flask-sqlalchemy
 flake8
 pytest
 pytest-subtests
+pytest-cov
+pytest-flask-sqlalchemy
+html5validate
 jinjalint

@@ -1,5 +1,5 @@
 """Integration tests for app.utils. """
-from app.utils import GeoIp
+from app.utils.geolocation import GeoIp
 
 
 def test_geo_ip():
