@@ -3,6 +3,7 @@ import tests.helpers as helpers
 from sqlalchemy.orm import sessionmaker
 from app import create_app
 from app.database import db
+from app.extensions import mail
 from app.user.models import User, Invitation, Ban
 
 Session = sessionmaker()
@@ -23,7 +24,7 @@ def filled_db(app):
     items = []
     items.append(map(lambda x: User(**x), helpers.users.values()))
     items.append(map(lambda x: Ban(**x), helpers.bans))
-    items.append(map(lambda x: Invitation(**x), helpers.invitations))
+    items.append(map(lambda x: Invitation(**x), helpers.invitations.values()))
 
     for item in items:
         for entry in item:
@@ -54,6 +55,12 @@ def client(filled_db, app, session):
         yield client
 
 
+@pytest.fixture
+def outbox(app):
+    with mail.record_messages() as outbox:
+        yield outbox
+
+
 @pytest.fixture(scope='session')
 def req_context(app):
     with app.test_request_context() as context:
@@ -78,6 +85,13 @@ def login_admin(client):
 def login_moderator(client):
     """Logs in as moderator user."""
     user = helpers.users['moderator1']
+    helpers.login(client, user['email'], user['password'])
+
+
+@pytest.fixture
+def login_user(client):
+    """Logs in as normal user."""
+    user = helpers.users['user1']
     helpers.login(client, user['email'], user['password'])
 
 

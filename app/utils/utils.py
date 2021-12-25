@@ -73,7 +73,7 @@ class Url:
     @classmethod
     def get_return(cls):
         """Generates an url to return to last with_return call."""
-        return cls(session['return_url'] or url_for('page.index'))
+        return cls(session.get('return_url', url_for('page.index')))
 
     def __str__(self) -> str:
         return self.url

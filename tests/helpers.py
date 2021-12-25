@@ -91,36 +91,28 @@ bans = [
     },
 ]
 
-invitations = [
-    {
-        'email': 'foo@bar.com',
-        'name': 'John Wick',
-        'reason': 'Professional needed',
-        'invited_by_id': 0
-    },
-    {
-        'email': 'foo2@bar.com',
-        'name': 'That Joker',
-        'reason': 'Little bit of insanity needed',
-        'invited_by_id': 1,
-        'state': InvitationState.DENIED
-    },
-    {
-        'email': 'foo3@bar.com',
-        'name': 'The Witcher',
-        'reason': 'Your blade is needed, my Lord',
-        'invited_by_id': 3,
-        'state': InvitationState.APPROVED
-    },
-    {
-        'email': 'newbie2@page.com',
-        'name': 'My Friend',
-        'reason': 'Friend of mine',
-        'invited_by_id': 2,
-        'state': InvitationState.REGISTERED,
-        'user_id': 4
-    },
-]
+invitations = dict(
+    waiting={'email': 'foo@bar.com',
+             'name': 'John Wick',
+             'reason': 'Professional needed',
+             'invited_by_id': 0},
+    denied={'email': 'foo2@bar.com',
+            'name': 'That Joker',
+            'reason': 'Little bit of insanity needed',
+            'invited_by_id': 1,
+            'state': InvitationState.DENIED},
+    approved={'email': 'foo3@bar.com',
+              'name': 'The Witcher',
+              'reason': 'Your blade is needed, my Lord',
+              'invited_by_id': 3,
+              'state': InvitationState.APPROVED},
+    registered={'email': 'newbie2@page.com',
+                'name': 'My Friend',
+                'reason': 'Friend of mine',
+                'invited_by_id': 2,
+                'state': InvitationState.REGISTERED,
+                'user_id': 4},
+)
 
 
 def login(client, email, password, next=None):

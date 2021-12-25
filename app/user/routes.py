@@ -226,25 +226,24 @@ def invite():
     """Invite a new user."""
     form = InviteForm()
     if form.validate_on_submit():
-        initial_state = InvitationState.WAITING
-        if current_user.role <= UserRole.ADMIN:
-            initial_state = InvitationState.APPROVED
-
         invitation = Invitation.create(
             email=form.email.data,
             name=form.name.data,
             reason=form.reason.data,
             invited_by=current_user,
-            state=initial_state
         )
+        if current_user.role <= UserRole.ADMIN:
+            invitation.state = InvitationState.APPROVED
+            invitation.approved_by = current_user
+
         EventLog.log(current_user, events.InviteEvent(invitation))
         db.session.commit()
 
-        if initial_state == InvitationState.APPROVED:
+        if invitation.state == InvitationState.APPROVED:
             email.send_invitation(invitation)
             flash(_("%(name)s invited", name=form.name.data), 'success')
         else:
-            flash(_("Invitation created, vaiting for approval by admins"),
+            flash(_("Invitation created, waiting for approval by admins"),
                   'warning')
         return redirect(url_for('user.invite'))
     return render_template('user/invite.html', form=form)
