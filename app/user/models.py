@@ -295,7 +295,7 @@ class LoginLog(DBItem):
         return cls.get().filter(cls.timestamp > since)
 
     @classmethod
-    def create(cls, email: str, result: LoginResult,
+    def create(cls, email: str, result: LoginResult,  # type:ignore
                user: Optional[User] = None):
         """Create a new login attempt entry
 

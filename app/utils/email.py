@@ -34,4 +34,4 @@ def send_email(recipients: List[str], subject: str, text_body: str,
     # Send email from thread for faster response
     # pylint: disable=protected-access
     Thread(target=_send_email_async,
-           args=(app._get_current_object(), msg)).start()
+           args=(app._get_current_object(), msg)).start()  # type:ignore

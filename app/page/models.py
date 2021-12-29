@@ -14,6 +14,7 @@ class Page(DBItem):
 
     @classmethod
     # pylint: disable=arguments-differ
+    # type:ignore
     def create(cls, page_type: PageType, *args, **kwargs):
         """Creates the page."""
         return super().create(id=page_type.value, *args, **kwargs)

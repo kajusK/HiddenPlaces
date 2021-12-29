@@ -8,51 +8,52 @@ from app.admin.models import EventLog
 from app.admin.events import UnauthorizedEvent
 
 
-def error_403(e: Exception):
+def error_403(error: Exception):
     """Shows error page for user with insufficient priviledges.
 
     Args:
-        error: An error string
+        error: An exception that was raised.
     Returns:
         A page content and error code.
     """
-    app.logger.error(f'403: {request.path} by {current_user.email}: {str(e)}')
+    app.logger.error(f'403: {request.path} by {current_user.email}:'
+                     f'{str(error)}')
     EventLog.log(current_user, UnauthorizedEvent(request.path))
     db.session.commit()
     return render_template('403.html'), 403
 
 
-def error_404(e: Exception):
+def error_404(error: Exception):
     """Shows error page for Not found error.
 
     Args:
-        error: An error string
+        error: An exception that was raised.
     Returns:
         A page content and error code.
     """
-    app.logger.error(f'404: {request.path}: {str(e)}')
+    app.logger.error(f'404: {request.path}: {str(error)}')
     return render_template('404.html'), 404
 
 
-def error_500(e: Exception):
+def error_500(error: Exception):
     """Shows error page for Internal server error.
 
     Args:
-        error: An error string.
+        error: An exception that was raised.
     Returns:
         A page content and error code.
     """
-    app.logger.error('Server Error: %s', e)
+    app.logger.error(f'500: {request.path}: {str(error)}')
     return render_template('500.html'), 500
 
 
-def unhandled_exception(e: Exception):
-    """Shows error page ro Unhandled exception.
+def unhandled_exception(error: Exception):
+    """Shows error page for Unhandled exception.
 
     Args:
-        e: An exception that was raised.
+        error: An exception that was raised.
     Returns:
         A page content and error code.
     """
-    app.logger.exception('Unhandled Exception: %s', e)
+    app.logger.exception(f'Unhandled Exception: {request.path}: {str(error)}')
     return render_template('500.html'), 500
