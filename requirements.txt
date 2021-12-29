@@ -1,6 +1,8 @@
 flask==2.0.1
-flask-wtf==3.0.0
+wtforms>=3.0.0
+flask-wtf==1.0.0
 flask-sqlalchemy
+mysqlclient
 flask-babel
 flask-login
 flask-bcrypt

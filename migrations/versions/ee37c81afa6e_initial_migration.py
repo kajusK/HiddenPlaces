@@ -155,7 +155,7 @@ def upgrade():
     sa.Column('name', sa.String(length=32), nullable=False),
     sa.Column('description', sa.String(length=1024), nullable=True),
     sa.Column('type', sa.Enum('OTHER', 'PHOTO', 'HISTORICAL_PHOTO', 'MAP', 'ARTICLE', 'BOOK', 'DOCUMENT', name='uploadtype'), nullable=False),
-    sa.Column('path', sa.String(), nullable=False),
+    sa.Column('path', sa.String(length=256), nullable=False),
     sa.Column('created', sa.DateTime(), nullable=False),
     sa.Column('object_uuid', app.database.UUID(length=16), nullable=True),
     sa.Column('created_by_id', sa.Integer(), nullable=False),

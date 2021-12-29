@@ -7,4 +7,5 @@ pytest-subtests
 coverage
 pytest-cov
 pytest-flask-sqlalchemy
+html5lib
 html5validate

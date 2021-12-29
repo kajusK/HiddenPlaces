@@ -1,18 +1,70 @@
+#kind: pipeline
+#type: docker
+#name: tests
+#
+#steps:
+#  - name: linting
+#    image: python:3
+#    commands:
+#      - pip install -r requirements.txt
+#      - pip install -r tests/requirements.txt
+#      - flake8 app
+#      - mypy app
+#      #- pylint app
+#
+#  - name: unit tests
+#    image: python:3
+#    commands:
+#      - pip install -r requirements.txt
+#      - pip install -r tests/requirements.txt
+#      - pytest tests/unit
+#
+#  - name: functional tests
+#    image: python:3
+#    commands:
+#      - pip install -r requirements.txt
+#      - pip install -r tests/requirements.txt
+#      - pytest tests/integration
+#      - pytest tests/functional
+#
+#---
 kind: pipeline
-type: docker
-name: default
+type: exec
+name: deploy
+#depends_on:
+#  - tests
+
+environment:
+  MAIL_USERNAME:
+    from_secret: MAIL_USERNAME
+  MAIL_PASSWORD:
+    from_secret: MAIL_PASSWORD
+  MAIL_SERVER:
+    from_secret: MAIL_SERVER
+  MAIL_PORT:
+    from_secret: MAIL_PORT
+  SECRET_KEY:
+    from_secret: SECRET_KEY
 
 steps:
-- name: lint
-  image: python:3
-  commands:
-    - pip install pylint flake8 pylint-flask-sqlalchemy
-    - flake8 app
-    - pylint app
+  - name: Build and deploy staging
+    commands:
+      - docker-compose up -d --build
+    environment:
+      FLASK_ENV: development
+      COMPOSE_PROJECT_NAME: hp_staging
+      PORT: 8080
+    when:
+      branch:
+        - master
 
-- name: tests
-  image: python:3
-  commands:
-    - pip install -r requirements.txt
-    - pip install -r tests/requirements.txt
-    - make tests
+  - name: Build and deploy production
+    commands:
+      - docker-compose up -d --build
+    environment:
+      FLASK_ENV: production
+      COMPOSE_PROJECT_NAME: hp
+      PORT: 8090
+    when:
+      event:
+        - tag

@@ -5,6 +5,7 @@ from app.utils.enums import StringEnum
 # DB strings lengths
 MAX_NAME_LEN = 32
 MAX_DESCRIPTION_LEN = 1024
+MAX_PATH_LEN = 256
 
 
 class UploadType(StringEnum):

@@ -1,36 +1,32 @@
-.PHONY: build run lint unittests tests coverage run_docker ci all
-
-app_name = hidden_places
-
-build:
-	@docker build -t $(app_name) .
+.PHONY: run lint unit functional tests ci all
 
 run_docker:
-	@docker run -d -p 8080:80 --name $(app_name) $(app_name)
+	@docker-compose up
 
 run:
-	python run.py
+	flask run
 
 lint:
 	@echo "Linting packages and modules ..."
+	@flake8 app
 	@mypy app
 	@pylint app
 	@pylint tests
-	@jinjalint app/templates
 
-unittests:
+unit:
 	@echo "Running unit tests ..."
 	@pytest tests/unit
+
+functional:
+	@echo "Running functional tests ..."
+	@pytest tests/functional
+	@pytest tests/integration
 
 tests:
 	@echo "Running all tests ..."
 	@pytest tests
 
-coverage:
-	@echo "Checking code coverage"
-	@python -m pytest --cov=project
-
 ci:
-	@drone exec --pipeline=test
+	@drone exec
 
-all: tests coverage lint
+all: lint tests

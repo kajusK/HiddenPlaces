@@ -19,7 +19,7 @@ class Upload(DBItem):
     name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
     description = db.Column(db.String(constants.MAX_DESCRIPTION_LEN))
     type = db.Column(db.Enum(UploadType), nullable=False)
-    path = db.Column(db.String, nullable=False)
+    path = db.Column(db.String(constants.MAX_PATH_LEN), nullable=False)
     created = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
 
     # Object UUID that is related to this file
