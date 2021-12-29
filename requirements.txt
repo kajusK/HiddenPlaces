@@ -1,5 +1,5 @@
-flask>=2.0.1
-flask-wtf
+flask==2.0.1
+flask-wtf==3.0.0
 flask-sqlalchemy
 flask-babel
 flask-login
@@ -8,6 +8,7 @@ flask-misaka
 flask-migrate
 flask-mail
 flask-moment
+python-dotenv
 pyjwt
 gunicorn
 is_safe_url

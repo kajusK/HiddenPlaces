@@ -1,9 +1,10 @@
 pylint
 pylint-flask-sqlalchemy
 flake8
+mypy
 pytest
 pytest-subtests
+coverage
 pytest-cov
 pytest-flask-sqlalchemy
 html5validate
-jinjalint
