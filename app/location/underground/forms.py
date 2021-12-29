@@ -1,8 +1,7 @@
 """Underground specific location forms."""
 from datetime import datetime
 from flask_babel import _
-from wtforms import StringField, SelectField, ValidationError
-from wtforms.fields.html5 import IntegerField
+from wtforms import StringField, SelectField, ValidationError, IntegerField
 from wtforms.validators import InputRequired, Length, Optional, NumberRange
 
 from app.utils.fields import CustomMultipleField

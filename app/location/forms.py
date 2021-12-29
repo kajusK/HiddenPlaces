@@ -5,9 +5,8 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
 from wtforms import StringField, SelectField, TextAreaField, SubmitField, \
-    RadioField, ValidationError
+    RadioField, DateField, ValidationError
 from wtforms.validators import InputRequired, Length, URL
-from wtforms.fields.html5 import DateField
 
 from app.location import constants
 from app.location.models import Bookmarks

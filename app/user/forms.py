@@ -4,8 +4,8 @@ from flask_babel import _, format_date
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 from wtforms import StringField, PasswordField, BooleanField, RadioField, \
-    ValidationError, SubmitField, TextAreaField, SelectField
-from wtforms.fields.html5 import EmailField, IntegerField
+    ValidationError, SubmitField, TextAreaField, SelectField, EmailField, \
+    IntegerField
 from wtforms.validators import InputRequired, EqualTo, Email, Length, \
     NumberRange
 
