@@ -1,38 +1,39 @@
-#kind: pipeline
-#type: docker
-#name: tests
-#
-#steps:
-#  - name: linting
-#    image: python:3
-#    commands:
-#      - pip install -r requirements.txt
-#      - pip install -r tests/requirements.txt
-#      - flake8 app
-#      - mypy app
-#      #- pylint app
-#
-#  - name: unit tests
-#    image: python:3
-#    commands:
-#      - pip install -r requirements.txt
-#      - pip install -r tests/requirements.txt
-#      - pytest tests/unit
-#
-#  - name: functional tests
-#    image: python:3
-#    commands:
-#      - pip install -r requirements.txt
-#      - pip install -r tests/requirements.txt
-#      - pytest tests/integration
-#      - pytest tests/functional
-#
-#---
+kind: pipeline
+type: docker
+name: tests
+
+steps:
+  - name: linting
+    image: python:3
+    commands:
+      - pip install -r requirements.txt
+      - pip install -r tests/requirements.txt
+      - flake8 app
+      - mypy app
+      # TODO - fails on db models due to pylint sqlalchemy bug
+      #- pylint app
+
+  - name: unit tests
+    image: python:3
+    commands:
+      - pip install -r requirements.txt
+      - pip install -r tests/requirements.txt
+      - pytest tests/unit
+
+  - name: functional tests
+    image: python:3
+    commands:
+      - pip install -r requirements.txt
+      - pip install -r tests/requirements.txt
+      - pytest tests/integration
+      - pytest tests/functional
+
+---
 kind: pipeline
 type: exec
 name: deploy
-#depends_on:
-#  - tests
+depends_on:
+  - tests
 
 environment:
   MAIL_USERNAME:

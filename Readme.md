@@ -12,21 +12,32 @@ in a web app form, e.g.
 As these objects gets heavily destroyed by vandals once publicly known, the
 app contains a several layers of permissions based on users reputation.
 
-
-## Running the app in docker
-* Run `make image` to build a docker image `hidden_places`
-* Run `docker run --name hidden_places -d hidden_places`, the app will be on port 80
-* See the `.env` file for possible environmental variables, specifically the DB settings
-
-## Running the app
+# Running the app
 * Install the requirements `pip install -r requirements.txt`
-* Run `python run.py` to launch the app for debbugging/testing
-* Run `make tests` to run the app tests
+* Configure `.env` file as described below
+* Initialize database `flask db upgrade`
+* Create a new admin user `flask user add-root foo@bar.org John Wick`
+* Run `flask run` to launch the app
 
+## Environmental variables
+### Required
+* **DATABASE_URL** Database connection as `dialect://username:password@host:port/database`, e.g. `sqlite:////tmp/database.sqlite` or `mysql://username:password@server/database`
+* **SECRET_KEY** Random long string, it's used to encrypt sessions, tokens,...
+
+## Optional
+* **MAIL_SERVER** SMTP server address for mail sending
+* **MAIL_PORT** Port to talk to SMTP server over
+* **MAIL_USERNAME** User for the SMTP server
+* **MAIL_PASSWORD** Password for the SMTP server
 
 # Contributing
-* [Flask intro and best practises](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-v-user-logins)
-* [PEP8 Code style](https://pep8.org/)
+* [Flask intro and best practises](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
+* Follow [PEP8 Code style](https://pep8.org/)
+* Use [Google docstring format](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
+* Don't use relative imports, use full package name
+* Use python [typing](https://www.pythonsheets.com/notes/python-typing.html) where possible
+* Write tests, validate generated HTML data and keep eye on amount of requests to the database per endpoint
+* Run `make tests` to verify formatting, linting,...
 
 ## Preparing development environment
 * create venv `python3 -m venv venv`
@@ -35,18 +46,11 @@ app contains a several layers of permissions based on users reputation.
 * Install requirements for tests `pip install -r tests/requirements.txt`
 * Initialize database `flask db upgrade`
 * Create a new admin user `flask user add-root foo@bar.org John Wick`
+* Run the app `flask run`
 
 ## Database migrations
 * The initial database migration table is set by `flask db init` and `flask db migrate`
 * Once you change any of the sqlalchemy models, run
     `flask db migrate -m "Some change related message"`
-    (unable to work with name changes, edit generated files manually)
 * Run `flask db upgrade` to apply changes in the migration scripts
 * Test and if everything works as expected, save the generated scripts into git
-
-## Rules
-* Follow PEP8 code style (run `flake8` to verify)
-* Don't use relative imports, use full package name
-* Use python typing
-* Use [Google docstring format](https://google.github.io/styleguide/pyguide.html#38-comments-and-docstrings)
-* Write tests, validate generated HTML data and keep eye on amount of requests to the database per endpoint
