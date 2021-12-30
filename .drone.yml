@@ -57,7 +57,7 @@ steps:
       PORT: 8080
     when:
       branch:
-        - master
+        - devel
 
   - name: Build and deploy production
     commands:
@@ -67,5 +67,5 @@ steps:
       COMPOSE_PROJECT_NAME: hp
       PORT: 8090
     when:
-      event:
-        - tag
+      branch:
+        - master
