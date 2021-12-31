@@ -14,12 +14,12 @@ services:
       - MAIL_SERVER
       - MAIL_PORT
       - SECRET_KEY
-      - DATABASE_URL=mysql://places:places@db/db
+      - DATABASE_URL=mysql+pymysql://places:places@db/db?charset=utf8mb4
     volumes:
       - app_data:/project/instance
 
   db:
-    image: mysql:5.7
+    image: mariadb:10.7
     restart: always
     environment:
       MYSQL_DATABASE: 'db'
