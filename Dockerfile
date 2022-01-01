@@ -1,6 +1,9 @@
 FROM python:3
 
 WORKDIR /project
+ENV FLASK_APP 'app'
+ENV FLASK_ENV 'production'
+
 ADD --chown=1000:1000 app /project/app
 ADD --chown=1000:1000 migrations /project/migrations
 ADD --chown=1000:1000 requirements.txt /project/

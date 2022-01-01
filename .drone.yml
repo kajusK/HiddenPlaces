@@ -36,16 +36,6 @@ depends_on:
   - tests
 
 environment:
-  MAIL_USERNAME:
-    from_secret: MAIL_USERNAME
-  MAIL_PASSWORD:
-    from_secret: MAIL_PASSWORD
-  MAIL_SERVER:
-    from_secret: MAIL_SERVER
-  MAIL_PORT:
-    from_secret: MAIL_PORT
-  SECRET_KEY:
-    from_secret: SECRET_KEY
 
 steps:
   - name: Build and deploy staging
@@ -55,6 +45,16 @@ steps:
       FLASK_ENV: development
       COMPOSE_PROJECT_NAME: hp_staging
       PORT: 8080
+      MAIL_USERNAME:
+        from_secret: MAIL_USERNAME
+      MAIL_PASSWORD:
+        from_secret: MAIL_PASSWORD
+      MAIL_SERVER:
+        from_secret: MAIL_SERVER
+      MAIL_PORT:
+        from_secret: MAIL_PORT
+      SECRET_KEY:
+        from_secret: SECRET_KEY
     when:
       branch:
         - devel
@@ -66,6 +66,17 @@ steps:
       FLASK_ENV: production
       COMPOSE_PROJECT_NAME: hp
       PORT: 8090
+      # global pipeline variable supported only by docker pipelines
+      MAIL_USERNAME:
+        from_secret: MAIL_USERNAME
+      MAIL_PASSWORD:
+        from_secret: MAIL_PASSWORD
+      MAIL_SERVER:
+        from_secret: MAIL_SERVER
+      MAIL_PORT:
+        from_secret: MAIL_PORT
+      SECRET_KEY:
+        from_secret: SECRET_KEY
     when:
       branch:
         - master
