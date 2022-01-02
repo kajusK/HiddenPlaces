@@ -36,7 +36,7 @@
                         {{ link_button('', Url.for_return('location.photo_remove', photo_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0 control-hide') }}
                         <a href="{{ Url.get('upload.get', path=image.path) }}"
                             data-toggle="lightbox" data-gallery="{{ visit.id }}">
-                            <img src="{{ Url.get('upload.get', path=image.path) }}" class="img-fluid">
+                            <img src="{{ Url.get('upload.get', path=image.thumbnail) }}" class="img-fluid">
                         </a>
                     </div>
                 </div>

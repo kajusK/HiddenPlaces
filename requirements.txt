@@ -11,6 +11,7 @@ flask-migrate
 flask-mail
 flask-moment
 python-dotenv
+pillow>=8.0
 pyjwt
 gunicorn
 is_safe_url

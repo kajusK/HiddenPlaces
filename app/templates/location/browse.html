@@ -16,7 +16,7 @@
 
             {% set image_url = Url.get('static', filename='images/favicon.ico') %}
             {% if location.photo %}
-                {% set image_url = Url.get('upload.get', path=location.photo.path) %}
+                {% set image_url = Url.get('upload.get', path=location.photo.thumbnail) %}
             {% endif %}
             <img src="{{ image_url }}" class="card-img-top" alt="Location title image">
             <div class="card-body">

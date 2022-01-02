@@ -32,6 +32,9 @@ class Config:
     IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'svg',
                         'eps', 'webp', 'heif', 'heic']
     DISABLED_EXTENSIONS = ['exe', 'php', 'js', 'html']
+    THUMBNAIL_SIZE_PX = 512
+    # Max x or y resolution of the image (only uploads of image type affected)
+    IMAGE_MAX_SIZE_PX = 2048
 
     LOGGING_FORMAT = '%(asctime)s:%(levelname)s: %(message)s'
     LOGGING_LOCATION = 'app.log'

@@ -2,8 +2,9 @@
 import os
 import uuid
 from datetime import datetime
-from werkzeug.utils import safe_join, secure_filename
+from werkzeug.utils import secure_filename
 from flask import current_app as app
+from PIL import Image
 
 from app.database import DBItem, db, UUID
 from app.upload import constants
@@ -28,12 +29,47 @@ class Upload(DBItem):
                               nullable=False)
     created_by = db.relationship('User')
 
+    @property
+    def _base_dir(self) -> str:
+        """Gets base directory for uploaded files"""
+        return os.path.join(app.instance_path, app.config['UPLOAD_DIR'])
+
     def _delete_file(self):
-        """Deletes file related to this object."""
-        base_dir = os.path.join(app.instance_path, app.config['UPLOAD_DIR'])
-        filename = safe_join(base_dir, self.path)
+        """Deletes files related to this object."""
+        base = self._base_dir
+        filename = os.path.join(base, self.path)
+        thumbnail = os.path.join(base, self.thumbnail)
+
         if os.path.exists(filename):
             os.remove(filename)
+        if os.path.exists(thumbnail):
+            os.remove(thumbnail)
+
+    def _make_thumbnail(self):
+        """Creates thumbnail from the image."""
+        base = self._base_dir
+        image_path = os.path.join(base, self.path)
+        thumbnail_path = os.path.join(base, self.thumbnail)
+        thumbnail_dir = os.path.dirname(thumbnail_path)
+
+        if not os.path.exists(thumbnail_dir):
+            os.mkdir(thumbnail_dir)
+
+        size = (app.config['THUMBNAIL_SIZE_PX'],
+                app.config['THUMBNAIL_SIZE_PX'])
+        image = Image.open(image_path)
+        image.thumbnail(size)
+        image.save(thumbnail_path)
+
+    def _reduce_resolution(self):
+        """Reduces resolution of the image file to save space"""
+        image_path = os.path.join(self._base_dir, self.path)
+        size = (app.config['IMAGE_MAX_SIZE_PX'],
+                app.config['IMAGE_MAX_SIZE_PX'])
+
+        image = Image.open(image_path)
+        image.thumbnail(size)
+        image.save(image_path)
 
     def delete(self):
         """Deletes file from drive and database."""
@@ -49,6 +85,9 @@ class Upload(DBItem):
         self._delete_file()
         subfolder = os.path.dirname(self.path)
         self.path = save_uploaded_file(file, subfolder, str(uuid.uuid4()))
+        if self.type == UploadType.PHOTO:
+            self._reduce_resolution()
+            self._make_thumbnail()
 
     @classmethod
     def create(cls, file, subfolder, *args, **kwargs):
@@ -61,7 +100,16 @@ class Upload(DBItem):
         # pylint: disable=arguments-differ
         obj = super().create(path='', *args, **kwargs)
         obj.path = save_uploaded_file(file, subfolder, str(uuid.uuid4()))
+        if obj.type == UploadType.PHOTO:
+            obj._reduce_resolution()
+            obj._make_thumbnail()
         return obj
+
+    @property
+    def thumbnail(self):
+        """Returns relative path to thumbnail"""
+        img_dir, name = os.path.split(self.path)
+        return os.path.join(img_dir, 'thumbnail', name)
 
 
 def save_uploaded_file(file, subfolder: str, filename: str) -> str:

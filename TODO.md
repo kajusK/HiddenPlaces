@@ -12,7 +12,6 @@
 * Add locations export to GPX
 * Translate to Czech
 * Add export tool for trip planning (select locations and export these to a pdf)
-* Add thumbnails generator for uploaded images, show thumbnails in galleries,...
 * Implement locations hiearchy - Zlate Hory location for area, Barborka for location child,...
 * Add settings to user accound (send emails settings, how many locations to show, default page after login...)
 * Disable login after 3 unsuccessful attemps within minute for a while
