@@ -41,8 +41,8 @@ class UndergroundAccessibility(StringEnum):
     GUIDED_TOURS = 2, _("Guided tours")
     GUARDED = 3, _("Guarded")
     LOCKED = 4, _("Locked")
-    FREELY_ACCESSIBLE = 4, _("Freely accessible")
-    DIGGING_REQUIRED = 5, _("Digging required")
+    FREELY_ACCESSIBLE = 5, _("Freely accessible")
+    DIGGING_REQUIRED = 6, _("Digging required")
 
 
 class MaterialType(StringEnum):
