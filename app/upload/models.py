@@ -1,8 +1,10 @@
 """Models for uploads module."""
 import os
 import uuid
+from typing import Optional
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from werkzeug.datastructures import FileStorage
 from flask import current_app as app
 from PIL import Image
 
@@ -29,80 +31,66 @@ class Upload(DBItem):
                               nullable=False)
     created_by = db.relationship('User')
 
-    @property
-    def _base_dir(self) -> str:
-        """Gets base directory for uploaded files"""
-        return os.path.join(app.instance_path, app.config['UPLOAD_DIR'])
-
     def _delete_file(self):
         """Deletes files related to this object."""
-        base = self._base_dir
-        filename = os.path.join(base, self.path)
-        thumbnail = os.path.join(base, self.thumbnail)
-
-        if os.path.exists(filename):
-            os.remove(filename)
-        if os.path.exists(thumbnail):
-            os.remove(thumbnail)
+        delete_file(self.path)
+        delete_file(self.thumbnail)
 
     def _make_thumbnail(self):
-        """Creates thumbnail from the image."""
-        base = self._base_dir
-        image_path = os.path.join(base, self.path)
-        thumbnail_path = os.path.join(base, self.thumbnail)
-        thumbnail_dir = os.path.dirname(thumbnail_path)
+        """Creates thumbnail."""
+        destination = get_full_path(self.thumbnail)
+        source = get_full_path(self.path)
+        dest_dir = os.path.dirname(destination)
 
-        if not os.path.exists(thumbnail_dir):
-            os.mkdir(thumbnail_dir)
-
+        image = Image.open(source)
         size = (app.config['THUMBNAIL_SIZE_PX'],
                 app.config['THUMBNAIL_SIZE_PX'])
-        image = Image.open(image_path)
         image.thumbnail(size)
-        image.save(thumbnail_path)
 
-    def _reduce_resolution(self):
-        """Reduces resolution of the image file to save space"""
-        image_path = os.path.join(self._base_dir, self.path)
-        size = (app.config['IMAGE_MAX_SIZE_PX'],
-                app.config['IMAGE_MAX_SIZE_PX'])
+        if not os.path.exists(dest_dir):
+            os.makedirs(dest_dir)
+        image.save(destination)
 
-        image = Image.open(image_path)
-        image.thumbnail(size)
-        image.save(image_path)
+    def _save_file(self, file: FileStorage, subfolder: str):
+        """Stores file to uploads dir, resize if needed
+
+        Args:
+            file: Uploaded file handle
+            subfolder: Subfolder under uploads dir to write to
+        """
+        reduce = self.type in (UploadType.PHOTO, UploadType.HISTORICAL_PHOTO)
+        self.path = save_uploaded_file(file, subfolder, str(uuid.uuid4()),
+                                       reduce)
+        if reduce:
+            self._make_thumbnail()
 
     def delete(self):
         """Deletes file from drive and database."""
         self._delete_file()
         super().delete()
 
-    def replace(self, file):
+    def replace(self, file: FileStorage):
         """Replaces the file related to this upload with a new one.
 
         Args:
-            file: Opened file handler to be saved
+            file: Uploaded file handle
         """
         self._delete_file()
         subfolder = os.path.dirname(self.path)
-        self.path = save_uploaded_file(file, subfolder, str(uuid.uuid4()))
-        if self.type == UploadType.PHOTO:
-            self._reduce_resolution()
-            self._make_thumbnail()
+        self._save_file(file, subfolder)
 
     @classmethod
-    def create(cls, file, subfolder, *args, **kwargs):
+    def create(cls, file: FileStorage, subfolder: str,  # type: ignore
+               *args, **kwargs):
         """Create a new DB record and stores uploaded file to selected folder
 
         Args:
-            file: Opened file handler to be saved
+            file: Uploaded file handle
             subfolder: Folder relative to uploads folder to save data to
         """
         # pylint: disable=arguments-differ
         obj = super().create(path='', *args, **kwargs)
-        obj.path = save_uploaded_file(file, subfolder, str(uuid.uuid4()))
-        if obj.type == UploadType.PHOTO:
-            obj._reduce_resolution()
-            obj._make_thumbnail()
+        obj._save_file(file, subfolder)
         return obj
 
     @property
@@ -112,13 +100,40 @@ class Upload(DBItem):
         return os.path.join(img_dir, 'thumbnail', name)
 
 
-def save_uploaded_file(file, subfolder: str, filename: str) -> str:
-    """Save uploaded file to filesystem directly without DB entry.
+def get_full_path(path: str) -> str:
+    """Gets full path to an uploaded file.
+
+    Args:
+        path: Relative path to file (from uploads folder)
+    Returns:
+        Full path to file
+    """
+    directory = os.path.join(app.instance_path, app.config['UPLOAD_DIR'])
+    return os.path.join(directory, path)
+
+
+def delete_file(path: Optional[str]):
+    """Removes file from the uploads dir (if exists)
+
+    Args:
+        path: Relative path to file
+    """
+    if not path:
+        return
+    filename = get_full_path(path)
+    if os.path.exists(filename):
+        os.unlink(filename)
+
+
+def save_uploaded_file(file, subfolder: str, filename: str,
+                       reduce: bool = False) -> str:
+    """Saves uploaded file to filesystem directly without DB entry.
 
     Args:
         file: Opened file handle
         subfolder: Folder under uploads directory to store file to
         filename: Name to save the file as. File extension is added if not set
+        reduce: Assume file is image, reduce it's size before saving
     Returns:
         str: Path to the file under upload dir
     """
@@ -129,10 +144,17 @@ def save_uploaded_file(file, subfolder: str, filename: str) -> str:
     if extension != given_extension:
         filename += extension
 
-    base_dir = os.path.join(app.instance_path, app.config['UPLOAD_DIR'])
-    directory = os.path.join(base_dir, subfolder)
+    directory = get_full_path(subfolder)
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    file.save(os.path.join(directory, filename))
+    full_path = os.path.join(directory, filename)
+    if reduce:
+        with Image.open(file) as image:
+            size = (app.config['IMAGE_MAX_SIZE_PX'],
+                    app.config['IMAGE_MAX_SIZE_PX'])
+            image.thumbnail(size)
+            image.save(full_path)
+    else:
+        file.save(full_path)
     return os.path.join(subfolder, filename)

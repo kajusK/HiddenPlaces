@@ -12,7 +12,7 @@ from app.database import db
 from app.decorators import public, moderator, admin
 from app.location.models import Location
 from app.location.constants import LocationType
-from app.upload.models import save_uploaded_file
+from app.upload.models import save_uploaded_file, delete_file
 from app.page.models import Page
 from app.page.constants import PageType
 from app.admin import events
@@ -167,8 +167,9 @@ def edit():
         # pylint: disable=assigning-non-slot
         current_user.about = form.about.data
         if form.photo.data:
+            delete_file(current_user.photo_path)
             current_user.photo_path = save_uploaded_file(
-                form.photo.data, 'user', str(current_user.id))
+                form.photo.data, 'user', str(current_user.id), reduce=True)
 
         db.session.commit()
         flash(_("Your profile changes were saved"), 'success')
