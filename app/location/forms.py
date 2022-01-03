@@ -45,8 +45,7 @@ class DocumentEditForm(FlaskForm):
         _("Name"),
         [InputRequired(), Length(min=3, max=constants.MAX_NAME_LEN)])
     description = StringField(
-        _("Description"),
-        [InputRequired(), Length(min=3, max=constants.MAX_DESCRIPTION_LEN)])
+        _("Description"), [Length(max=constants.MAX_DESCRIPTION_LEN)])
     type = SelectField(_("Document type"), [InputRequired()],
                        coerce=UploadType.coerce,
                        choices=UploadType.choices([UploadType.PHOTO]))
@@ -66,8 +65,7 @@ class PhotoEditForm(FlaskForm):
         _("Name"),
         [InputRequired(), Length(min=3, max=constants.MAX_NAME_LEN)])
     description = StringField(
-        _("Description"),
-        [InputRequired(), Length(min=3, max=constants.MAX_DESCRIPTION_LEN)])
+        _("Description"), [Length(max=constants.MAX_DESCRIPTION_LEN)])
     taken_on = DateField(_('Taken on:'), [InputRequired(), date_in_past()],
                          default=datetime.utcnow)
     submit = SubmitField(_('Save'))
