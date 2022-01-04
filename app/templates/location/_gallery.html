@@ -8,8 +8,8 @@
     <div class="card-body row">
         {% for image in location.uploads %}
             {% if image.type.name in ('PHOTO', 'HISTORICAL_PHOTO') and not image == location.photo %}
-            <div class="col-sm-4">
-                <div class="position-relative control-hover">
+            <div class="col-sm-6 col-xl-4">
+                <div class="position-relative control-hover mb-2">
                     <div class="control-hide">
                         {{ link_button('', Url.for_return('location.photo_edit', photo_id=image.id), 'pencil', 'warning', class='btn-sm position-absolute top-0 start-0') }}
                         {{ link_button('', Url.for_return('location.photo_remove', photo_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0') }}
@@ -17,11 +17,11 @@
 
                     <a href="{{ Url.get('upload.get', path=image.path) }}"
                        data-toggle="lightbox" data-gallery="photo-gallery"
-                       data-caption="<b>{{ image.name }}</b>{% if image.description %}<br><br>{{ image.description }}{% endif %}" >
+                       data-caption="<b>{{ image.created_by }}: {{ image.name }}</b>{% if image.description %}<br>{{ image.description }}{% endif %}" >
                         <img src="{{ Url.get('upload.get', path=image.thumbnail) }}" class="img-fluid" alt="{{ image.name }}">
                         <div class="image-caption d-flex justify-content-between">
-                            {{ image.created_by }}
-                            <span>{{ image.created.date() }}</span>
+                            <span class="text-truncate">{{ image.name }}</span>
+                            {{ moment(image.created).format('L') }}
                         </div>
                     </a>
                 </div>

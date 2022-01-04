@@ -482,6 +482,7 @@ def photo_edit(photo_id: int):
     elif form.validate_on_submit():
         photo.name = form.name.data
         photo.description = form.description.data
+        photo.created = form.taken_on.data
         db.session.commit()
         return redirect_return()
 

@@ -49,7 +49,7 @@ class Upload(DBItem):
 
         if not os.path.exists(dest_dir):
             os.makedirs(dest_dir)
-        image.save(destination)
+        image.save(destination, exif=image.info.get('exif', None))
 
     def _save_file(self, file: FileStorage, subfolder: str):
         """Stores file to uploads dir, resize if needed
@@ -154,7 +154,7 @@ def save_uploaded_file(file, subfolder: str, filename: str,
             size = (app.config['IMAGE_MAX_SIZE_PX'],
                     app.config['IMAGE_MAX_SIZE_PX'])
             image.thumbnail(size)
-            image.save(full_path)
+            image.save(full_path, exif=image.info.get('exif', None))
     else:
         file.save(full_path)
     return os.path.join(subfolder, filename)
