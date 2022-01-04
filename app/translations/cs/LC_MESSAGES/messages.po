@@ -1,0 +1,1505 @@
+# Czech translations for PROJECT.
+# Copyright (C) 2022 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-01-03 20:03+0100\n"
+"PO-Revision-Date: 2022-01-03 20:04+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: cs\n"
+"Language-Team: cs <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: app/admin/constants.py:8 app/location/constants.py:24
+#: app/location/underground/constants.py:11
+#: app/location/underground/constants.py:50 app/location/urbex/constants.py:8
+#: app/upload/constants.py:13
+msgid "Other"
+msgstr "Ostatní"
+
+#: app/admin/constants.py:9
+msgid "Create"
+msgstr "Vytvořit"
+
+#: app/admin/constants.py:10
+msgid "Modify"
+msgstr "Změnit"
+
+#: app/admin/constants.py:11
+msgid "Delete"
+msgstr "Smazat"
+
+#: app/admin/constants.py:16
+msgid "Low"
+msgstr "Nízká"
+
+#: app/admin/constants.py:17
+msgid "Normal"
+msgstr "Normální"
+
+#: app/admin/constants.py:18
+msgid "High"
+msgstr "Vysoká"
+
+#: app/admin/constants.py:19
+msgid "Critical"
+msgstr "Kritická"
+
+#: app/admin/routes.py:39
+msgid "All locations"
+msgstr "Všechny lokace"
+
+#: app/admin/routes.py:42
+msgid "Urbex locations"
+msgstr "Urbexové lokace"
+
+#: app/admin/routes.py:45
+msgid "Underground locations"
+msgstr "Podzemní lokace"
+
+#: app/admin/routes.py:48
+msgid "Private locations"
+msgstr "Soukromé lokace"
+
+#: app/admin/routes.py:85 app/templates/_menu.html:40
+#: app/templates/admin/users.html:6
+msgid "Users"
+msgstr "Uživatelé"
+
+#: app/admin/routes.py:88 app/templates/admin/users.html:7
+msgid "Admins"
+msgstr "Admini"
+
+#: app/admin/routes.py:91 app/templates/admin/users.html:8
+msgid "Moderators"
+msgstr "Moderátoři"
+
+#: app/admin/routes.py:94
+msgid "Banned users"
+msgstr "Bany"
+
+#: app/admin/routes.py:126 app/templates/_menu.html:41
+msgid "Invitations"
+msgstr "Pozvánky"
+
+#: app/admin/routes.py:129 app/user/constants.py:25
+msgid "Waiting for approval"
+msgstr "Čeká na schválení"
+
+#: app/admin/routes.py:132
+msgid "Approved invitations"
+msgstr "Schválené pozvánky"
+
+#: app/admin/routes.py:135
+msgid "Denied invitations"
+msgstr "Zamítnuté pozvánky"
+
+#: app/admin/routes.py:138
+msgid "Registered users"
+msgstr "Registrovaní uživatelé"
+
+#: app/admin/routes.py:171 app/templates/_menu.html:42
+msgid "Logins"
+msgstr "Přihlášení"
+
+#: app/admin/routes.py:174 app/templates/admin/logins.html:8
+msgid "Unique IPs"
+msgstr "Unikátní IP"
+
+#: app/admin/routes.py:177 app/templates/_private.html:34
+msgid "Failed logins"
+msgstr "Chybná přihlášení"
+
+#: app/location/constants.py:25
+msgid "Czechia"
+msgstr "Česká Republika"
+
+#: app/location/constants.py:26
+msgid "Slovakia"
+msgstr "Slovensko"
+
+#: app/location/constants.py:27
+msgid "Poland"
+msgstr "Polsko"
+
+#: app/location/constants.py:28
+msgid "Germany"
+msgstr "Německo"
+
+#: app/location/constants.py:29
+msgid "Austria"
+msgstr "Rakousko"
+
+#: app/location/forms.py:23 app/location/forms.py:45 app/location/forms.py:65
+#: app/location/forms.py:83 app/location/forms.py:101
+#: app/templates/admin/invitations.html:21
+#: app/templates/admin/locations.html:20 app/templates/admin/users.html:21
+msgid "Name"
+msgstr "Jméno"
+
+#: app/location/forms.py:26 app/location/forms.py:48 app/location/forms.py:68
+#: app/templates/admin/events.html:16 app/templates/admin/invitations.html:23
+msgid "Description"
+msgstr "Popis"
+
+#: app/location/forms.py:28 app/page/constants.py:9 app/templates/_menu.html:51
+#: app/templates/location/location.html:60 app/templates/user/profile.html:68
+#: app/user/forms.py:122
+msgid "About"
+msgstr "Popis"
+
+#: app/location/forms.py:30
+msgid "Latitude"
+msgstr "Zeměpisná šířka"
+
+#: app/location/forms.py:31
+msgid "Longitude"
+msgstr "Zeměpisná délka"
+
+#: app/location/forms.py:33
+msgid "Published"
+msgstr "Publikováno"
+
+#: app/location/forms.py:34 app/user/forms.py:138
+msgid "No"
+msgstr "Ne"
+
+#: app/location/forms.py:34 app/user/forms.py:138
+msgid "Yes"
+msgstr "Ano"
+
+#: app/location/forms.py:35
+msgid "Country"
+msgstr "Země"
+
+#: app/location/forms.py:38 app/location/routes.py:144
+#: app/location/routes.py:221
+msgid "Title photo"
+msgstr "Titulní fotka"
+
+#: app/location/forms.py:39 app/location/forms.py:54 app/location/forms.py:71
+#: app/location/forms.py:85 app/page/forms.py:18 app/user/forms.py:126
+msgid "Save"
+msgstr "Uložit"
+
+#: app/location/forms.py:49
+msgid "Document type"
+msgstr "Typ dokumentu"
+
+#: app/location/forms.py:53 app/location/forms.py:59
+#: app/templates/location/location.html:48 app/upload/constants.py:19
+msgid "Document"
+msgstr "Dokument"
+
+#: app/location/forms.py:69
+msgid "Taken on:"
+msgstr "Pořízeno dne:"
+
+#: app/location/forms.py:76 app/templates/location/location.html:49
+#: app/upload/constants.py:14
+msgid "Photo"
+msgstr "Fotka"
+
+#: app/location/forms.py:90
+msgid "Comment"
+msgstr "Komentář"
+
+#: app/location/forms.py:93
+msgid "Visited on"
+msgstr "Navštíveno dne"
+
+#: app/location/forms.py:95
+msgid "Photos"
+msgstr "Fotky"
+
+#: app/location/forms.py:96
+msgid "Log your visit"
+msgstr "Zaznamenej návštěvu"
+
+#: app/location/forms.py:103
+msgid "Add"
+msgstr "Přidat"
+
+#: app/location/forms.py:108
+msgid "Name already used"
+msgstr "Jméno již existuje"
+
+#: app/location/routes.py:84 app/location/routes.py:406
+msgid "Visit photo"
+msgstr "Foto z návštěvy"
+
+#: app/location/routes.py:91
+msgid "Your visit was saved"
+msgstr "Vaše návštěva byla uložena"
+
+#: app/location/routes.py:150
+msgid "New location created"
+msgstr "Lokace byla vytvořena"
+
+#: app/location/routes.py:171
+msgid "Location was deleted"
+msgstr "Lokace byla smazána"
+
+#: app/location/routes.py:230
+msgid "Location saved"
+msgstr "Lokace byla uložena"
+
+#: app/location/routes.py:413
+msgid "Visit was saved"
+msgstr "Návštěva byla uložena"
+
+#: app/location/routes.py:433
+msgid "Visit was deleted"
+msgstr "Návštěva byla odstraněna"
+
+#: app/location/routes.py:461
+msgid "New photo added"
+msgstr "Fotografie byla přidána"
+
+#: app/location/routes.py:530
+msgid "New document added"
+msgstr "Dokument byl přidán"
+
+#: app/location/routes.py:602
+msgid "New link added"
+msgstr "Odkaz byl přidán"
+
+#: app/location/routes.py:646
+#, python-format
+msgid "The bookmark list %(name)s created"
+msgstr "Seznam záložek %(name)s byl vytvořen"
+
+#: app/location/routes.py:651
+#, python-format
+msgid "Adding bookmark list failed: %(error)s"
+msgstr "Přidání seznamu záložek selhalo: %(error)s"
+
+#: app/location/routes.py:673
+#, python-format
+msgid "Added to bookmark list: %(name)s"
+msgstr "Přidáno do seznamu záložek: %(name)s"
+
+#: app/location/routes.py:695
+#, python-format
+msgid "Removed from bookmark list: %(name)s"
+msgstr "Odstraněno ze seznamu záložek: %(name)s"
+
+#: app/location/underground/constants.py:13
+msgid "Mine"
+msgstr "Důl"
+
+#: app/location/underground/constants.py:14
+msgid "Shaft"
+msgstr "Šachta"
+
+#: app/location/underground/constants.py:15
+msgid "Adit"
+msgstr "Štola"
+
+#: app/location/underground/constants.py:16
+msgid "Pinge"
+msgstr "Pínka"
+
+#: app/location/underground/constants.py:17
+msgid "Quarry"
+msgstr "Lom"
+
+#: app/location/underground/constants.py:18
+msgid "Shelter"
+msgstr "Kryt"
+
+#: app/location/underground/constants.py:19
+msgid "Military underground"
+msgstr "Vojenské podzemí"
+
+#: app/location/underground/constants.py:20
+msgid "Urban underground"
+msgstr "Městské podzemí"
+
+#: app/location/underground/constants.py:21
+msgid "Mill race"
+msgstr "Vodní náhon"
+
+#: app/location/underground/constants.py:22
+msgid "Drainage"
+msgstr "Kanalizace"
+
+#: app/location/underground/constants.py:23
+msgid "Railway tunnel"
+msgstr "Železniční tunel"
+
+#: app/location/underground/constants.py:28 app/location/urbex/constants.py:20
+#: app/templates/location/_metadata.html:20
+#: app/templates/location/_metadata.html:24
+#: app/templates/location/_metadata.html:32
+msgid "Unknown"
+msgstr "Neznámý"
+
+#: app/location/underground/constants.py:29
+#: app/location/underground/constants.py:40
+msgid "Working"
+msgstr "V provozu"
+
+#: app/location/underground/constants.py:30 app/location/urbex/constants.py:28
+msgid "Museum"
+msgstr "Muzeum"
+
+#: app/location/underground/constants.py:31
+msgid "Preserved"
+msgstr "Zachovalý"
+
+#: app/location/underground/constants.py:32
+msgid "Not bad"
+msgstr "Ujde"
+
+#: app/location/underground/constants.py:33
+msgid "Bad"
+msgstr "Špatný"
+
+#: app/location/underground/constants.py:34 app/location/urbex/constants.py:25
+msgid "Demolished"
+msgstr "Zlikvidováno"
+
+#: app/location/underground/constants.py:39 app/location/urbex/constants.py:33
+msgid "Inaccessible"
+msgstr "Nepřístupno"
+
+#: app/location/underground/constants.py:41 app/location/urbex/constants.py:34
+msgid "Guided tours"
+msgstr "Oficiální prohlídky"
+
+#: app/location/underground/constants.py:42 app/location/urbex/constants.py:35
+msgid "Guarded"
+msgstr "Hlídaný"
+
+#: app/location/underground/constants.py:43
+msgid "Locked"
+msgstr "Zamknutý"
+
+#: app/location/underground/constants.py:44 app/location/urbex/constants.py:37
+msgid "Freely accessible"
+msgstr "Volně přístupno"
+
+#: app/location/underground/constants.py:45
+msgid "Digging required"
+msgstr "Nutno odkopat"
+
+#: app/location/underground/constants.py:51
+msgid "Coal"
+msgstr "Uhlí"
+
+#: app/location/underground/constants.py:52
+msgid "Lignite"
+msgstr "Hnědé uhlí"
+
+#: app/location/underground/constants.py:53
+msgid "Uranium"
+msgstr "Uran"
+
+#: app/location/underground/constants.py:54
+msgid "Fire clay"
+msgstr "Lupek"
+
+#: app/location/underground/constants.py:55
+msgid "Kaolinite"
+msgstr "Kaolín"
+
+#: app/location/underground/constants.py:56
+msgid "Sand"
+msgstr "Písek"
+
+#: app/location/underground/constants.py:57
+msgid "Graphite"
+msgstr "Grafit"
+
+#: app/location/underground/constants.py:58
+msgid "Iron"
+msgstr "Železo"
+
+#: app/location/underground/constants.py:59
+msgid "Gold"
+msgstr "Zlato"
+
+#: app/location/underground/constants.py:60
+msgid "Copper"
+msgstr "Měď"
+
+#: app/location/underground/constants.py:61
+msgid "Silver"
+msgstr "Stříbro"
+
+#: app/location/underground/constants.py:62
+msgid "Tin"
+msgstr "Cín"
+
+#: app/location/underground/constants.py:63
+msgid "Slate"
+msgstr "Břidlice"
+
+#: app/location/underground/constants.py:64
+msgid "Baryte"
+msgstr "Baryt"
+
+#: app/location/underground/constants.py:65
+msgid "Fluorite"
+msgstr "Fluorit"
+
+#: app/location/underground/constants.py:66
+msgid "Feldspar"
+msgstr "Živec"
+
+#: app/location/underground/forms.py:16 app/location/urbex/forms.py:14
+#: app/templates/admin/locations.html:24
+msgid "Type"
+msgstr "Typ"
+
+#: app/location/underground/forms.py:18 app/location/urbex/forms.py:16
+msgid "Location type"
+msgstr "Typ lokace"
+
+#: app/location/underground/forms.py:20 app/location/urbex/forms.py:18
+#: app/templates/admin/invitations.html:22
+#: app/templates/admin/locations.html:23 app/templates/admin/users.html:25
+#: app/templates/location/_metadata.html:17
+msgid "State"
+msgstr "Stav"
+
+#: app/location/underground/forms.py:22 app/location/urbex/forms.py:20
+msgid "Location state"
+msgstr "Stav lokace"
+
+#: app/location/underground/forms.py:24 app/location/urbex/forms.py:22
+msgid "Accessibility"
+msgstr "Přístupnost"
+
+#: app/location/underground/forms.py:26 app/location/urbex/forms.py:24
+msgid "Location accessibility"
+msgstr "Přístupnost lokace"
+
+#: app/location/underground/forms.py:28
+#: app/templates/location/_metadata.html:26
+msgid "Materials"
+msgstr "Materiály"
+
+#: app/location/underground/forms.py:30
+msgid "Select mined materials"
+msgstr "Vyberte těžené materiály"
+
+#: app/location/underground/forms.py:33
+msgid "Tools for opening the entrance"
+msgstr "Nástroj k otevření vchodu"
+
+#: app/location/underground/forms.py:35
+msgid "Length [m]"
+msgstr "Délka [m]"
+
+#: app/location/underground/forms.py:36
+msgid "Geofond ID"
+msgstr "Geofond ID"
+
+#: app/location/underground/forms.py:38 app/location/urbex/forms.py:26
+msgid "Abandoned [year]"
+msgstr "Opuštěno [rok]"
+
+#: app/location/underground/forms.py:43 app/location/urbex/forms.py:31
+msgid "It cannot be in the future"
+msgstr "Nemůže být v budoucnosti"
+
+#: app/location/urbex/constants.py:10
+msgid "House"
+msgstr "Dům"
+
+#: app/location/urbex/constants.py:11
+msgid "Mansion"
+msgstr "Vila"
+
+#: app/location/urbex/constants.py:12
+msgid "Recreation center"
+msgstr "Rekreační areál"
+
+#: app/location/urbex/constants.py:13
+msgid "Army object"
+msgstr "Vojenský objekt"
+
+#: app/location/urbex/constants.py:14
+msgid "Factory"
+msgstr "Továrna"
+
+#: app/location/urbex/constants.py:15
+msgid "Technology"
+msgstr "Technologie"
+
+#: app/location/urbex/constants.py:21
+msgid "Like being used"
+msgstr "Jako za provozu"
+
+#: app/location/urbex/constants.py:22
+msgid "Furnished"
+msgstr "Vybaveno nábytkem"
+
+#: app/location/urbex/constants.py:23
+msgid "Cleaned out"
+msgstr "Holé místnosti"
+
+#: app/location/urbex/constants.py:24
+msgid "Falling apart"
+msgstr "Rozpadající se"
+
+#: app/location/urbex/constants.py:26
+msgid "Under restoration"
+msgstr "V rekonstrukci"
+
+#: app/location/urbex/constants.py:27
+msgid "Restored"
+msgstr "Zrekonstruováno"
+
+#: app/location/urbex/constants.py:36
+msgid "Monitored"
+msgstr "Hlídáno"
+
+#: app/message/forms.py:12 app/page/forms.py:10
+#: app/templates/message/browse.html:16 app/templates/message/write.html:11
+#: app/templates/page/contact.html:12
+msgid "Subject"
+msgstr "Předmět"
+
+#: app/message/forms.py:15 app/message/forms.py:21
+msgid "Message"
+msgstr "Zpráva"
+
+#: app/message/forms.py:16 app/page/forms.py:12
+msgid "Send"
+msgstr "Odeslat"
+
+#: app/message/forms.py:22
+msgid "Reply"
+msgstr "Odpovědět"
+
+#: app/message/routes.py:53
+msgid "Message sent"
+msgstr "Zpráva odeslána"
+
+#: app/page/constants.py:10 app/templates/_menu.html:50
+msgid "Rules"
+msgstr "Pravidla"
+
+#: app/page/constants.py:11
+msgid "Support us"
+msgstr "Podpořte nás"
+
+#: app/page/email.py:26
+#, python-format
+msgid ""
+"User %(user)s (%(url)s) sent you a message:\n"
+"\n"
+"%(msg)s"
+msgstr ""
+"Uživatel %(user)s (%(url)s) vám poslal zprávu:\n"
+"\n"
+"%(msg)s"
+
+#: app/page/forms.py:11 app/templates/message/write.html:12
+#: app/templates/page/contact.html:13
+msgid "Your message"
+msgstr "Vaše zpráva"
+
+#: app/page/forms.py:17 app/templates/page/edit.html:10
+msgid "Page content"
+msgstr "Obsah"
+
+#: app/page/routes.py:90
+msgid "Nothing added yet"
+msgstr "Nic zatím nebylo přidáno"
+
+#: app/page/routes.py:103
+msgid "Your message was sent"
+msgstr "Vaše zpráva byla odeslána"
+
+#: app/templates/403.html:1
+msgid "Access forbidden"
+msgstr "Přístup odepřen"
+
+#: app/templates/403.html:12
+msgid "You don't have sufficient persmissions to access this page!"
+msgstr "Nemáte dostatečná práva pro přístup k této stránce"
+
+#: app/templates/404.html:1
+msgid "Page not found"
+msgstr "Stránka nenalezena"
+
+#: app/templates/404.html:12
+msgid "Page not found, was it demolished already?"
+msgstr "Stránka nenalazena, neproběhla už demolice?"
+
+#: app/templates/500.html:1
+msgid "Internal server error"
+msgstr "Interní chyba"
+
+#: app/templates/500.html:12
+msgid "Internal server error, our team of trained monkeys was notified."
+msgstr "Nastala nečekaná chyba, náš tým cvičených opic byl informován."
+
+#: app/templates/_base.html:8 app/templates/_base.html:16
+#: app/templates/_base.html:20 app/templates/user/login.html:8
+#: app/templates/user/register.html:35
+msgid "Hidden places"
+msgstr "Hidden places"
+
+#: app/templates/_base.html:9
+msgid "Database of underground and abandoned places"
+msgstr "Databáze opuštěných míst"
+
+#: app/templates/_helpers.html:163
+msgid ""
+"Supports markdown formatting, check the <a "
+"href=\"https://www.markdownguide.org/basic-syntax/\">syntax</a>"
+msgstr ""
+"Podporuje markdown formátování, syntaxe <a "
+"href=\"https://www.markdownguide.org/basic-syntax/\">zde</a>"
+
+#: app/templates/_menu.html:5 app/templates/_menu.html:6
+msgid "Search"
+msgstr "Hledat"
+
+#: app/templates/_menu.html:11 app/templates/_menu.html:16
+#: app/templates/_menu.html:25
+msgid "Browse"
+msgstr "Procházet"
+
+#: app/templates/_menu.html:12 app/upload/constants.py:16
+msgid "Map"
+msgstr "Mapa"
+
+#: app/templates/_menu.html:14 app/templates/admin/locations.html:7
+msgid "Underground"
+msgstr "Podzemí"
+
+#: app/templates/_menu.html:15 app/templates/_menu.html:24
+msgid "Create new"
+msgstr "Nová"
+
+#: app/templates/_menu.html:17 app/templates/_menu.html:26
+msgid "Show on map"
+msgstr "Zobrazit na mapě"
+
+#: app/templates/_menu.html:18 app/templates/_menu.html:27
+msgid "My locations"
+msgstr "Moje lokace"
+
+#: app/templates/_menu.html:19 app/templates/_menu.html:28
+msgid "Visited"
+msgstr "Navštíveno"
+
+#: app/templates/_menu.html:23 app/templates/admin/locations.html:8
+msgid "Urbex"
+msgstr "Urbex"
+
+#: app/templates/_menu.html:36
+msgid "Bookmarks"
+msgstr "Záložky"
+
+#: app/templates/_menu.html:38 app/user/constants.py:35
+msgid "Admin"
+msgstr "Admin"
+
+#: app/templates/_menu.html:39 app/templates/location/browse.html:1
+#: app/templates/user/profile.html:34
+msgid "Locations"
+msgstr "Lokace"
+
+#: app/templates/_menu.html:43
+msgid "Events"
+msgstr "Události"
+
+#: app/templates/_menu.html:47
+msgid "Page"
+msgstr "Web"
+
+#: app/templates/_menu.html:48 app/templates/page/contact.html:1
+msgid "Contact admins"
+msgstr "Kontaktovat adminy"
+
+#: app/templates/_menu.html:49
+msgid "Support"
+msgstr "Podpořit"
+
+#: app/templates/_private.html:11
+msgid "HiddenPlaces"
+msgstr "HiddenPlaces"
+
+#: app/templates/_private.html:30
+msgid "Unreaded messages"
+msgstr "Nepřečtené zprávy"
+
+#: app/templates/_private.html:31
+msgid "Latest changes"
+msgstr "Nedávné změny"
+
+#: app/templates/_private.html:32
+msgid "New locations"
+msgstr "Nové lokace"
+
+#: app/templates/_private.html:33
+msgid "Invitations pending"
+msgstr "Čekající pozvánky"
+
+#: app/templates/_private.html:50 app/templates/message/browse.html:1
+msgid "Messages"
+msgstr "Zprávy"
+
+#: app/templates/_private.html:51
+msgid "Profile"
+msgstr "Profil"
+
+#: app/templates/_private.html:52 app/templates/user/password.html:1
+#: app/templates/user/profile.html:11 app/user/forms.py:112
+#: app/user/forms.py:191
+msgid "Change password"
+msgstr "Změnit heslo"
+
+#: app/templates/_private.html:53 app/templates/user/invite.html:1
+msgid "Invite new user"
+msgstr "Pozvat nového uživatele"
+
+#: app/templates/_private.html:55
+msgid "Log out"
+msgstr "Odhlásit"
+
+#: app/templates/admin/events.html:1
+msgid "Event log"
+msgstr "Události"
+
+#: app/templates/admin/events.html:14 app/templates/admin/logins.html:20
+msgid "Time"
+msgstr "Čas"
+
+#: app/templates/admin/events.html:15 app/templates/message/browse.html:17
+#: app/user/constants.py:38
+msgid "User"
+msgstr "Uživatel"
+
+#: app/templates/admin/invitations.html:6
+msgid "Waiting"
+msgstr "Čekající"
+
+#: app/templates/admin/invitations.html:7 app/user/constants.py:26
+msgid "Approved"
+msgstr "Schválená"
+
+#: app/templates/admin/invitations.html:8 app/user/constants.py:29
+msgid "Denied"
+msgstr "Zamítnutá"
+
+#: app/templates/admin/invitations.html:9 app/user/constants.py:27
+msgid "Registered"
+msgstr "Zaregistrován"
+
+#: app/templates/admin/invitations.html:20
+msgid "Inviter"
+msgstr "Autor"
+
+#: app/templates/admin/invitations.html:46
+msgid "Approve"
+msgstr "Schválit"
+
+#: app/templates/admin/invitations.html:47
+msgid "Deny"
+msgstr "Zamítnout"
+
+#: app/templates/admin/locations.html:6 app/templates/admin/logins.html:6
+msgid "All"
+msgstr "Vše"
+
+#: app/templates/admin/locations.html:9
+msgid "Private"
+msgstr "Soukromé"
+
+#: app/templates/admin/locations.html:21
+msgid "Owner"
+msgstr "Vlastník"
+
+#: app/templates/admin/locations.html:22 app/templates/admin/users.html:20
+#: app/templates/location/_metadata.html:13 app/templates/user/profile.html:29
+msgid "Created"
+msgstr "Vytvořeno"
+
+#: app/templates/admin/logins.html:7
+msgid "Failed"
+msgstr "Selhalo"
+
+#: app/templates/admin/logins.html:9
+msgid "Month"
+msgstr "Měsíc"
+
+#: app/templates/admin/logins.html:21
+msgid "IP"
+msgstr "IP"
+
+#: app/templates/admin/logins.html:22 app/templates/location/edit.html:24
+msgid "Location"
+msgstr "Lokace"
+
+#: app/templates/admin/logins.html:23
+msgid "System"
+msgstr "Systém"
+
+#: app/templates/admin/logins.html:24
+msgid "Browser"
+msgstr "Prohlížeč"
+
+#: app/templates/admin/logins.html:25 app/templates/user/profile.html:37
+msgid "Email"
+msgstr "Email"
+
+#: app/templates/admin/logins.html:26
+msgid "Result"
+msgstr "Výsledek"
+
+#: app/templates/admin/users.html:9
+msgid "Bans"
+msgstr "Bany"
+
+#: app/templates/admin/users.html:22 app/templates/user/profile.html:46
+msgid "Invited by"
+msgstr "Pozván"
+
+#: app/templates/admin/users.html:23
+msgid "Seen"
+msgstr "Viděn"
+
+#: app/templates/admin/users.html:24 app/templates/admin/users.html:56
+#: app/templates/user/profile.html:43 app/user/forms.py:166
+msgid "Role"
+msgstr "Role"
+
+#: app/templates/admin/users.html:49 app/templates/user/profile.html:39
+#: app/user/constants.py:18
+msgid "Banned"
+msgstr "Zabanován"
+
+#: app/templates/admin/users.html:50 app/templates/user/profile.html:40
+msgid "Inactive"
+msgstr "Neaktivní"
+
+#: app/templates/admin/users.html:51 app/templates/user/profile.html:41
+msgid "Active"
+msgstr "Aktivní"
+
+#: app/templates/admin/users.html:57 app/templates/user/profile.html:13
+msgid "Ban"
+msgstr "Ban"
+
+#: app/templates/location/_gallery.html:6
+msgid "Gallery"
+msgstr "Galerie"
+
+#: app/templates/location/_metadata.html:3 app/templates/location/edit.html:43
+msgid "Metadata"
+msgstr "Metadata"
+
+#: app/templates/location/_metadata.html:14
+msgid "Last updated"
+msgstr "Poslední aktualizace"
+
+#: app/templates/location/_metadata.html:15
+msgid "Maintainer"
+msgstr "Správce"
+
+#: app/templates/location/_metadata.html:20
+msgid "Length"
+msgstr "Délka"
+
+#: app/templates/location/_metadata.html:22
+msgid "Tools required"
+msgstr "Nástroje"
+
+#: app/templates/location/_metadata.html:24
+#: app/templates/location/_metadata.html:32
+msgid "Abandoned"
+msgstr "Opuštěno"
+
+#: app/templates/location/_visit_form.html:4
+msgid "How was your visit?"
+msgstr "Podrobnosti o vaší návštěvě."
+
+#: app/templates/location/_visits.html:5 app/templates/user/profile.html:33
+msgid "Visits"
+msgstr "Návštěvy"
+
+#: app/templates/location/browse.html:8
+msgid "No locations found"
+msgstr "Žádné lokace nenalezeny"
+
+#: app/templates/location/document.html:2
+#, python-format
+msgid "Add document for %(name)s"
+msgstr "Přidat dokument pro %(name)s"
+
+#: app/templates/location/document.html:4
+msgid "Edit document"
+msgstr "Editace dokumenti"
+
+#: app/templates/location/document.html:20
+msgid "Document name"
+msgstr "Jméno dokumentu"
+
+#: app/templates/location/document.html:21
+msgid "Short description of the document"
+msgstr "Krátký popis dokumentu"
+
+#: app/templates/location/document.html:26 app/templates/location/edit.html:33
+#: app/templates/location/link.html:18 app/templates/location/photo.html:27
+#: app/templates/message/write.html:15 app/templates/page/edit.html:13
+#: app/templates/user/ban.html:28 app/templates/user/edit.html:17
+#: app/templates/user/role.html:16
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: app/templates/location/edit.html:2
+#, python-format
+msgid "Edit location %(name)s"
+msgstr "Editace lokace %(name)s"
+
+#: app/templates/location/edit.html:4
+#, python-format
+msgid "Add new child for %(name)s"
+msgstr "Nový potomek pro %(name)s"
+
+#: app/templates/location/edit.html:6
+msgid "Add a new location"
+msgstr "Přidat novou lokaci"
+
+#: app/templates/location/edit.html:27
+msgid "Location name"
+msgstr "Jméno lokace"
+
+#: app/templates/location/edit.html:29
+msgid "Short description of the location and its current state"
+msgstr "Krátký popis lokace a aktuální stavu"
+
+#: app/templates/location/edit.html:30
+msgid "Location description, history,..."
+msgstr "Popis lokace, historie,..."
+
+#: app/templates/location/edit.html:48
+msgid "50.1234N"
+msgstr "50.1234N"
+
+#: app/templates/location/edit.html:49
+msgid "14.4567E"
+msgstr "14.4567E"
+
+#: app/templates/location/edit.html:52
+msgid "Select from map"
+msgstr "Vybrat z mapy"
+
+#: app/templates/location/link.html:1
+msgid "Add link"
+msgstr "Přidat odkaz"
+
+#: app/templates/location/link.html:8
+#, python-format
+msgid "Add link for %(name)s"
+msgstr "Přidat odkaz pro %(name)s"
+
+#: app/templates/location/link.html:14
+msgid "Page URL"
+msgstr "URL webu"
+
+#: app/templates/location/link.html:15
+msgid "Description of the linked page"
+msgstr "Popis odkazované stránky"
+
+#: app/templates/location/location.html:14
+msgid "Not published"
+msgstr "Nepublikováno"
+
+#: app/templates/location/location.html:47 app/templates/page/page.html:8
+#: app/templates/user/profile.html:10
+msgid "Edit"
+msgstr "Editovat"
+
+#: app/templates/location/location.html:50
+msgid "Link"
+msgstr "Odkaz"
+
+#: app/templates/location/location.html:86
+msgid "Related places"
+msgstr "Příbuzná místa"
+
+#: app/templates/location/location.html:102
+msgid "Links"
+msgstr "Odkazy"
+
+#: app/templates/location/location.html:107
+msgid "Geofond - photos"
+msgstr "Geofond - fotky"
+
+#: app/templates/location/location.html:110
+msgid "Geofond - info"
+msgstr "Geofond - info"
+
+#: app/templates/location/location.html:128
+msgid "Documents"
+msgstr "Dokumenty"
+
+#: app/templates/location/photo.html:2
+#, python-format
+msgid "Add photo for %(name)s"
+msgstr "Přidat fotku pro %(name)s"
+
+#: app/templates/location/photo.html:4
+msgid "Edit photo"
+msgstr "Editovat fotku"
+
+#: app/templates/location/photo.html:19
+msgid "Photo name"
+msgstr "Jméno fotky"
+
+#: app/templates/location/photo.html:20
+msgid "Short description of the photo"
+msgstr "Krátký popis fotky"
+
+#: app/templates/location/visit.html:1
+msgid "Edit visit"
+msgstr "Editovat návštěvu"
+
+#: app/templates/location/visit.html:8
+msgid "Edit your visit log"
+msgstr "Editace vaší návštěvy"
+
+#: app/templates/message/browse.html:15
+msgid "Date"
+msgstr "Datum"
+
+#: app/templates/message/browse.html:46
+msgid "No messages received yet"
+msgstr "Žádné zprávy"
+
+#: app/templates/message/show.html:18
+msgid "Your response"
+msgstr "Vaše odpověď"
+
+#: app/templates/message/write.html:1
+msgid "New message"
+msgstr "Nová zpráva"
+
+#: app/templates/page/edit.html:6
+#, python-format
+msgid "Edit page %(name)s"
+msgstr "Editovat stránku %(name)s"
+
+#: app/templates/user/ban.html:1
+#, python-format
+msgid "Ban %(user)s"
+msgstr "Vytvoř ban pro %(user)s"
+
+#: app/templates/user/ban.html:13
+msgid "Why are you banning this guy?"
+msgstr "Důvod banu"
+
+#: app/templates/user/ban.html:14
+msgid "Amount of days to ban for."
+msgstr "Počet dní banu"
+
+#: app/templates/user/edit.html:1
+msgid "Edit profile"
+msgstr "Editovat profil"
+
+#: app/templates/user/edit.html:13
+msgid "Write something about yourself"
+msgstr "Napiš něco o sobě"
+
+#: app/templates/user/forgotten_password.html:1 app/user/forms.py:175
+msgid "Request password reset"
+msgstr "Vyžádat reset hesla"
+
+#: app/templates/user/invite.html:13
+msgid "Real name of the person invited"
+msgstr "Reálné jméno zvané osoby"
+
+#: app/templates/user/invite.html:15
+msgid "Why are you inviting this guy?"
+msgstr "Proč tuto osobu zveš?"
+
+#: app/templates/user/login.html:1
+msgid "Login"
+msgstr "Přihlásit"
+
+#: app/templates/user/login.html:17
+msgid "Forgot password?"
+msgstr "Zapomenuté heslo?"
+
+#: app/templates/user/password.html:9
+#, python-format
+msgid "Change password for %(user)s"
+msgstr "Změnit heslo pro %(user)s"
+
+#: app/templates/user/profile.html:9
+msgid "Send message"
+msgstr "Odeslat zprávu"
+
+#: app/templates/user/profile.html:14
+msgid "Set role"
+msgstr "Nastavit roli"
+
+#: app/templates/user/profile.html:30
+msgid "Last seen"
+msgstr "Naposledy viděn"
+
+#: app/templates/user/profile.html:38
+msgid "Status"
+msgstr "Stav"
+
+#: app/templates/user/profile.html:50
+msgid "Invited"
+msgstr "Pozval"
+
+#: app/templates/user/profile.html:74
+msgid "Write something about youself"
+msgstr "Napiš něco o sobě"
+
+#: app/templates/user/register.html:1
+msgid "Register new user"
+msgstr "Registrace nového uživatele"
+
+#: app/templates/user/register.html:22
+msgid "No rules defined!"
+msgstr "Žádná pravidla nebyla zatím definována"
+
+#: app/templates/user/register.html:26
+msgid "Understood"
+msgstr "Rozumím"
+
+#: app/templates/user/register.html:46
+msgid "Page rules"
+msgstr "Pravidla webu"
+
+#: app/templates/user/register.html:47
+#, python-format
+msgid "I will follow the %(rules)s"
+msgstr "Budu dodržovat %(rules)s"
+
+#: app/templates/user/register.html:50 app/user/forms.py:30
+msgid "Log In"
+msgstr "Přihlásit"
+
+#: app/templates/user/reset_password.html:1
+msgid "Reset forgotten password"
+msgstr "Resetovat zapomenuté heslo"
+
+#: app/templates/user/role.html:1
+#, python-format
+msgid "Change role for %(user)s"
+msgstr "Změna role pro %(user)s"
+
+#: app/upload/constants.py:15
+msgid "Historical photo"
+msgstr "Historická fotka"
+
+#: app/upload/constants.py:17
+msgid "Article"
+msgstr "Článek"
+
+#: app/upload/constants.py:18
+msgid "Book"
+msgstr "Kniha"
+
+#: app/user/constants.py:16
+msgid "Success"
+msgstr "Úspěch"
+
+#: app/user/constants.py:17
+msgid "Not active"
+msgstr "Neaktivní"
+
+#: app/user/constants.py:19 app/user/forms.py:117
+msgid "Invalid password"
+msgstr "Špatné heslo"
+
+#: app/user/constants.py:20
+msgid "Invalid email"
+msgstr "Špatný email"
+
+#: app/user/constants.py:28
+msgid "Timed out"
+msgstr "Vypršel"
+
+#: app/user/constants.py:34
+msgid "Root"
+msgstr "Root"
+
+#: app/user/constants.py:36
+msgid "Moderator"
+msgstr "Moderátor"
+
+#: app/user/constants.py:37
+msgid "Contributor"
+msgstr "Přispěvatel"
+
+#: app/user/constants.py:39
+msgid "Newbie"
+msgstr "Nováček"
+
+#: app/user/email.py:16
+msgid "Password reset requested"
+msgstr "Reset hesla byl vyžádán"
+
+#: app/user/email.py:30
+msgid "You were invited to join us"
+msgstr "Byl jsi pozván, aby ses k nám připojil"
+
+#: app/user/forms.py:25 app/user/forms.py:79 app/user/forms.py:148
+#: app/user/forms.py:174
+msgid "Email address"
+msgstr "Emailová adresa"
+
+#: app/user/forms.py:28 app/user/forms.py:82
+msgid "Password"
+msgstr "Heslo"
+
+#: app/user/forms.py:29
+msgid "Remember me"
+msgstr "Zapamatuj si mě"
+
+#: app/user/forms.py:45 app/user/forms.py:50
+msgid "Invalid email or password"
+msgstr "Špatný email nebo heslo"
+
+#: app/user/forms.py:56
+#, python-format
+msgid "You are banned until %(until)s: %(reason)s"
+msgstr "Máš ban do %(until)s: %(reason)s"
+
+#: app/user/forms.py:59
+#, python-format
+msgid "You were banned permanently: %(reason)s"
+msgstr "Máš ban navždy: %(reason)s"
+
+#: app/user/forms.py:65
+msgid "This account is not active."
+msgstr "Tento účet není aktivní"
+
+#: app/user/forms.py:73
+msgid "First name"
+msgstr "Jméno"
+
+#: app/user/forms.py:76
+msgid "Last name"
+msgstr "Příjmení"
+
+#: app/user/forms.py:84
+msgid "Repeat password"
+msgstr "Heslo znovu"
+
+#: app/user/forms.py:87 app/user/forms.py:111 app/user/forms.py:190
+msgid "Passwords must match"
+msgstr "Hesla musí být stejná"
+
+#: app/user/forms.py:89
+msgid "Register"
+msgstr "Zaregistrovat"
+
+#: app/user/forms.py:95 app/user/forms.py:159
+msgid "Email already used by existing user"
+msgstr "Tento email je již používán jiným uživatelem"
+
+#: app/user/forms.py:100
+msgid "You must agree with page rules"
+msgstr "Musíš souhlasit s pravidly webu"
+
+#: app/user/forms.py:105
+msgid "Current password"
+msgstr "Aktuální heslo"
+
+#: app/user/forms.py:106 app/user/forms.py:185
+msgid "New password"
+msgstr "Nové heslo"
+
+#: app/user/forms.py:108 app/user/forms.py:187
+msgid "Repeat new password"
+msgstr "Nové heslo znovu"
+
+#: app/user/forms.py:125
+msgid "Profile photo"
+msgstr "Profilová fotka"
+
+#: app/user/forms.py:131
+msgid "Ban reason"
+msgstr "Důvod banu"
+
+#: app/user/forms.py:134
+msgid "Ban length [days]"
+msgstr "Délka banu [dny]"
+
+#: app/user/forms.py:137
+msgid "Ban permanently"
+msgstr "Trvalý ban"
+
+#: app/user/forms.py:139
+msgid "Ban!"
+msgstr "Ban!"
+
+#: app/user/forms.py:144
+msgid "Name of the person"
+msgstr "Jméno osoby"
+
+#: app/user/forms.py:151
+msgid "Invitation reason"
+msgstr "Důvod pozvánky"
+
+#: app/user/forms.py:154
+msgid "Send Invitation"
+msgstr "Odeslat pozvánky"
+
+#: app/user/forms.py:161
+msgid "This email was already invited"
+msgstr "Tento email byl již pozván"
+
+#: app/user/forms.py:169
+msgid "Set Role"
+msgstr "Nastavit roli"
+
+#: app/user/forms.py:180
+msgid "User does not exist."
+msgstr "Uživatel neexistuje"
+
+#: app/user/routes.py:48
+msgid "You were logged in"
+msgstr "Přihlášení bylo úspěšné"
+
+#: app/user/routes.py:71
+msgid "The invitation is no longer valid."
+msgstr "Pozvánka už není platná"
+
+#: app/user/routes.py:86
+msgid "You were registered, you may now log-in"
+msgstr "Byl jste zaregistrován, teď se můžete přihlásit"
+
+#: app/user/routes.py:103
+msgid "Password reset request was requested, check your email"
+msgstr "Změna hesla byla vyžádána, zkontrolujte si email"
+
+#: app/user/routes.py:119
+msgid "The password reset request is no longer valid."
+msgstr "Žádost o změnu hesla vypršela."
+
+#: app/user/routes.py:127
+msgid "Your password was changed, you may now log in"
+msgstr "Heslo bylo změněno, můžete se přihlásit"
+
+#: app/user/routes.py:138
+msgid "You were logged out."
+msgstr "Byl jste odhlášen"
+
+#: app/user/routes.py:175
+msgid "Your profile changes were saved"
+msgstr "Změny profilu uloženy"
+
+#: app/user/routes.py:188
+msgid "Your password was changed"
+msgstr "Heslo bylo změněno"
+
+#: app/user/routes.py:205
+msgid "Superuser cannot be banned"
+msgstr "Superuser nemůže dostat ban"
+
+#: app/user/routes.py:219
+#, python-format
+msgid "User %(user)s was banned"
+msgstr "Uživatel %(user)s dostal ban"
+
+#: app/user/routes.py:245
+#, python-format
+msgid "%(name)s invited"
+msgstr "%(name)s pozván"
+
+#: app/user/routes.py:247
+msgid "Invitation created, waiting for approval by admins"
+msgstr "Pozvánka vytvořena, čeká na schválení adminem"
+
+#: app/user/routes.py:265
+msgid "You can't change root's role!"
+msgstr "Nemůžete změnit roli roota"
+
+#: app/user/routes.py:268
+msgid "You can't change your own role!"
+msgstr "Nemůžete změnit svoji vlastní roli"
+
+#: app/user/routes.py:279
+#, python-format
+msgid "Changed role of %(user)s to %(role)s"
+msgstr "Role uživatele %(user)s změněna na %(role)s"
+
+#: app/utils/fields.py:24
+msgid "Choices cannot be None."
+msgstr "Výběr nemůže být prázdný"
+
+#: app/utils/fields.py:36
+#, python-format
+msgid "'%(value)s' is not a valid choice for this field."
+msgid_plural "'%(value)s' are not valid choices for this field."
+msgstr[0] "Alespoň jedna položka musí být vybrána."
+msgstr[1] "'%(value)s' není validní volba."
+msgstr[2] "'%(value)s' nejsou validní volby."
+
+#: app/utils/validators.py:29
+msgid "Not an allowed file format"
+msgstr "Nedovolený typ souboru"
+
+#: app/utils/validators.py:53
+msgid "Not a supported image type"
+msgstr "Nepodporovaný typ obrázku"
+
+#: app/utils/validators.py:70
+msgid "Files of this type are not allowed"
+msgstr "Soubory tohoto typu nejsou dovoleny"
+
+#: app/utils/validators.py:87
+msgid "Invalid latitude format"
+msgstr "Nesprávný formát zeměpisné šířky"
+
+#: app/utils/validators.py:107
+msgid "Invalid longitude format"
+msgstr "Nesprávný formát zeměpisné délky"
+
+#: app/utils/validators.py:127
+msgid "Date cannot be in the future"
+msgstr "Datum nemůže být v budoucnosti"
+
+#: app/utils/validators.py:166
+#, python-format
+msgid "Password must have at least %(length)d characters"
+msgstr "Heslo musí mít alespoň %(length)d znaků"
+
+#: app/utils/validators.py:170
+#, python-format
+msgid "%(lower)d small letters"
+msgstr "%(lower)d malých písmen"
+
+#: app/utils/validators.py:172
+#, python-format
+msgid "%(upper)d capital letters"
+msgstr "%(upper)d velkých písmen"
+
+#: app/utils/validators.py:174
+#, python-format
+msgid "%(numeric)d numbers"
+msgstr "%(numeric)d číslic"
+
+#: app/utils/validators.py:176
+#, python-format
+msgid "%(special)d special characters"
+msgstr "%(special)d speciálních znaků"
+
+#: app/utils/validators.py:179
+msgid " and "
+msgstr " a "

@@ -1,6 +1,6 @@
 """Constants for locaiton module."""
 from enum import Enum, auto
-from flask_babel import _
+from flask_babel import lazy_gettext as _
 
 from app.utils.enums import StringEnum
 

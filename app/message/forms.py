@@ -1,6 +1,6 @@
 """Forms for message module."""
 from flask_wtf import FlaskForm
-from flask_babel import _
+from flask_babel import lazy_gettext as _
 from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import InputRequired, Length
 

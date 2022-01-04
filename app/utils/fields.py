@@ -1,4 +1,5 @@
 """Custom fields for wtforms."""
+from flask_babel import lazy_gettext as _
 from werkzeug.datastructures import FileStorage
 from wtforms import MultipleFileField as _MultipleFileField
 from wtforms import SelectMultipleField, ValidationError
@@ -29,11 +30,5 @@ class CustomMultipleField(SelectMultipleField):
         acceptable = {self.coerce(c[0]) for c in self.iter_choices()}
         if any(d not in acceptable for d in self.data):
             unacceptable = [str(d) for d in set(self.data) - acceptable]
-            raise ValidationError(
-                self.ngettext(
-                    "'%(value)s' is not a valid choice for this field.",
-                    "'%(value)s' are not valid choices for this field.",
-                    len(unacceptable),
-                )
-                % dict(value="', '".join(unacceptable))
-            )
+            raise ValidationError(_("'%(value)s' is not a valid choice.",
+                                    value="', '".join(unacceptable)))

@@ -54,3 +54,9 @@ app contains a several layers of permissions based on users reputation.
     `flask db migrate -m "Some change related message"`
 * Run `flask db upgrade` to apply changes in the migration scripts
 * Test and if everything works as expected, save the generated scripts into git
+
+## Translations
+* Translations are stored in `app/translations`, edit `messages.po` file
+* Run `flask translate init <language_shortcut>` to create a new translation
+* Run `flask translate update` to update list of translated strings when app changes
+* Run `flask translate compile` to compile all translations after strings are translated

@@ -1,6 +1,7 @@
 """ Forms for user related pages. """
 from flask_login import current_user
-from flask_babel import _, format_date
+from flask_babel import format_date
+from flask_babel import lazy_gettext as _
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField
 from wtforms import StringField, PasswordField, BooleanField, RadioField, \

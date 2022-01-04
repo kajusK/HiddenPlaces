@@ -1,6 +1,6 @@
 """Urbex specific location forms."""
 from datetime import datetime
-from flask_babel import _
+from flask_babel import lazy_gettext as _
 from wtforms import SelectField, ValidationError, IntegerField
 from wtforms.validators import InputRequired, Optional
 

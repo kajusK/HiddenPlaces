@@ -1,6 +1,6 @@
 """Forms for location module."""
 from datetime import datetime
-from flask_babel import _
+from flask_babel import lazy_gettext as _
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired

@@ -2,7 +2,7 @@
 import logging
 from typing import Dict, Any, Optional
 from flask import Flask, request, redirect, url_for, flash, current_app,\
-    session
+    session, g
 from flask_login import current_user
 
 import app.user.routes as user
@@ -12,7 +12,7 @@ import app.page.routes as page
 import app.message.routes as message
 import app.upload.routes as upload
 from app import errors
-from app.commands import user_cli
+from app.commands import user_cli, translate_cli
 from app.utils.utils import Url
 from app.user.models import User, Invitation, LoginLog
 from app.user.constants import InvitationState
@@ -70,6 +70,7 @@ def create_app(config_object: str = 'app.config.Config') -> Flask:
 
     # register custom flask commands
     app.cli.add_command(user_cli)
+    app.cli.add_command(translate_cli)
 
     # modify jinja2 environment
     app.jinja_env.trim_blocks = True
@@ -154,6 +155,11 @@ def register_before_requests(app: Flask) -> None:
         if not is_public() and current_user.is_authenticated:
             current_user.update_last_seen()
             db.session.commit()
+
+    @app.before_request
+    def set_locale() -> None:
+        """Sets current locale for usage from templates/javascript."""
+        g.locale = str(get_locale())
 
 
 @login_manager.user_loader

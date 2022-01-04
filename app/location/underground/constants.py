@@ -1,5 +1,5 @@
 """Constants for underground locations."""
-from flask_babel import _
+from flask_babel import lazy_gettext as _
 from app.utils.enums import StringEnum
 
 

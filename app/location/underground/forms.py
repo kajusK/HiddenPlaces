@@ -1,6 +1,6 @@
 """Underground specific location forms."""
 from datetime import datetime
-from flask_babel import _
+from flask_babel import lazy_gettext as _
 from wtforms import StringField, SelectField, ValidationError, IntegerField
 from wtforms.validators import InputRequired, Length, Optional, NumberRange
 

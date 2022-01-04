@@ -163,16 +163,17 @@ def password_rules(length: int = 6,
     # pylint: disable=unused-argument,too-many-arguments
 
     if not message:
-        message = _(f"Password must have at least {length} characters")
+        message = _("Password must have at least %(length)d characters",
+                    length=length)
         rules = []
         if lower:
-            rules.append(_(f"{lower} small letters"))
+            rules.append(_("%(lower)d small letters", lower=lower))
         if upper:
-            rules.append(_(f"{upper} capital letters"))
+            rules.append(_("%(upper)d capital letters", upper=upper))
         if numeric:
-            rules.append(_(f"{numeric} numbers"))
+            rules.append(_("%(numeric)d numbers", numeric=numeric))
         if special:
-            rules.append(_(f"{special} special characters"))
+            rules.append(_("%(special)d special characters", special=special))
 
         if rules:
             message += _(" and ") + _(" and ").join(rules)

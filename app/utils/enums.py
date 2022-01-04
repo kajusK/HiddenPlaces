@@ -1,6 +1,7 @@
 """Custom enum types."""
 from enum import Enum
-from typing import Optional
+from flask_babel import LazyString
+from typing import Optional, Union
 
 
 class OrderedEnum(Enum):
@@ -34,7 +35,7 @@ class StringEnum(OrderedEnum):
     """
     translation: str  # pylint: disable=invalid-name
 
-    def __new__(cls, value: int, translation: str):
+    def __new__(cls, value: int, translation: Union[str, LazyString]):
         """Custom object creation.
 
         Args:
@@ -87,4 +88,4 @@ class StringEnum(OrderedEnum):
 
     def __str__(self) -> str:
         """Get string of the item ID."""
-        return self.translation
+        return str(self.translation)
