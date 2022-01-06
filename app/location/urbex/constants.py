@@ -13,6 +13,7 @@ class UrbexType(StringEnum):
     ARMY = 4, _("Army object")
     FACTORY = 5, _("Factory")
     TECHNOLOGY = 6, _("Technology")
+    CHATEAU = 7, _("Château")
 
 
 class UrbexState(StringEnum):

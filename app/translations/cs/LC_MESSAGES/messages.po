@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-03 20:03+0100\n"
+"POT-Creation-Date: 2022-01-06 19:03+0100\n"
 "PO-Revision-Date: 2022-01-03 20:04+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: cs\n"
@@ -152,7 +152,7 @@ msgstr "Popis"
 
 #: app/location/forms.py:28 app/page/constants.py:9 app/templates/_menu.html:51
 #: app/templates/location/location.html:60 app/templates/user/profile.html:68
-#: app/user/forms.py:122
+#: app/user/forms.py:123
 msgid "About"
 msgstr "Popis"
 
@@ -168,11 +168,11 @@ msgstr "Zeměpisná délka"
 msgid "Published"
 msgstr "Publikováno"
 
-#: app/location/forms.py:34 app/user/forms.py:138
+#: app/location/forms.py:34 app/user/forms.py:139
 msgid "No"
 msgstr "Ne"
 
-#: app/location/forms.py:34 app/user/forms.py:138
+#: app/location/forms.py:34 app/user/forms.py:139
 msgid "Yes"
 msgstr "Ano"
 
@@ -186,7 +186,7 @@ msgid "Title photo"
 msgstr "Titulní fotka"
 
 #: app/location/forms.py:39 app/location/forms.py:54 app/location/forms.py:71
-#: app/location/forms.py:85 app/page/forms.py:18 app/user/forms.py:126
+#: app/location/forms.py:85 app/page/forms.py:18 app/user/forms.py:127
 msgid "Save"
 msgstr "Uložit"
 
@@ -264,30 +264,30 @@ msgstr "Návštěva byla odstraněna"
 msgid "New photo added"
 msgstr "Fotografie byla přidána"
 
-#: app/location/routes.py:530
+#: app/location/routes.py:531
 msgid "New document added"
 msgstr "Dokument byl přidán"
 
-#: app/location/routes.py:602
+#: app/location/routes.py:603
 msgid "New link added"
 msgstr "Odkaz byl přidán"
 
-#: app/location/routes.py:646
+#: app/location/routes.py:647
 #, python-format
 msgid "The bookmark list %(name)s created"
 msgstr "Seznam záložek %(name)s byl vytvořen"
 
-#: app/location/routes.py:651
+#: app/location/routes.py:652
 #, python-format
 msgid "Adding bookmark list failed: %(error)s"
 msgstr "Přidání seznamu záložek selhalo: %(error)s"
 
-#: app/location/routes.py:673
+#: app/location/routes.py:674
 #, python-format
 msgid "Added to bookmark list: %(name)s"
 msgstr "Přidáno do seznamu záložek: %(name)s"
 
-#: app/location/routes.py:695
+#: app/location/routes.py:696
 #, python-format
 msgid "Removed from bookmark list: %(name)s"
 msgstr "Odstraněno ze seznamu záložek: %(name)s"
@@ -336,7 +336,7 @@ msgstr "Kanalizace"
 msgid "Railway tunnel"
 msgstr "Železniční tunel"
 
-#: app/location/underground/constants.py:28 app/location/urbex/constants.py:20
+#: app/location/underground/constants.py:28 app/location/urbex/constants.py:21
 #: app/templates/location/_metadata.html:20
 #: app/templates/location/_metadata.html:24
 #: app/templates/location/_metadata.html:32
@@ -348,7 +348,7 @@ msgstr "Neznámý"
 msgid "Working"
 msgstr "V provozu"
 
-#: app/location/underground/constants.py:30 app/location/urbex/constants.py:28
+#: app/location/underground/constants.py:30 app/location/urbex/constants.py:29
 msgid "Museum"
 msgstr "Muzeum"
 
@@ -364,19 +364,19 @@ msgstr "Ujde"
 msgid "Bad"
 msgstr "Špatný"
 
-#: app/location/underground/constants.py:34 app/location/urbex/constants.py:25
+#: app/location/underground/constants.py:34 app/location/urbex/constants.py:26
 msgid "Demolished"
 msgstr "Zlikvidováno"
 
-#: app/location/underground/constants.py:39 app/location/urbex/constants.py:33
+#: app/location/underground/constants.py:39 app/location/urbex/constants.py:34
 msgid "Inaccessible"
 msgstr "Nepřístupno"
 
-#: app/location/underground/constants.py:41 app/location/urbex/constants.py:34
+#: app/location/underground/constants.py:41 app/location/urbex/constants.py:35
 msgid "Guided tours"
 msgstr "Oficiální prohlídky"
 
-#: app/location/underground/constants.py:42 app/location/urbex/constants.py:35
+#: app/location/underground/constants.py:42 app/location/urbex/constants.py:36
 msgid "Guarded"
 msgstr "Hlídaný"
 
@@ -384,7 +384,7 @@ msgstr "Hlídaný"
 msgid "Locked"
 msgstr "Zamknutý"
 
-#: app/location/underground/constants.py:44 app/location/urbex/constants.py:37
+#: app/location/underground/constants.py:44 app/location/urbex/constants.py:38
 msgid "Freely accessible"
 msgstr "Volně přístupno"
 
@@ -537,31 +537,35 @@ msgstr "Továrna"
 msgid "Technology"
 msgstr "Technologie"
 
-#: app/location/urbex/constants.py:21
+#: app/location/urbex/constants.py:16
+msgid "Château"
+msgstr "Zámek"
+
+#: app/location/urbex/constants.py:22
 msgid "Like being used"
 msgstr "Jako za provozu"
 
-#: app/location/urbex/constants.py:22
+#: app/location/urbex/constants.py:23
 msgid "Furnished"
 msgstr "Vybaveno nábytkem"
 
-#: app/location/urbex/constants.py:23
+#: app/location/urbex/constants.py:24
 msgid "Cleaned out"
 msgstr "Holé místnosti"
 
-#: app/location/urbex/constants.py:24
+#: app/location/urbex/constants.py:25
 msgid "Falling apart"
 msgstr "Rozpadající se"
 
-#: app/location/urbex/constants.py:26
+#: app/location/urbex/constants.py:27
 msgid "Under restoration"
 msgstr "V rekonstrukci"
 
-#: app/location/urbex/constants.py:27
+#: app/location/urbex/constants.py:28
 msgid "Restored"
 msgstr "Zrekonstruováno"
 
-#: app/location/urbex/constants.py:36
+#: app/location/urbex/constants.py:37
 msgid "Monitored"
 msgstr "Hlídáno"
 
@@ -760,8 +764,8 @@ msgid "Profile"
 msgstr "Profil"
 
 #: app/templates/_private.html:52 app/templates/user/password.html:1
-#: app/templates/user/profile.html:11 app/user/forms.py:112
-#: app/user/forms.py:191
+#: app/templates/user/profile.html:11 app/user/forms.py:113
+#: app/user/forms.py:192
 msgid "Change password"
 msgstr "Změnit heslo"
 
@@ -876,7 +880,7 @@ msgid "Seen"
 msgstr "Viděn"
 
 #: app/templates/admin/users.html:24 app/templates/admin/users.html:56
-#: app/templates/user/profile.html:43 app/user/forms.py:166
+#: app/templates/user/profile.html:43 app/user/forms.py:167
 msgid "Role"
 msgstr "Role"
 
@@ -1118,7 +1122,7 @@ msgstr "Editovat profil"
 msgid "Write something about yourself"
 msgstr "Napiš něco o sobě"
 
-#: app/templates/user/forgotten_password.html:1 app/user/forms.py:175
+#: app/templates/user/forgotten_password.html:1 app/user/forms.py:176
 msgid "Request password reset"
 msgstr "Vyžádat reset hesla"
 
@@ -1188,7 +1192,7 @@ msgstr "Pravidla webu"
 msgid "I will follow the %(rules)s"
 msgstr "Budu dodržovat %(rules)s"
 
-#: app/templates/user/register.html:50 app/user/forms.py:30
+#: app/templates/user/register.html:50 app/user/forms.py:31
 msgid "Log In"
 msgstr "Přihlásit"
 
@@ -1221,7 +1225,7 @@ msgstr "Úspěch"
 msgid "Not active"
 msgstr "Neaktivní"
 
-#: app/user/constants.py:19 app/user/forms.py:117
+#: app/user/constants.py:19 app/user/forms.py:118
 msgid "Invalid password"
 msgstr "Špatné heslo"
 
@@ -1257,118 +1261,118 @@ msgstr "Reset hesla byl vyžádán"
 msgid "You were invited to join us"
 msgstr "Byl jsi pozván, aby ses k nám připojil"
 
-#: app/user/forms.py:25 app/user/forms.py:79 app/user/forms.py:148
-#: app/user/forms.py:174
+#: app/user/forms.py:26 app/user/forms.py:80 app/user/forms.py:149
+#: app/user/forms.py:175
 msgid "Email address"
 msgstr "Emailová adresa"
 
-#: app/user/forms.py:28 app/user/forms.py:82
+#: app/user/forms.py:29 app/user/forms.py:83
 msgid "Password"
 msgstr "Heslo"
 
-#: app/user/forms.py:29
+#: app/user/forms.py:30
 msgid "Remember me"
 msgstr "Zapamatuj si mě"
 
-#: app/user/forms.py:45 app/user/forms.py:50
+#: app/user/forms.py:46 app/user/forms.py:51
 msgid "Invalid email or password"
 msgstr "Špatný email nebo heslo"
 
-#: app/user/forms.py:56
+#: app/user/forms.py:57
 #, python-format
 msgid "You are banned until %(until)s: %(reason)s"
 msgstr "Máš ban do %(until)s: %(reason)s"
 
-#: app/user/forms.py:59
+#: app/user/forms.py:60
 #, python-format
 msgid "You were banned permanently: %(reason)s"
 msgstr "Máš ban navždy: %(reason)s"
 
-#: app/user/forms.py:65
+#: app/user/forms.py:66
 msgid "This account is not active."
 msgstr "Tento účet není aktivní"
 
-#: app/user/forms.py:73
+#: app/user/forms.py:74
 msgid "First name"
 msgstr "Jméno"
 
-#: app/user/forms.py:76
+#: app/user/forms.py:77
 msgid "Last name"
 msgstr "Příjmení"
 
-#: app/user/forms.py:84
+#: app/user/forms.py:85
 msgid "Repeat password"
 msgstr "Heslo znovu"
 
-#: app/user/forms.py:87 app/user/forms.py:111 app/user/forms.py:190
+#: app/user/forms.py:88 app/user/forms.py:112 app/user/forms.py:191
 msgid "Passwords must match"
 msgstr "Hesla musí být stejná"
 
-#: app/user/forms.py:89
+#: app/user/forms.py:90
 msgid "Register"
 msgstr "Zaregistrovat"
 
-#: app/user/forms.py:95 app/user/forms.py:159
+#: app/user/forms.py:96 app/user/forms.py:160
 msgid "Email already used by existing user"
 msgstr "Tento email je již používán jiným uživatelem"
 
-#: app/user/forms.py:100
+#: app/user/forms.py:101
 msgid "You must agree with page rules"
 msgstr "Musíš souhlasit s pravidly webu"
 
-#: app/user/forms.py:105
+#: app/user/forms.py:106
 msgid "Current password"
 msgstr "Aktuální heslo"
 
-#: app/user/forms.py:106 app/user/forms.py:185
+#: app/user/forms.py:107 app/user/forms.py:186
 msgid "New password"
 msgstr "Nové heslo"
 
-#: app/user/forms.py:108 app/user/forms.py:187
+#: app/user/forms.py:109 app/user/forms.py:188
 msgid "Repeat new password"
 msgstr "Nové heslo znovu"
 
-#: app/user/forms.py:125
+#: app/user/forms.py:126
 msgid "Profile photo"
 msgstr "Profilová fotka"
 
-#: app/user/forms.py:131
+#: app/user/forms.py:132
 msgid "Ban reason"
 msgstr "Důvod banu"
 
-#: app/user/forms.py:134
+#: app/user/forms.py:135
 msgid "Ban length [days]"
 msgstr "Délka banu [dny]"
 
-#: app/user/forms.py:137
+#: app/user/forms.py:138
 msgid "Ban permanently"
 msgstr "Trvalý ban"
 
-#: app/user/forms.py:139
+#: app/user/forms.py:140
 msgid "Ban!"
 msgstr "Ban!"
 
-#: app/user/forms.py:144
+#: app/user/forms.py:145
 msgid "Name of the person"
 msgstr "Jméno osoby"
 
-#: app/user/forms.py:151
+#: app/user/forms.py:152
 msgid "Invitation reason"
 msgstr "Důvod pozvánky"
 
-#: app/user/forms.py:154
+#: app/user/forms.py:155
 msgid "Send Invitation"
 msgstr "Odeslat pozvánky"
 
-#: app/user/forms.py:161
+#: app/user/forms.py:162
 msgid "This email was already invited"
 msgstr "Tento email byl již pozván"
 
-#: app/user/forms.py:169
+#: app/user/forms.py:170
 msgid "Set Role"
 msgstr "Nastavit roli"
 
-#: app/user/forms.py:180
+#: app/user/forms.py:181
 msgid "User does not exist."
 msgstr "Uživatel neexistuje"
 
@@ -1439,17 +1443,14 @@ msgstr "Nemůžete změnit svoji vlastní roli"
 msgid "Changed role of %(user)s to %(role)s"
 msgstr "Role uživatele %(user)s změněna na %(role)s"
 
-#: app/utils/fields.py:24
+#: app/utils/fields.py:25
 msgid "Choices cannot be None."
 msgstr "Výběr nemůže být prázdný"
 
-#: app/utils/fields.py:36
-#, python-format
-msgid "'%(value)s' is not a valid choice for this field."
-msgid_plural "'%(value)s' are not valid choices for this field."
-msgstr[0] "Alespoň jedna položka musí být vybrána."
-msgstr[1] "'%(value)s' není validní volba."
-msgstr[2] "'%(value)s' nejsou validní volby."
+#: app/utils/fields.py:34
+#, fuzzy, python-format
+msgid "'%(value)s' is not a valid choice."
+msgstr "Alespoň jedna položka musí být vybrána."
 
 #: app/utils/validators.py:29
 msgid "Not an allowed file format"
