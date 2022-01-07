@@ -479,6 +479,7 @@ def photo_edit(photo_id: int):
     if request.method == 'GET':
         form.name.data = photo.name
         form.description.data = photo.description
+        form.taken_on.data = photo.created
     elif form.validate_on_submit():
         photo.name = form.name.data
         photo.description = form.description.data
