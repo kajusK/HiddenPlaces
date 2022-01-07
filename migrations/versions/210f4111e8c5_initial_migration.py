@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: ee37c81afa6e
+Revision ID: 210f4111e8c5
 Revises:
-Create Date: 2021-12-29 08:57:17.948710
+Create Date: 2022-01-07 13:39:12.289630
 
 """
 from alembic import op
@@ -11,7 +11,7 @@ import app
 
 
 # revision identifiers, used by Alembic.
-revision = 'ee37c81afa6e'
+revision = '210f4111e8c5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -27,9 +27,9 @@ def upgrade():
     )
     op.create_table('underground',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('type', sa.Enum('OTHER', 'MINE', 'SHAFT', 'ADIT', 'PINGE', 'QUARRY', 'SHELTER', 'MILITARY_UNDERGROUND', 'URBAN_UNDERGROUND', 'MILL_RACE', 'DRAINAGE', 'TUNNEL', name='undergroundtype'), nullable=False),
-    sa.Column('state', sa.Enum('UNKNOWN', 'WORKING', 'MUSEUM', 'PRESERVED', 'NOT_BAD', 'BAD', 'DEMOLISHED', name='undergroundstate'), nullable=False),
-    sa.Column('accessibility', sa.Enum('INACCESSIBLE', 'WORKING', 'GUIDED_TOURS', 'GUARDED', 'LOCKED', 'FREELY_ACCESSIBLE', 'DIGGING_REQUIRED', name='undergroundaccessibility'), nullable=True),
+    sa.Column('type', sa.Integer(), nullable=False),
+    sa.Column('state', sa.Integer(), nullable=False),
+    sa.Column('accessibility', sa.Integer(), nullable=True),
     sa.Column('tools', sa.String(length=32), nullable=True),
     sa.Column('length', sa.Integer(), nullable=True),
     sa.Column('geofond_id', sa.Integer(), nullable=True),
@@ -39,9 +39,9 @@ def upgrade():
     )
     op.create_table('urbex',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('type', sa.Enum('OTHER', 'HOUSE', 'MANSION', 'RECREATION', 'ARMY', 'FACTORY', 'TECHNOLOGY', name='urbextype'), nullable=False),
-    sa.Column('state', sa.Enum('UNKNOWN', 'LIKE_USED', 'FURNISHED', 'CLEANED_OUT', 'FALLING_APART', 'DEMOLISHED', 'UNDER_RESTORE', 'RESTORED', 'MUSEUM', name='urbexstate'), nullable=False),
-    sa.Column('accessibility', sa.Enum('INACCESSIBLE', 'GUIDED_TOURS', 'GUARDED', 'MONITORED', 'FREELY_ACCESSIBLE', name='urbexaccessibility'), nullable=True),
+    sa.Column('type', sa.Integer(), nullable=False),
+    sa.Column('state', sa.Integer(), nullable=False),
+    sa.Column('accessibility', sa.Integer(), nullable=True),
     sa.Column('abandoned_year', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('id')
@@ -57,7 +57,7 @@ def upgrade():
     sa.Column('active', sa.Boolean(), nullable=False),
     sa.Column('about', sa.String(length=10000), nullable=True),
     sa.Column('photo_path', sa.String(length=64), nullable=True),
-    sa.Column('role', sa.Enum('ROOT', 'ADMIN', 'MODERATOR', 'CONTRIBUTOR', 'USER', 'NEWBIE', name='userrole'), nullable=False),
+    sa.Column('role', sa.Integer(), nullable=False),
     sa.Column('event_check_ts', sa.DateTime(), nullable=False),
     sa.Column('location_check_ts', sa.DateTime(), nullable=False),
     sa.Column('login_check_ts', sa.DateTime(), nullable=False),
@@ -89,8 +89,8 @@ def upgrade():
     op.create_table('event_log',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('timestamp', sa.DateTime(), nullable=False),
-    sa.Column('type', sa.Enum('OTHER', 'CREATE', 'MODIFY', 'DELETE', name='eventtype'), nullable=False),
-    sa.Column('severity', sa.Enum('LOW', 'NORMAL', 'HIGH', 'CRITICAL', name='eventseverity'), nullable=False),
+    sa.Column('type', sa.Integer(), nullable=False),
+    sa.Column('severity', sa.Integer(), nullable=False),
     sa.Column('text', sa.Text(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
@@ -103,7 +103,7 @@ def upgrade():
     sa.Column('name', sa.String(length=85), nullable=False),
     sa.Column('reason', sa.String(length=1024), nullable=False),
     sa.Column('created', sa.DateTime(), nullable=False),
-    sa.Column('state', sa.Enum('WAITING', 'APPROVED', 'REGISTERED', 'TIMED_OUT', 'DENIED', name='invitationstate'), nullable=False),
+    sa.Column('state', sa.Integer(), nullable=False),
     sa.Column('invited_by_id', sa.Integer(), nullable=False),
     sa.Column('approved_by_id', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
@@ -116,7 +116,7 @@ def upgrade():
     op.create_table('login_log',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('email', sa.String(length=128), nullable=False),
-    sa.Column('result', sa.Enum('SUCCESS', 'NOT_ACTIVE', 'BANNED', 'INVALID_PASSWORD', 'INVALID_EMAIL', name='loginresult'), nullable=False),
+    sa.Column('result', sa.Integer(), nullable=False),
     sa.Column('ip', sa.String(length=46), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('system', sa.String(length=64), nullable=True),
@@ -130,7 +130,7 @@ def upgrade():
     op.create_index(op.f('ix_login_log_result'), 'login_log', ['result'], unique=False)
     op.create_table('material',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('type', sa.Enum('OTHER', 'COAL', 'LIGNITE', 'URANIUM', 'FIRE_CLAY', 'KAOLINITE', 'SAND', 'GRAPHITE', 'IRON', 'GOLD', 'COPPER', 'SILVER', 'TIN', 'SLATE', 'BARYTE', 'FLUORITE', 'FELDSPAR', name='materialtype'), nullable=False),
+    sa.Column('type', sa.Integer(), nullable=False),
     sa.Column('underground_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['underground_id'], ['underground.id'], ),
     sa.PrimaryKeyConstraint('id'),
@@ -154,7 +154,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(length=32), nullable=False),
     sa.Column('description', sa.String(length=1024), nullable=True),
-    sa.Column('type', sa.Enum('OTHER', 'PHOTO', 'HISTORICAL_PHOTO', 'MAP', 'ARTICLE', 'BOOK', 'DOCUMENT', name='uploadtype'), nullable=False),
+    sa.Column('type', sa.Integer(), nullable=False),
     sa.Column('path', sa.String(length=256), nullable=False),
     sa.Column('created', sa.DateTime(), nullable=False),
     sa.Column('object_uuid', app.database.UUID(length=16), nullable=True),
@@ -175,7 +175,7 @@ def upgrade():
     sa.Column('latitude', app.database.Latitude(), nullable=False),
     sa.Column('longitude', app.database.Longitude(), nullable=False),
     sa.Column('published', sa.Boolean(), nullable=False),
-    sa.Column('country', sa.Enum('OTHER', 'CZECHIA', 'SLOVAKIA', 'POLAND', 'GERMANY', 'AUSTRIA', name='country'), nullable=False),
+    sa.Column('country', sa.Integer(), nullable=False),
     sa.Column('parent_id', sa.Integer(), nullable=True),
     sa.Column('owner_id', sa.Integer(), nullable=False),
     sa.Column('photo_id', sa.Integer(), nullable=True),

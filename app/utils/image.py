@@ -1,8 +1,7 @@
 """Image helpers."""
 import os
 from typing import Union
-from datetime import datetime
-from PIL import Image, ExifTags
+from PIL import Image
 from werkzeug.datastructures import FileStorage
 
 
