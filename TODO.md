@@ -27,7 +27,6 @@
 * Discussion for locations
 * Location concepts - simple UI to create location from field, update and save as final location afterwards
 * Guess duplicates - inform user there's a location nearby already when creating
-* Add POI (parking space, area entrance, shafts to the mine,...)
 * Keep history of location changes, allow reverting
 * Find corresponding geofond ID when creating object by GPS (nearby mines) and suggest it.
 * Add importer from other sites - Geofond, podzemi.org, archiv.dolovani.cz
