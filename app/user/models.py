@@ -8,7 +8,7 @@ from sqlalchemy.orm import Query, backref
 from flask import request, current_app as app
 from flask_login import UserMixin
 
-from app.database import DBItem, db
+from app.database import DBItem, db, IntEnum
 from app.extensions import bcrypt
 from app.utils.geolocation import GeoIp
 from app.utils.utils import get_visitor_ip
@@ -30,7 +30,7 @@ class User(DBItem, UserMixin):
     active = db.Column(db.Boolean(), default=True, nullable=False)
     about = db.Column(db.String(constants.MAX_ABOUT_LEN), default='')
     photo_path = db.Column(db.String(64))
-    role = db.Column(db.Enum(UserRole), default=UserRole.NEWBIE,
+    role = db.Column(IntEnum(UserRole), default=UserRole.NEWBIE,
                      nullable=False)
 
     # Time when the corresponding table was last checked
@@ -173,7 +173,7 @@ class Invitation(DBItem):
 
     reason = db.Column(db.String(constants.MAX_REASON_LEN), nullable=False)
     created = db.Column(db.DateTime(), nullable=False, default=datetime.utcnow)
-    state = db.Column(db.Enum(InvitationState), nullable=False,
+    state = db.Column(IntEnum(InvitationState), nullable=False,
                       default=InvitationState.WAITING)
 
     invited_by_id = db.Column(db.Integer(), db.ForeignKey('user.id'),
@@ -248,7 +248,7 @@ class Invitation(DBItem):
 class LoginLog(DBItem):
     """Table for login attempts logging."""
     email = db.Column(db.String(constants.MAX_EMAIL_LEN), nullable=False)
-    result = db.Column(db.Enum(LoginResult), nullable=False, index=True)
+    result = db.Column(IntEnum(LoginResult), nullable=False, index=True)
     ip = db.Column(db.String(46), nullable=False)
     # In case of success, also logs user that logged in
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))

@@ -10,10 +10,10 @@ MAX_PATH_LEN = 256
 
 class UploadType(StringEnum):
     """Upload file types."""
-    OTHER = 0, _("Other")
-    PHOTO = 1, _("Photo")
-    HISTORICAL_PHOTO = 2, _("Historical photo")
-    MAP = 3, _("Map")
-    ARTICLE = 4, _("Article")
-    BOOK = 5, _("Book")
-    DOCUMENT = 6, _("Document")
+    OTHER = _("Other")
+    PHOTO = _("Photo")
+    HISTORICAL_PHOTO = _("Historical photo")
+    MAP = _("Map")
+    ARTICLE = _("Article")
+    BOOK = _("Book")
+    DOCUMENT = _("Document")

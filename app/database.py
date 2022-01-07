@@ -142,3 +142,35 @@ class UUID(types.TypeDecorator):
         if not isinstance(value, uuid.UUID):
             value = uuid.UUID(bytes=value)
         return value
+
+
+class IntEnum(types.TypeDecorator):
+    """Custom enum type, stores enum as Integer"""
+    impl = types.Integer
+    cache_ok = True
+
+    def __init__(self, enum, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._enum = enum
+
+    def process_bind_param(self, value, dialect):
+        """Converts input value to database format.
+
+        Args:
+            value: Value to be converted
+            dialect: Database dialect used
+        Returns:
+            converted value
+        """
+        return value.value
+
+    def process_result_value(self, value, dialect):
+        """Converts database data back to Enum format.
+
+        Args:
+            value: Database value to be converted
+            dialect: Database dialect used
+        Returns:
+            Converted Enum value
+        """
+        return self._enum(value)

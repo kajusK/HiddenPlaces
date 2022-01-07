@@ -8,7 +8,7 @@ from werkzeug.datastructures import FileStorage
 from flask import current_app as app
 from PIL import Image
 
-from app.database import DBItem, db, UUID
+from app.database import DBItem, db, UUID, IntEnum
 from app.upload import constants
 from app.upload.constants import UploadType
 
@@ -21,7 +21,7 @@ class Upload(DBItem):
     """
     name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
     description = db.Column(db.String(constants.MAX_DESCRIPTION_LEN))
-    type = db.Column(db.Enum(UploadType), nullable=False)
+    type = db.Column(IntEnum(UploadType), nullable=False)
     path = db.Column(db.String(constants.MAX_PATH_LEN), nullable=False)
     created = db.Column(db.DateTime(), default=datetime.utcnow, nullable=False)
 

@@ -2,7 +2,7 @@
 from datetime import datetime
 from sqlalchemy.orm import Query
 
-from app.database import DBItem, db
+from app.database import DBItem, db, IntEnum
 from app.admin.constants import EventSeverity, EventType
 from app.admin.events import Event
 from app.user.models import User
@@ -12,8 +12,8 @@ class EventLog(DBItem):
     """Event log record model."""
     timestamp = db.Column(db.DateTime(), default=datetime.utcnow,
                           nullable=False)
-    type = db.Column(db.Enum(EventType), nullable=False)
-    severity = db.Column(db.Enum(EventSeverity), nullable=False)
+    type = db.Column(IntEnum(EventType), nullable=False)
+    severity = db.Column(IntEnum(EventSeverity), nullable=False)
     text = db.Column(db.Text(), nullable=False)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
 

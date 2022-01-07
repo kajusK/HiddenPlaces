@@ -5,15 +5,15 @@ from app.utils.enums import StringEnum
 
 class EventType(StringEnum):
     """Event log record type."""
-    OTHER = 0, _("Other")
-    CREATE = 1, _("Create")
-    MODIFY = 2, _("Modify")
-    DELETE = 3, _("Delete")
+    OTHER = _("Other")
+    CREATE = _("Create")
+    MODIFY = _("Modify")
+    DELETE = _("Delete")
 
 
 class EventSeverity(StringEnum):
     """Severity of the event."""
-    LOW = 0, _("Low")
-    NORMAL = 1, _("Normal")
-    HIGH = 2, _("High")
-    CRITICAL = 3, _("Critical")
+    LOW = _("Low")
+    NORMAL = _("Normal")
+    HIGH = _("High")
+    CRITICAL = _("Critical")

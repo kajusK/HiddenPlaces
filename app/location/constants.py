@@ -21,9 +21,9 @@ class LocationType(Enum):
 
 class Country(StringEnum):
     """Countries list."""
-    OTHER = 0, _("Other")
-    CZECHIA = 1, _("Czechia")
-    SLOVAKIA = 2, _("Slovakia")
-    POLAND = 3, _("Poland")
-    GERMANY = 4, _("Germany")
-    AUSTRIA = 5, _("Austria")
+    OTHER = _("Other")
+    CZECHIA = _("Czechia")
+    SLOVAKIA = _("Slovakia")
+    POLAND = _("Poland")
+    GERMANY = _("Germany")
+    AUSTRIA = _("Austria")

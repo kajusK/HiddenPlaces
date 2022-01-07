@@ -31,17 +31,17 @@ class StringEnum(OrderedEnum):
     """Enum for strings with translations.
 
     Define items like:
-    FOO = 0, _("Translated string")
+    FOO = _("Translated string")
     """
     translation: str  # pylint: disable=invalid-name
 
-    def __new__(cls, value: int, translation: Union[str, LazyString]):
+    def __new__(cls, translation: Union[str, LazyString]):
         """Custom object creation.
 
         Args:
-            value: Numeric value of the item
             translation: Translation string for the item
         """
+        value = len(cls.__members__) + 1
         obj = object.__new__(cls)
         obj._value_ = value
         obj.translation = translation

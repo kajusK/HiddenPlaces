@@ -6,6 +6,6 @@ from app.utils.enums import StringEnum
 
 class PageType(StringEnum):
     """Type of the saved location."""
-    ABOUT = 1, _("About")
-    RULES = 2, _("Rules")
-    SUPPORT = 3, _("Support us")
+    ABOUT = _("About")
+    RULES = _("Rules")
+    SUPPORT = _("Support us")

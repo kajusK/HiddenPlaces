@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import Query
 
-from app.database import DBItem, db, Latitude, Longitude, UUID
+from app.database import DBItem, db, Latitude, Longitude, UUID, IntEnum
 from app.location.constants import Country, LocationType
 from app.location import constants
 from app.upload.constants import UploadType
@@ -37,7 +37,7 @@ class Location(DBItem):
     latitude = db.Column(Latitude(), nullable=False)
     longitude = db.Column(Longitude(), nullable=False)
     published = db.Column(db.Boolean(), nullable=False)
-    country = db.Column(db.Enum(Country), nullable=False)
+    country = db.Column(IntEnum(Country), nullable=False)
 
     parent_id = db.Column(db.Integer(), db.ForeignKey('location.id'))
     owner_id = db.Column(db.Integer(), db.ForeignKey('user.id'),
