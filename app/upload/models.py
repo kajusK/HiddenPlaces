@@ -6,11 +6,11 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 from flask import current_app as app
-from PIL import Image
 
 from app.database import DBItem, db, UUID, IntEnum
 from app.upload import constants
 from app.upload.constants import UploadType
+from app.utils.image import Img
 
 
 class Upload(DBItem):
@@ -38,18 +38,9 @@ class Upload(DBItem):
 
     def _make_thumbnail(self):
         """Creates thumbnail."""
-        destination = get_full_path(self.thumbnail)
-        source = get_full_path(self.path)
-        dest_dir = os.path.dirname(destination)
-
-        image = Image.open(source)
-        size = (app.config['THUMBNAIL_SIZE_PX'],
-                app.config['THUMBNAIL_SIZE_PX'])
-        image.thumbnail(size)
-
-        if not os.path.exists(dest_dir):
-            os.makedirs(dest_dir)
-        image.save(destination, exif=image.info.get('exif', None))
+        dest = get_full_path(self.thumbnail)
+        img = Img(get_full_path(self.path))
+        img.thumbnail(dest, app.config['THUMBNAIL_SIZE_PX'])
 
     def _save_file(self, file: FileStorage, subfolder: str):
         """Stores file to uploads dir, resize if needed
@@ -58,10 +49,10 @@ class Upload(DBItem):
             file: Uploaded file handle
             subfolder: Subfolder under uploads dir to write to
         """
-        reduce = self.type in (UploadType.PHOTO, UploadType.HISTORICAL_PHOTO)
+        is_img = self.type in (UploadType.PHOTO, UploadType.HISTORICAL_PHOTO)
         self.path = save_uploaded_file(file, subfolder, str(uuid.uuid4()),
-                                       reduce)
-        if reduce:
+                                       is_img)
+        if is_img:
             self._make_thumbnail()
 
     def delete(self):
@@ -150,11 +141,8 @@ def save_uploaded_file(file, subfolder: str, filename: str,
 
     full_path = os.path.join(directory, filename)
     if reduce:
-        with Image.open(file) as image:
-            size = (app.config['IMAGE_MAX_SIZE_PX'],
-                    app.config['IMAGE_MAX_SIZE_PX'])
-            image.thumbnail(size)
-            image.save(full_path, exif=image.info.get('exif', None))
+        img = Img(file)
+        img.thumbnail(full_path, app.config['IMAGE_MAX_SIZE_PX'])
     else:
         file.save(full_path)
     return os.path.join(subfolder, filename)
