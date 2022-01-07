@@ -61,6 +61,7 @@ class Location(DBItem):
     photo = db.relationship('Upload', post_update=True, foreign_keys=photo_id)
     links = db.relationship('Link', lazy='selectin',
                             cascade='all,delete-orphan')
+    pois = db.relationship('POI', lazy='selectin', cascade='all,delete-orphan')
     uploads = db.relationship(
         'Upload', primaryjoin="Location.uuid==foreign(Upload.object_uuid)",
         cascade='all,delete-orphan')
@@ -185,6 +186,21 @@ class Link(DBItem):
     """Table of links related to the location."""
     name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
     url = db.Column(db.String(constants.MAX_URL_LEN), nullable=False)
+
+    created_by_id = db.Column(db.Integer(), db.ForeignKey('user.id'),
+                              nullable=False)
+    location_id = db.Column(db.Integer(), db.ForeignKey('location.id'),
+                            nullable=False)
+
+    created_by = db.relationship('User')
+
+
+class POI(DBItem):
+    """Table of points of interest"""
+    name = db.Column(db.String(constants.MAX_NAME_LEN), nullable=False)
+    latitude = db.Column(Latitude(), nullable=False)
+    longitude = db.Column(Longitude(), nullable=False)
+    description = db.Column(db.String(constants.MAX_SHORT_DESC_LEN))
 
     created_by_id = db.Column(db.Integer(), db.ForeignKey('user.id'),
                               nullable=False)

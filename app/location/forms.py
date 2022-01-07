@@ -85,6 +85,18 @@ class LinkForm(FlaskForm):
     submit = SubmitField(_("Save"))
 
 
+class POIForm(FlaskForm):
+    """Point of interest form."""
+    name = StringField(
+        _("Name"),
+        [InputRequired(), Length(min=3, max=constants.MAX_NAME_LEN)])
+    description = StringField(
+        _("Description"), [Length(max=constants.MAX_SHORT_DESC_LEN)])
+    latitude = StringField(_("Latitude"), [InputRequired(), latitude()])
+    longitude = StringField(_("Longitude"), [InputRequired(), longitude()])
+    submit = SubmitField(_("Save"))
+
+
 class VisitForm(FlaskForm):
     """Log visit form."""
     comment = TextAreaField(_("Comment"),

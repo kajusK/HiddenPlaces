@@ -48,6 +48,7 @@
             {{ link_button(_('Document'), Url.for_return('location.document_add', location_id=location.id), 'file-earmark-plus', 'outline-success') }}
             {{ link_button(_('Photo'), Url.for_return('location.photo_add', location_id=location.id), 'camera-fill', 'outline-success') }}
             {{ link_button(_('Link'), Url.for_return('location.link_add', location_id=location.id), 'link', 'outline-success') }}
+            {{ link_button(_('POI'), Url.for_return('location.poi_add', location_id=location.id), 'geo-alt', 'outline-success') }}
             <!-- TODO add parent, child -->
         </div>
     </div>
@@ -140,6 +141,24 @@
                         <a href="{{ Url.get('upload.get', path=item.path) }}" class="stretched-link"></a>
                     </div>
                     {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if location.pois | length %}
+        <div class="card content-card">
+            <div class="card-header">
+                {{ _('POI') }}
+            </div>
+            <div class="list-group list-group-flush">
+                {% for poi in location.pois %}
+                <div class="list-group-item list-group-item-action position-relative control-hover">
+                    {{ link_button('', Url.for_return('location.poi_remove', poi_id=poi.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0 foreground-item control-hide') }}
+                    <strong>{{ poi.name }}</strong>
+                    <p class="mb-0 text-muted">{{ poi.description }}</p>
+                    <a href="https://mapy.cz/zakladni?&q={{ poi.latitude }}%2C%20{{ poi.longitude }}" class="stretched-link"></a>
+                </div>
                 {% endfor %}
             </div>
         </div>

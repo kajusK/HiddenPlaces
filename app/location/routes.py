@@ -12,8 +12,8 @@ from app.decorators import moderator
 from app.utils.pagination import Pagination
 from app.utils.utils import redirect_return
 from app.location.forms import VisitForm, DocumentForm, PhotoForm, LinkForm, \
-     PhotoEditForm, BookmarkForm, DocumentEditForm
-from app.location.models import Location, Visit, Link, Bookmarks
+     PhotoEditForm, BookmarkForm, DocumentEditForm, POIForm
+from app.location.models import Location, Visit, Link, Bookmarks, POI
 from app.location.utils import LocationUtil
 from app.location.constants import LocationType
 from app.location.underground.forms import UndergroundForm
@@ -619,6 +619,50 @@ def link_remove(link_id: int):
         abort(404)
 
     link.delete()
+    db.session.commit()
+    return redirect_return()
+
+
+@blueprint.route('/poi/add/<int:location_id>', methods=['GET', 'POST'])
+def poi_add(location_id: int):
+    """Renders form for adding a new POI
+
+    Args:
+        location_id: ID of the location the POI belongs to
+    """
+    location = Location.get_by_id(location_id)
+    if not location:
+        abort(404)
+
+    form = POIForm()
+    if form.validate_on_submit():
+        POI.create(
+            location_id=location.id,
+            name=form.name.data,
+            description=form.description.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data,
+            created_by=current_user)
+
+        db.session.commit()
+        flash(_("New POI added"), 'success')
+        return redirect_return()
+
+    return render_template('location/poi.html', form=form, location=location)
+
+
+@blueprint.route('/poi/remove/<int:poi_id>')
+def poi_remove(poi_id: int):
+    """Removes POI record
+
+    Args:
+        poi_id: ID of the POI to be removed
+    """
+    poi = POI.get_by_id(poi_id)
+    if not poi:
+        abort(404)
+
+    poi.delete()
     db.session.commit()
     return redirect_return()
 
