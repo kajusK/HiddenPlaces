@@ -1,7 +1,7 @@
 """Custom enum types."""
 from enum import Enum
-from flask_babel import LazyString
 from typing import Optional, Union
+from flask_babel import LazyString
 
 
 class OrderedEnum(Enum):

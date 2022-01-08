@@ -6,6 +6,7 @@ from sqlalchemy.orm import Query
 
 from app.database import DBItem, db, Latitude, Longitude, UUID, IntEnum
 from app.location.constants import Country, LocationType
+from app.category.models import category_association
 from app.location import constants
 from app.upload.constants import UploadType
 from app.user.models import User
@@ -49,11 +50,6 @@ class Location(DBItem):
     underground_id = db.Column(db.Integer(), db.ForeignKey('underground.id'),
                                unique=True)
 
-    parent = db.relationship('Location', back_populates='children',
-                             foreign_keys=parent_id)
-    children = db.relationship('Location', back_populates='parent',
-                               remote_side='Location.id')
-
     underground = db.relationship('Underground')
     urbex = db.relationship('Urbex')
 
@@ -67,6 +63,8 @@ class Location(DBItem):
         cascade='all,delete-orphan')
     visits = db.relationship('Visit', back_populates='location',
                              cascade='all,delete-orphan')
+    categories = db.relationship('Category', secondary=category_association,
+                                 lazy="dynamic")
 
     @classmethod
     def _filter(cls, query, loc_type: LocationType) -> Query:

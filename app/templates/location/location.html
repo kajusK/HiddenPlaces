@@ -7,13 +7,18 @@
     <div class="col-auto">
         <h1>
             {{ location.name }}
-            {% if location.parent %}
-            (<a href="{{ Url.get('location.show', location_id=location.parent.id) }}">{{ location.parent.name }}</a>)
-            {% endif %}
             {% if not location.published %}
             <span class="text-danger">{{ _('Not published') }}</span>
             {% endif %}
         </h1>
+        {% if location.categories.count() != 0 %}
+        <h2>
+            {% set comma = joiner(', ') %}
+            ({%- for category in location.categories.all() -%}
+                {{ comma() }}<a href="{{ Url.get('category.show', category_id=category.id) }}">{{ category.name }}</a>
+            {%- endfor -%})
+        </h2>
+        {% endif %}
         <h3>{{ location.underground.type or location.urbex.type }}, {{ location.underground.accessibility or location.urbex.accessibility }}</h3>
         <small clas="text-muted">
             <i class="bi bi-geo-alt"></i>
@@ -49,7 +54,6 @@
             {{ link_button(_('Photo'), Url.for_return('location.photo_add', location_id=location.id), 'camera-fill', 'outline-success') }}
             {{ link_button(_('Link'), Url.for_return('location.link_add', location_id=location.id), 'link', 'outline-success') }}
             {{ link_button(_('POI'), Url.for_return('location.poi_add', location_id=location.id), 'geo-alt', 'outline-success') }}
-            <!-- TODO add parent, child -->
         </div>
     </div>
 </div>

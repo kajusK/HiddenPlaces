@@ -6,6 +6,7 @@ from flask import Flask, request, redirect, url_for, flash, current_app,\
 from flask_login import current_user
 
 import app.user.routes as user
+import app.category.routes as category
 import app.location.routes as location
 import app.admin.routes as admin
 import app.page.routes as page
@@ -17,6 +18,7 @@ from app.utils.utils import Url
 from app.user.models import User, Invitation, LoginLog
 from app.user.constants import InvitationState
 from app.location.models import Bookmarks, Location
+from app.category.models import Category
 from app.admin.models import EventLog
 from app.message.models import Thread
 from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka,\
@@ -56,6 +58,7 @@ def create_app(config_object: str = 'app.config.Config') -> Flask:
     # register routes
     app.register_blueprint(user.blueprint)
     app.register_blueprint(location.blueprint)
+    app.register_blueprint(category.blueprint)
     app.register_blueprint(upload.blueprint)
     app.register_blueprint(admin.blueprint)
     app.register_blueprint(page.blueprint)
@@ -100,6 +103,14 @@ def register_template_context(app: Flask) -> None:
         if current_user.is_authenticated:
             bookmarks = Bookmarks.get_by_user(current_user).all()
         return dict(user_bookmarks=bookmarks)
+
+    @app.context_processor
+    def jinja_categories():
+        """Registers list of user bookmarks."""
+        categories = []
+        if current_user.is_authenticated:
+            categories = Category.get().all()
+        return dict(categories=categories)
 
     @app.context_processor
     def jinja_alerts_count():

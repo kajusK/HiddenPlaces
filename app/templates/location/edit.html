@@ -1,7 +1,5 @@
 {% if location %}
     {% set title=_('Edit location %(name)s', name=location.name) %}
-{% elif parent %}
-    {% set title=_('Add new child for %(name)s', name=parent.name) %}
 {% else %}
     {% set title=_('Add a new location') %}
 {% endif %}
@@ -52,6 +50,7 @@
                     {{ link_button(_('Select from map'), '#', None, 'secondary btn-sm')}}
                 </div>
 
+                {{ render_field(form.categories, 'bookmarks', field_class="dselect", required=False) }}
                 {{ render_field(form.country, 'flag', field_class="dselect") }}
 
                 {% if 'underground' in request.url or (location and location.underground) %}

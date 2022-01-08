@@ -97,19 +97,12 @@ def show(location_id: int, name: str = None):
 
 
 @blueprint.route('/add/<string:type_str>', methods=['GET', 'POST'])
-@blueprint.route('/add/<string:type_str>/<int:parent_id>',
-                 methods=['GET', 'POST'])
-def add(type_str: str, parent_id: Optional[int] = None):
+def add(type_str: str):
     """Renders form for adding new location record
 
     Args:
         type_str: Type of the location
-        parent_id: ID of the parent location if creating child
     """
-    parent = None
-    if parent_id:
-        parent = Location.get_by_id(parent_id)
-
     loc_type = _get_loc_type(type_str)
     util: LocationUtil
     if loc_type == LocationType.UNDERGROUND:
@@ -128,9 +121,9 @@ def add(type_str: str, parent_id: Optional[int] = None):
             about=form.about.data,
             latitude=form.latitude.data,
             longitude=form.longitude.data,
+            categories=form.categories.data,
             country=form.country.data,
             published=int(form.published.data),
-            parent_id=parent_id,
             owner=current_user,
         )
         util.create(location, form)
@@ -150,7 +143,7 @@ def add(type_str: str, parent_id: Optional[int] = None):
         flash(_("New location created"), 'success')
         return redirect(url_for('location.show', location_id=location.id))
 
-    return render_template('location/edit.html', form=form, parent=parent)
+    return render_template('location/edit.html', form=form)
 
 
 @blueprint.route('/delete/<int:location_id>')
@@ -199,6 +192,7 @@ def edit(location_id: int):
         form.about.data = location.about
         form.latitude.data = location.latitude
         form.longitude.data = location.longitude
+        form.categories.data = location.categories.all()
         form.country.data = location.country
         form.published.data = '0' if not location.published else '1'
         util.load(location, form)
@@ -208,6 +202,7 @@ def edit(location_id: int):
         location.about = form.about.data
         location.latitude = form.latitude.data
         location.longitude = form.longitude.data
+        location.categories = form.categories.data
         location.country = form.country.data
         location.published = int(form.published.data)
         location.modified = datetime.utcnow()

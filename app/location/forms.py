@@ -11,8 +11,9 @@ from wtforms.validators import InputRequired, Length, URL
 from app.location import constants
 from app.location.models import Bookmarks
 from app.location.constants import Country
+from app.category.models import Category
 from app.upload.constants import UploadType
-from app.utils.fields import MultipleFileField
+from app.utils.fields import MultipleFileField, CustomMultipleField
 from app.utils.validators import image_file, allowed_file, latitude, \
     longitude, date_in_past
 
@@ -35,6 +36,9 @@ class LocationForm(FlaskForm):
     country = SelectField(_("Country"), [InputRequired()],
                           coerce=Country.coerce, choices=Country.choices(),
                           default=Country.CZECHIA)
+    # Categories are filled up in view function
+    categories = CustomMultipleField(_("Categories"), coerce=Category.coerce,
+                                     choices=Category.choices)
     photo = FileField(_("Title photo"), [image_file()])
     submit = SubmitField(_("Save"))
 

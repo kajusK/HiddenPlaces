@@ -8,25 +8,9 @@
     <h1>{{ _('No locations found') }}</h1>
 </div>
 {% else %}
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+<div class="row">
 {% for location in locations %}
-    <div class="col">
-        <div class="card h-100 shadow{% if not location.published %} bg-warning{% endif %}">
-            <a href="{{ Url.get('location.show', location_id=location.id) }}" class="stretched-link"></a>
-
-            {% set image_url = Url.get('static', filename='images/favicon.ico') %}
-            {% if location.photo %}
-                {% set image_url = Url.get('upload.get', path=location.photo.thumbnail) %}
-            {% endif %}
-            <img src="{{ image_url }}" class="card-img-top" alt="Location title image">
-            <div class="card-body">
-                <h4 class="card-title">
-                    <a href="{{ Url.get('location.show', location_id=location.id) }}" class="text-decoration-none link-dark"></a>{{ location.name }}</a>
-                </h4>
-            <p class="card-text text-muted overflow-hidden" style="display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4;">{{ location.description }}</p>
-            </div>
-        </div>
-    </div>
+    {% include 'location/_browse_item.html' %}
 {% endfor %}
 </div>
 

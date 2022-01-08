@@ -1,0 +1,35 @@
+{% if category %}
+    {% set title=_('Edit category %(name)s', name=category.name) %}
+{% else %}
+    {% set title=_('Add a new category') %}
+{% endif %}
+
+{% extends "_private.html" %}
+{% from '_helpers.html' import render_field, render_label, link_button, markdown_description  %}
+
+{% block content %}
+
+<div class="card content-card">
+    <h4 class="card-header">
+        {{ title }}
+    </h4>
+
+    <div class="card-body">
+        <form method="POST" action="" role="form" class="row" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            {{ render_field(form.name, 'pencil', placeholder=_('Category name')) }}
+
+            {{ render_field(form.description, 'card-text', style="min-height: 5em", placeholder=_('Short description of the category'), description=markdown_description) }}
+            {{ render_field(form.about, 'file-earmark-text', style="min-height: 15em", placeholder=_('Category description, history,...'), description=markdown_description) }}
+            {{ render_field(form.photo, 'image') }}
+
+            <div class='text-end mt-2'>
+                {{ link_button(_('Cancel'), Url.get_return(), None, 'danger') }}
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

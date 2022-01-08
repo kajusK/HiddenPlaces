@@ -35,6 +35,13 @@
         {% endfor %}
         {{ menu_block(_("Bookmarks"), "star", bookmark_items, show=('bookmark' in request.url)) }}
 
+        {% set category_items = [] %}
+        {{ category_items.append(menu_item(_("Create new"), "plus-lg", Url.get('category.add'))) or "" }}
+        {% for category in categories %}
+            {{ category_items.append(menu_item(category.name, "", Url.get('category.show', category_id=category.id))) or "" }}
+        {% endfor %}
+        {{ menu_block(_("Categories"), "bookmarks", category_items, show=('category' in request.url)) }}
+
         {{ menu_block(_("Admin"), "shield", [
             menu_item(_("Locations"), "geo-alt", Url.get('admin.locations')),
             menu_item(_("Users"), "people", Url.get('admin.users')),

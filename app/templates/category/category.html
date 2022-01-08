@@ -1,0 +1,66 @@
+{% set title=_("Category: ")+category.name %}
+{% extends "_private.html" %}
+{% from '_helpers.html' import link_button, render_field %}
+
+{% block content %}
+<div class="row justify-content-between">
+    <div class="col-auto">
+        <h1>
+            {{ title }}
+        </h1>
+    </div>
+    <div class="col-auto">
+        <div class="h1">
+            {{ link_button(_('Edit'), Url.for_return('category.edit', category_id=category.id), 'pencil', 'outline-success') }}
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card content-card">
+            <div class="card-header">
+                {{ _('About') }}
+            </div>
+            <div class="card-body">
+                <div>
+                    {{ category.description | markdown }}
+                </div>
+                {% if category.about %}
+                <hr>
+                <div>
+                    {{ category.about | markdown }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card content-card">
+            <div class="card-header">
+                {{ _('Metadata') }}
+            </div>
+            {% if category.photo %}
+            <a href="{{ Url.get('upload.get', path=category.photo.path) }}" data-toggle="lightbox" data-gallery="title">
+                <img class="card-img-top" src="{{ Url.get('upload.get', path=category.photo.thumbnail) }}" alt="Category title image">
+            </a>
+            {% else %}
+            <img class="card-img-top" src="{{ Url.get('static', filename='images/favicon.ico') }}" alt="Category title image">
+            {% endif %}
+
+            <div class="card-body">
+                {{ _('Created') }}: {{ category.created.date() }}<br>
+                {{ _('Last updated') }}: {{ category.modified.date() }}<br>
+                {{ _('Maintainer') }}: <a href="{{ Url.get('user.profile', id=category.owner_id) }}">{{ category.owner }}</a><br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% for location in category.locations.all() %}
+        {% include 'location/_browse_item.html' %}
+    {% endfor %}
+</div>
+
+{% endblock %}

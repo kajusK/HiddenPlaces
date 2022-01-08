@@ -3,6 +3,7 @@ from abc import ABC
 
 from app.page.constants import PageType
 from app.location.models import Location, Visit
+from app.category.models import Category
 from app.user.models import User, Invitation, Ban
 from app.user.constants import UserRole
 from app.admin.constants import EventType, EventSeverity
@@ -144,6 +145,30 @@ class DeleteLocationEvent(Event):
         self.severity = EventSeverity.HIGH
         self.type = EventType.DELETE
         self.text = f"Deleted location {location.name}"
+
+
+#
+# Category events
+#
+class CreateCategoryEvent(Event):
+    def __init__(self, category: Category):
+        self.severity = EventSeverity.LOW
+        self.type = EventType.CREATE
+        self.text = f"Created category {category.name}"
+
+
+class ModifyCategoryEvent(Event):
+    def __init__(self, category: Category):
+        self.severity = EventSeverity.NORMAL
+        self.type = EventType.MODIFY
+        self.text = f"Modified category {category.name}"
+
+
+class DeleteCategoryEvent(Event):
+    def __init__(self, category: Category):
+        self.severity = EventSeverity.HIGH
+        self.type = EventType.DELETE
+        self.text = f"Deleted category {category.name}"
 
 
 #
