@@ -22,7 +22,7 @@
         <h3>{{ location.underground.type or location.urbex.type }}, {{ location.underground.accessibility or location.urbex.accessibility }}</h3>
         <small clas="text-muted">
             <i class="bi bi-geo-alt"></i>
-            {{ location.latitude }} {{ location.longitude }}
+            <a href="https://mapy.cz/zakladni?&q={{ location.latitude }}%2C%20{{ location.longitude }}" target="_blank">{{ location.latitude }} {{ location.longitude }}</a>
         </small>
     </div>
     <div class="col-auto">
@@ -161,7 +161,7 @@
                     {{ link_button('', Url.for_return('location.poi_remove', poi_id=poi.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0 foreground-item control-hide') }}
                     <strong>{{ poi.name }}</strong>
                     <p class="mb-0 text-muted">{{ poi.description }}</p>
-                    <a href="https://mapy.cz/zakladni?&q={{ poi.latitude }}%2C%20{{ poi.longitude }}" class="stretched-link"></a>
+                    <a href="https://mapy.cz/zakladni?&q={{ poi.latitude }}%2C%20{{ poi.longitude }}" class="stretched-link" target="_blank"></a>
                 </div>
                 {% endfor %}
             </div>
