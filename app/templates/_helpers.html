@@ -4,9 +4,14 @@
         {% set label_class = 'form-check-label' %}
     {% endif -%}
 
+    {% set image_class='' %}
+    {% if field.flags.required %}
+        {% set image_class='text-danger' %}
+    {% endif %}
+
     <label class="{{ label_class }} {{ class }}" for="{{ field.id }}">
         {% if image %}
-        <i class="bi bi-{{ image }}"></i>
+        <i class="bi bi-{{ image }} {{ image_class }}"></i>
         {% endif %}
         {{ label or field.label.text }}
     </label>
