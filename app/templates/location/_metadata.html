@@ -23,11 +23,13 @@
             {% endif %}
             {{ _('Abandoned') }}: {{ _('Unknown') if location.underground.abandoned_year == None else location.underground.abandoned_year }} <br>
 
-            {{ _('Materials') }}:
-            {% for material in location.underground.materials %}
-            <a href="#" class="badge bg-secondary text-decoration-none">{{ material.type }}</a>
-            {% endfor %}
-            <br>
+            {% if location.underground.materials | length %}
+                {{ _('Materials') }}:
+                {% for material in location.underground.materials %}
+                <a href="#" class="badge bg-secondary text-decoration-none">{{ material.type }}</a>
+                {% endfor %}
+                <br>
+            {% endif %}
         {% else %}
             {{ _('Abandoned') }}: {{ _('Unknown') if location.urbex.abandoned_year == None else location.urbex.abandoned_year }} <br>
         {% endif %}

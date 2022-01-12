@@ -25,7 +25,7 @@ class UndergroundForm(LocationForm):
                                 coerce=UndergroundAccessibility.coerce,
                                 choices=[('', _("Location accessibility"))]
                                 + UndergroundAccessibility.choices())
-    materials = CustomMultipleField(_("Materials"), [InputRequired()],
+    materials = CustomMultipleField(_("Materials"),
                                     coerce=MaterialType.coerce,
                                     choices=[('', _("Select mined materials"))]
                                     + MaterialType.choices())
