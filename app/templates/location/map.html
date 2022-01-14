@@ -1,0 +1,24 @@
+{% set title=_('Map') %}
+
+{% set js_scripts = [
+    'leaflet/leaflet.js',
+    'leaflet/plugins/markercluster/leaflet.markercluster.js',
+    'js/map.js',
+    ]
+%}
+
+{% set stylesheets = [
+    'leaflet/leaflet.css',
+    'leaflet/plugins/markercluster/MarkerCluster.css',
+    'leaflet/plugins/markercluster/MarkerCluster.Default.css',
+    ]
+%}
+
+{% extends "_private.html" %}
+
+{% block content %}
+<div id="map" style="min-height: 400px; height: 100%"></div>
+<script>
+    var map_api_url = "{{ Url.get('location.api', type_str=loc_type) }}"
+</script>
+{% endblock %}

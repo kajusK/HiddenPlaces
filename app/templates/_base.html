@@ -20,10 +20,13 @@
     <meta name="apple-mobile-web-app-title" content="{{ _('Hidden places') }}"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
 
-    <link rel="stylesheet" href="{{ Url.get('static', filename='css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ Url.get('static', filename='css/dselect.min.css') }}">
-    <link rel="stylesheet" href="{{ Url.get('static', filename='css/custom.css') }}">
+    <link rel="stylesheet" href="{{ Url.get('static', filename='bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ Url.get('static', filename='dselect/dselect.min.css') }}">
     <link rel="stylesheet" href="{{ Url.get('static', filename='bootstrap/icons/bootstrap-icons.css') }}">
+    {% for stylesheet in stylesheets %}
+        <link rel="stylesheet" href="{{ Url.get('static', filename=stylesheet) }}">
+    {% endfor %}
+    <link rel="stylesheet" href="{{ Url.get('static', filename='css/custom.css') }}">
     <link rel="shortcut icon" type="image/jpg" href="{{ Url.get('static', filename='images/favicon.ico') }}"/>
 
     <!--
@@ -46,11 +49,14 @@
         {% block wrapper %}
         {% endblock %}
     </div>
-    <script src="{{ Url.get('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ Url.get('static', filename='js/dselect.min.js') }}"></script>
+    <script src="{{ Url.get('static', filename='bootstrap/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ Url.get('static', filename='dselect/dselect.min.js') }}"></script>
     <script src="{{ Url.get('static', filename='js/bs5-lightbox.min.js') }}"></script>
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
+    {% for script in js_scripts %}
+        <script src="{{ Url.get('static', filename=script) }}"></script>
+    {% endfor %}
     <script src="{{ Url.get('static', filename='js/custom.js') }}"></script>
 </body>
 </html>

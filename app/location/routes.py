@@ -1,4 +1,5 @@
 """Routes for location module."""
+import json
 from typing import Optional
 from datetime import datetime
 from flask import Blueprint, render_template, request, abort, redirect, \
@@ -10,7 +11,7 @@ from flask_babel import _
 from app.database import db
 from app.decorators import moderator
 from app.utils.pagination import Pagination
-from app.utils.utils import redirect_return
+from app.utils.utils import redirect_return, Url
 from app.location.forms import VisitForm, DocumentForm, PhotoForm, LinkForm, \
      PhotoEditForm, BookmarkForm, DocumentEditForm, POIForm
 from app.location.models import Location, Visit, Link, Bookmarks, POI
@@ -736,3 +737,38 @@ def bookmark_remove(bookmarks_id: int, location_id: int):
     flash(_("Removed from bookmark list: %(name)s", name=bookmarks.name),
           'success')
     return redirect_return()
+
+
+@blueprint.route('/map')
+@blueprint.route('/map/<string:type_str>')
+def browse_map(type_str: Optional[str] = None):
+    """Renders locations in map
+
+    Args:
+        type: Type of the location
+    """
+    return render_template('location/map.html', loc_type=type_str)
+
+
+@blueprint.route('/api')
+@blueprint.route('/api/<string:type_str>')
+def api(type_str: Optional[str] = None):
+    loc_type = _get_loc_type(type_str)
+    locations = Location.get(loc_type).all()
+    results = []
+
+    for location in locations:
+        if location.photo:
+            image_url = Url.get('upload.get', path=location.photo.thumbnail)
+        else:
+            image_url = Url.get('static', filename='images/favicon.ico')
+        results.append({
+            'id': location.id,
+            'name': location.name,
+            'image': str(image_url),
+            'description': location.description,
+            'latitude': location.latitude.value,
+            'longitude': location.longitude.value,
+        })
+
+    return json.dumps({'locations': results})

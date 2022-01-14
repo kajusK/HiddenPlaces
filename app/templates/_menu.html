@@ -9,12 +9,12 @@
 
     <ul class="list-unstyled">
         {{ menu_item(_("Browse"), 'book', Url.get('location.browse')) }}
-        {{ menu_item(_("Map"), 'map', '#') }}
+        {{ menu_item(_("Map"), 'map', Url.get('location.browse_map')) }}
 
         {{ menu_block(_("Underground"), "minecart-loaded", [
             menu_item(_("Create new"), "plus-lg", Url.get('location.add', type_str='underground')),
             menu_item(_("Browse"), "book", Url.get('location.browse', type_str='underground')),
-            menu_item(_("Show on map"), "map", '#'),
+            menu_item(_("Show on map"), "map", Url.get('location.browse_map', type_str='underground')),
             menu_item(_("My locations"), "geo", Url.get('location.owned', type_str='underground')),
             menu_item(_("Visited"), "pin", Url.get('location.visited', type_str='underground')),
             ], show=('underground' in request.url))
@@ -23,7 +23,7 @@
         {{ menu_block(_("Urbex"), "building", [
             menu_item(_("Create new"), "plus-lg", Url.get('location.add', type_str='urbex')),
             menu_item(_("Browse"), "book", Url.get('location.browse', type_str='urbex')),
-            menu_item(_("Show on map"), "map", '#'),
+            menu_item(_("Show on map"), "map", Url.get('location.browse_map', type_str='urbex')),
             menu_item(_("My locations"), "geo", Url.get('location.owned', type_str='urbex')),
             menu_item(_("Visited"), "pin", Url.get('location.visited', type_str='urbex')),
             ], show=('urbex' in request.url))
