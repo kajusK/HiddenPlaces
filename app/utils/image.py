@@ -26,7 +26,10 @@ class Img:
         """
         self.image.thumbnail((max_size, max_size))
         self._mkdir(dest)
-        self.image.save(dest, exif=self.image.info.get('exif', None))
+        params = {}
+        if 'exif' in self.image.info:
+            params['exif'] = self.image.info['exif']
+        self.image.save(dest, **params)
 
     def _mkdir(self, path: str) -> None:
         """Creates target directory if doesn't exist yet.
