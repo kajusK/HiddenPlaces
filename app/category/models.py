@@ -32,10 +32,10 @@ class Category(DBItem):
     owner = db.relationship('User')
     photo = db.relationship('Upload', post_update=True, foreign_keys=photo_id)
     uploads = db.relationship(
-        'Upload', primaryjoin="Category.uuid==foreign(Upload.object_uuid)",
+        'Upload', primaryjoin='Category.uuid==foreign(Upload.object_uuid)',
         cascade='all,delete-orphan')
     locations = db.relationship('Location', secondary=category_association,
-                                lazy="dynamic")
+                                lazy='dynamic', back_populates='categories')
 
     @classmethod
     def get(cls) -> Query:

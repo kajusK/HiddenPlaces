@@ -59,12 +59,12 @@ class Location(DBItem):
                             cascade='all,delete-orphan')
     pois = db.relationship('POI', lazy='selectin', cascade='all,delete-orphan')
     uploads = db.relationship(
-        'Upload', primaryjoin="Location.uuid==foreign(Upload.object_uuid)",
+        'Upload', primaryjoin='Location.uuid==foreign(Upload.object_uuid)',
         cascade='all,delete-orphan')
     visits = db.relationship('Visit', back_populates='location',
                              cascade='all,delete-orphan')
     categories = db.relationship('Category', secondary=category_association,
-                                 lazy="dynamic")
+                                 lazy='dynamic', back_populates='locations')
 
     @classmethod
     def _filter(cls, query, loc_type: LocationType) -> Query:
