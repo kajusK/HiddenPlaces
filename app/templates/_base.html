@@ -36,18 +36,20 @@
 </head>
 <body>
     <div class='container-fluid h-100 p-0 m-0'>
-        <header>
-            {% set messages = get_flashed_messages(with_categories=True) %}
-            {% for category, msg in messages %}
-            <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
-                {{ msg }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
-        </header>
+        <div class="h-100 d-flex flex-column">
+            <header>
+                {% set messages = get_flashed_messages(with_categories=True) %}
+                {% for category, msg in messages %}
+                <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+                    {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            </header>
 
-        {% block wrapper %}
-        {% endblock %}
+            {% block wrapper %}
+            {% endblock %}
+        </div>
     </div>
     <script src="{{ Url.get('static', filename='bootstrap/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ Url.get('static', filename='dselect/dselect.min.js') }}"></script>

@@ -1,62 +1,60 @@
 {% from "_helpers.html" import menu_item, menu_block %}
 
-<nav class="scrollable-content collapse d-md-block bg-light p-2" id="collapsibleMenu">
-    <form class="d-flex" action="{{ Url.get('location.search') }}" method="POST">
-        <input name='search' class="form-control me-2" type="search" placeholder="{{ _('Search') }}" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">{{ _('Search') }}</button>
-    </form>
-    <hr/>
+<form class="d-flex" action="{{ Url.get('location.search') }}" method="POST">
+    <input name='search' class="form-control me-2" type="search" placeholder="{{ _('Search') }}" aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">{{ _('Search') }}</button>
+</form>
+<hr/>
 
-    <ul class="list-unstyled">
-        {{ menu_item(_("Browse"), 'book', Url.get('location.browse')) }}
-        {{ menu_item(_("Map"), 'map', Url.get('location.browse_map')) }}
+<ul class="list-unstyled">
+    {{ menu_item(_("Browse"), 'book', Url.get('location.browse')) }}
+    {{ menu_item(_("Map"), 'map', Url.get('location.browse_map')) }}
 
-        {{ menu_block(_("Underground"), "minecart-loaded", [
-            menu_item(_("Create new"), "plus-lg", Url.get('location.add', type_str='underground')),
-            menu_item(_("Browse"), "book", Url.get('location.browse', type_str='underground')),
-            menu_item(_("Show on map"), "map", Url.get('location.browse_map', type_str='underground')),
-            menu_item(_("My locations"), "geo", Url.get('location.owned', type_str='underground')),
-            menu_item(_("Visited"), "pin", Url.get('location.visited', type_str='underground')),
-            ], show=('underground' in request.url))
-        }}
+    {{ menu_block(_("Underground"), "minecart-loaded", [
+        menu_item(_("Create new"), "plus-lg", Url.get('location.add', type_str='underground')),
+        menu_item(_("Browse"), "book", Url.get('location.browse', type_str='underground')),
+        menu_item(_("Show on map"), "map", Url.get('location.browse_map', type_str='underground')),
+        menu_item(_("My locations"), "geo", Url.get('location.owned', type_str='underground')),
+        menu_item(_("Visited"), "pin", Url.get('location.visited', type_str='underground')),
+        ], show=('underground' in request.url))
+    }}
 
-        {{ menu_block(_("Urbex"), "building", [
-            menu_item(_("Create new"), "plus-lg", Url.get('location.add', type_str='urbex')),
-            menu_item(_("Browse"), "book", Url.get('location.browse', type_str='urbex')),
-            menu_item(_("Show on map"), "map", Url.get('location.browse_map', type_str='urbex')),
-            menu_item(_("My locations"), "geo", Url.get('location.owned', type_str='urbex')),
-            menu_item(_("Visited"), "pin", Url.get('location.visited', type_str='urbex')),
-            ], show=('urbex' in request.url))
-        }}
+    {{ menu_block(_("Urbex"), "building", [
+        menu_item(_("Create new"), "plus-lg", Url.get('location.add', type_str='urbex')),
+        menu_item(_("Browse"), "book", Url.get('location.browse', type_str='urbex')),
+        menu_item(_("Show on map"), "map", Url.get('location.browse_map', type_str='urbex')),
+        menu_item(_("My locations"), "geo", Url.get('location.owned', type_str='urbex')),
+        menu_item(_("Visited"), "pin", Url.get('location.visited', type_str='urbex')),
+        ], show=('urbex' in request.url))
+    }}
 
-        {% set bookmark_items = [] %}
-        {% for bookmark in user_bookmarks %}
-            {{ bookmark_items.append(menu_item(bookmark.name, "", Url.get('location.bookmark_show', name=bookmark.name))) or "" }}
-        {% endfor %}
-        {{ menu_block(_("Bookmarks"), "star", bookmark_items, show=('bookmark' in request.url)) }}
+    {% set bookmark_items = [] %}
+    {% for bookmark in user_bookmarks %}
+        {{ bookmark_items.append(menu_item(bookmark.name, "", Url.get('location.bookmark_show', name=bookmark.name))) or "" }}
+    {% endfor %}
+    {{ menu_block(_("Bookmarks"), "star", bookmark_items, show=('bookmark' in request.url)) }}
 
-        {% set category_items = [] %}
-        {{ category_items.append(menu_item(_("Create new"), "plus-lg", Url.get('category.add'))) or "" }}
-        {% for category in categories %}
-            {{ category_items.append(menu_item(category.name, "", Url.get('category.show', category_id=category.id))) or "" }}
-        {% endfor %}
-        {{ menu_block(_("Categories"), "bookmarks", category_items, show=('category' in request.url)) }}
+    {% set category_items = [] %}
+    {{ category_items.append(menu_item(_("Create new"), "plus-lg", Url.get('category.add'))) or "" }}
+    {% for category in categories %}
+        {{ category_items.append(menu_item(category.name, "", Url.get('category.show', category_id=category.id))) or "" }}
+    {% endfor %}
+    {{ menu_block(_("Categories"), "bookmarks", category_items, show=('category' in request.url)) }}
 
-        {{ menu_block(_("Admin"), "shield", [
-            menu_item(_("Locations"), "geo-alt", Url.get('admin.locations')),
-            menu_item(_("Users"), "people", Url.get('admin.users')),
-            menu_item(_("Invitations"), "people-fill", Url.get('admin.invitations')),
-            menu_item(_("Logins"), "door-open", Url.get('admin.logins')),
-            menu_item(_("Events"), "list", Url.get('admin.events')),
-            ], show=('admin' in request.url))
-        }}
+    {{ menu_block(_("Admin"), "shield", [
+        menu_item(_("Locations"), "geo-alt", Url.get('admin.locations')),
+        menu_item(_("Users"), "people", Url.get('admin.users')),
+        menu_item(_("Invitations"), "people-fill", Url.get('admin.invitations')),
+        menu_item(_("Logins"), "door-open", Url.get('admin.logins')),
+        menu_item(_("Events"), "list", Url.get('admin.events')),
+        ], show=('admin' in request.url))
+    }}
 
-        {{ menu_block(_("Page"), "signpost", [
-            menu_item(_("Contact admins"), "envelope", Url.get('page.contact')),
-            menu_item(_("Support"), "currency-dollar", Url.get('page.show', page='support')),
-            menu_item(_("Rules"), "book", Url.get('page.show', page='rules')),
-            menu_item(_("About"), "question-lg", Url.get('page.show', page='about')),
-            ], show=True)
-        }}
-    </ul>
-</nav>
+    {{ menu_block(_("Page"), "signpost", [
+        menu_item(_("Contact admins"), "envelope", Url.get('page.contact')),
+        menu_item(_("Support"), "currency-dollar", Url.get('page.show', page='support')),
+        menu_item(_("Rules"), "book", Url.get('page.show', page='rules')),
+        menu_item(_("About"), "question-lg", Url.get('page.show', page='about')),
+        ], show=True)
+    }}
+</ul>

@@ -17,7 +17,7 @@
 {% extends "_private.html" %}
 
 {% block content %}
-<div id="map" style="min-height: 400px; height: 100%"></div>
+<div id="map" class="h-100" style="min-height: 300px"></div>
 <script>
     var map_api_url = "{{ Url.get('location.api', type_str=loc_type) }}"
 </script>
