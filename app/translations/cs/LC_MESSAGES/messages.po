@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-16 19:56+0100\n"
+"POT-Creation-Date: 2022-01-16 21:38+0100\n"
 "PO-Revision-Date: 2022-01-03 20:04+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: cs\n"
@@ -69,7 +69,7 @@ msgstr "Podzemní lokace"
 msgid "Private locations"
 msgstr "Soukromé lokace"
 
-#: app/admin/routes.py:85 app/templates/_menu.html:47
+#: app/admin/routes.py:85 app/templates/_menu.html:46
 #: app/templates/admin/users.html:6
 msgid "Users"
 msgstr "Uživatelé"
@@ -86,7 +86,7 @@ msgstr "Moderátoři"
 msgid "Banned users"
 msgstr "Bany"
 
-#: app/admin/routes.py:126 app/templates/_menu.html:48
+#: app/admin/routes.py:126 app/templates/_menu.html:47
 msgid "Invitations"
 msgstr "Pozvánky"
 
@@ -106,7 +106,7 @@ msgstr "Zamítnuté pozvánky"
 msgid "Registered users"
 msgstr "Registrovaní uživatelé"
 
-#: app/admin/routes.py:171 app/templates/_menu.html:49
+#: app/admin/routes.py:171 app/templates/_menu.html:48
 msgid "Logins"
 msgstr "Přihlášení"
 
@@ -133,7 +133,7 @@ msgid "Description"
 msgstr "Popis"
 
 #: app/category/forms.py:19 app/location/forms.py:28 app/page/constants.py:9
-#: app/templates/_menu.html:58 app/templates/category/category.html:25
+#: app/templates/_menu.html:57 app/templates/category/category.html:25
 #: app/templates/location/location.html:65 app/templates/user/profile.html:68
 #: app/user/forms.py:123
 msgid "About"
@@ -152,7 +152,7 @@ msgid "Save"
 msgstr "Uložit"
 
 #: app/category/models.py:53 app/location/forms.py:39
-#: app/templates/_menu.html:43
+#: app/templates/_menu.html:42
 msgid "Categories"
 msgstr "Kategorie"
 
@@ -591,7 +591,7 @@ msgstr "Odpovědět"
 msgid "Message sent"
 msgstr "Zpráva odeslána"
 
-#: app/page/constants.py:10 app/templates/_menu.html:57
+#: app/page/constants.py:10 app/templates/_menu.html:56
 msgid "Rules"
 msgstr "Pravidla"
 
@@ -669,71 +669,71 @@ msgstr ""
 "Podporuje markdown formátování, syntaxe <a "
 "href=\"https://www.markdownguide.org/basic-syntax/\">zde</a>"
 
-#: app/templates/_menu.html:5 app/templates/_menu.html:6
+#: app/templates/_menu.html:4 app/templates/_menu.html:5
 msgid "Search"
 msgstr "Hledat"
 
-#: app/templates/_menu.html:11 app/templates/_menu.html:16
-#: app/templates/_menu.html:25
+#: app/templates/_menu.html:10 app/templates/_menu.html:15
+#: app/templates/_menu.html:24
 msgid "Browse"
 msgstr "Procházet"
 
-#: app/templates/_menu.html:12 app/templates/location/map.html:1
+#: app/templates/_menu.html:11 app/templates/location/map.html:1
 #: app/upload/constants.py:16
 msgid "Map"
 msgstr "Mapa"
 
-#: app/templates/_menu.html:14 app/templates/admin/locations.html:7
+#: app/templates/_menu.html:13 app/templates/admin/locations.html:7
 msgid "Underground"
 msgstr "Podzemí"
 
-#: app/templates/_menu.html:15 app/templates/_menu.html:24
-#: app/templates/_menu.html:39
+#: app/templates/_menu.html:14 app/templates/_menu.html:23
+#: app/templates/_menu.html:38
 msgid "Create new"
 msgstr "Vytvořit"
 
-#: app/templates/_menu.html:17 app/templates/_menu.html:26
+#: app/templates/_menu.html:16 app/templates/_menu.html:25
 msgid "Show on map"
 msgstr "Zobrazit na mapě"
 
-#: app/templates/_menu.html:18 app/templates/_menu.html:27
+#: app/templates/_menu.html:17 app/templates/_menu.html:26
 msgid "My locations"
 msgstr "Moje lokace"
 
-#: app/templates/_menu.html:19 app/templates/_menu.html:28
+#: app/templates/_menu.html:18 app/templates/_menu.html:27
 msgid "Visited"
 msgstr "Navštíveno"
 
-#: app/templates/_menu.html:23 app/templates/admin/locations.html:8
+#: app/templates/_menu.html:22 app/templates/admin/locations.html:8
 msgid "Urbex"
 msgstr "Urbex"
 
-#: app/templates/_menu.html:36
+#: app/templates/_menu.html:35
 msgid "Bookmarks"
 msgstr "Záložky"
 
-#: app/templates/_menu.html:45 app/user/constants.py:35
+#: app/templates/_menu.html:44 app/user/constants.py:35
 msgid "Admin"
 msgstr "Admin"
 
-#: app/templates/_menu.html:46 app/templates/location/browse.html:1
+#: app/templates/_menu.html:45 app/templates/location/browse.html:1
 #: app/templates/user/profile.html:34
 msgid "Locations"
 msgstr "Lokace"
 
-#: app/templates/_menu.html:50
+#: app/templates/_menu.html:49
 msgid "Events"
 msgstr "Události"
 
-#: app/templates/_menu.html:54
+#: app/templates/_menu.html:53
 msgid "Page"
 msgstr "Web"
 
-#: app/templates/_menu.html:55 app/templates/page/contact.html:1
+#: app/templates/_menu.html:54 app/templates/page/contact.html:1
 msgid "Contact admins"
 msgstr "Kontaktovat adminy"
 
-#: app/templates/_menu.html:56
+#: app/templates/_menu.html:55
 msgid "Support"
 msgstr "Podpořit"
 
@@ -1031,8 +1031,8 @@ msgid "14.4567E"
 msgstr "14.4567E"
 
 #: app/templates/location/edit.html:50
-msgid "Select from map"
-msgstr "Vybrat z mapy"
+msgid "Current location"
+msgstr "Aktuální pozice"
 
 #: app/templates/location/link.html:1
 msgid "Add link"
@@ -1582,3 +1582,6 @@ msgstr " a "
 
 #~ msgid "Add photo for %(name)s"
 #~ msgstr "Přidat fotku pro %(name)s"
+
+#~ msgid "Select from map"
+#~ msgstr "Vybrat z mapy"

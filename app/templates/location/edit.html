@@ -46,8 +46,8 @@
                 {{ render_field(form.latitude, 'geo-alt', placeholder=_('50.1234N')) }}
                 {{ render_field(form.longitude, 'geo-alt', placeholder=_('14.4567E')) }}
 
-                <div class="text-center mt-2">
-                    {{ link_button(_('Select from map'), '#', None, 'secondary btn-sm')}}
+                <div class="text-center mt-2 id">
+                    {{ link_button(_('Current location'), 'javascript:getLocation()', None, 'secondary btn-sm')}}
                 </div>
 
                 {{ render_field(form.categories, 'bookmarks', field_class="dselect", required=False) }}
@@ -82,5 +82,29 @@
         </div>
     </div>
 </form>
+
+
+<script>
+    const latitude = document.getElementById("latitude");
+    const longitude = document.getElementById("longitude");
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                console.log(position)
+                if (position.coords.latitude > 0) {
+                    latitude.value = position.coords.latitude + 'N'
+                } else {
+                    latitude.value = position.coords.latitude + 'S'
+                }
+                if (position.coords.longitude > 0) {
+                    longitude.value = position.coords.longitude + 'E'
+                } else {
+                    longitude.value = position.coords.longitude + 'W'
+                }
+            })
+        }
+    }
+</script>
 
 {% endblock %}
