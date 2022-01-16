@@ -12,6 +12,8 @@
     <div class="col-auto">
         <div class="h1">
             {{ link_button(_('Edit'), Url.for_return('category.edit', category_id=category.id), 'pencil', 'outline-success') }}
+            {{ link_button(_('Document'), Url.for_return('upload.document_add', object_type='category', object_id=category.id), 'file-earmark-plus', 'outline-success') }}
+            {{ link_button(_('Photo'), Url.for_return('upload.photo_add', object_type='category', object_id=category.id), 'camera-fill', 'outline-success') }}
         </div>
     </div>
 </div>
@@ -34,6 +36,9 @@
                 {% endif %}
             </div>
         </div>
+
+        {% set object=category %}
+        {% include 'upload/_gallery.html' %}
     </div>
     <div class="col-md-3">
         <div class="card content-card">
@@ -54,6 +59,29 @@
                 {{ _('Maintainer') }}: <a href="{{ Url.get('user.profile', id=category.owner_id) }}">{{ category.owner }}</a><br>
             </div>
         </div>
+
+        {% if category.has_documents() %}
+        <div class="card content-card">
+            <div class="card-header">
+                {{ _('Documents') }}
+            </div>
+            <div class="list-group list-group-flush">
+                {% for item in category.uploads %}
+                    {% if item.type.name not in ('PHOTO', 'HISTORICAL_PHOTO') %}
+                    <div class="list-group-item list-group-item-action position-relative control-hover">
+                        <div class="position-absolute top-0 end-0 foreground-item control-hide">
+                            {{ link_button('', Url.for_return('upload.document_edit', document_id=item.id), 'pencil', 'warning', class='btn-sm') }}
+                            {{ link_button('', Url.for_return('upload.remove', upload_id=item.id), 'trash', 'danger', class='btn-sm') }}
+                        </div>
+                        <strong>{{ item.name }}</strong>
+                        <p class="mb-0 text-muted">{{ item.description }}</p>
+                        <a href="{{ Url.get('upload.get', path=item.path) }}" class="stretched-link"></a>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 

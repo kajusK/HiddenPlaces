@@ -12,8 +12,7 @@ from app.database import db
 from app.decorators import moderator
 from app.utils.pagination import Pagination
 from app.utils.utils import redirect_return, Url
-from app.location.forms import VisitForm, DocumentForm, PhotoForm, LinkForm, \
-     PhotoEditForm, BookmarkForm, DocumentEditForm, POIForm
+from app.location.forms import VisitForm, LinkForm, BookmarkForm, POIForm
 from app.location.models import Location, Visit, Link, Bookmarks, POI
 from app.location.utils import LocationUtil
 from app.location.constants import LocationType
@@ -430,153 +429,6 @@ def visit_remove(visit_id: int):
     return redirect_return()
 
 
-@blueprint.route('/photo/add/<int:location_id>', methods=['GET', 'POST'])
-def photo_add(location_id: int):
-    """Renders for for uploading a new photo
-
-    Args:
-        location_id: ID of the location to which we are uploading
-    """
-    location = Location.get_by_id(location_id)
-    if not location:
-        return abort(404)
-
-    form = PhotoForm()
-    if form.validate_on_submit():
-        Upload.create(
-            file=form.file.data,
-            subfolder=f'location/{ location.id }/photos',
-            name=form.name.data,
-            description=form.description.data,
-            created=form.taken_on.data,
-            type=UploadType.PHOTO,
-            created_by=current_user,
-            object_uuid=location.uuid,
-        )
-        db.session.commit()
-        flash(_("New photo added"), 'success')
-        return redirect_return()
-
-    return render_template('location/photo.html', form=form, location=location)
-
-
-@blueprint.route('/photo/edit/<int:photo_id>', methods=['GET', 'POST'])
-def photo_edit(photo_id: int):
-    """Renders for for editing existing photo
-
-    Args:
-        photo_id: ID of the photo to be edited
-    """
-    photo = Upload.get_by_id(photo_id)
-    if not photo:
-        abort(404)
-
-    form = PhotoEditForm()
-    if request.method == 'GET':
-        form.name.data = photo.name
-        form.description.data = photo.description
-        form.taken_on.data = photo.created
-    elif form.validate_on_submit():
-        photo.name = form.name.data
-        photo.description = form.description.data
-        photo.created = form.taken_on.data
-        db.session.commit()
-        return redirect_return()
-
-    return render_template('location/photo.html', form=form)
-
-
-@blueprint.route('/photo/delete/<int:photo_id>')
-def photo_remove(photo_id: int):
-    """Deletes photo record
-
-    Args:
-        photo_id: ID of the photo to be deleted
-    """
-    photo = Upload.get_by_id(photo_id)
-    if not photo:
-        abort(404)
-
-    photo.delete()
-    db.session.commit()
-    return redirect_return()
-
-
-@blueprint.route('/document/add/<int:location_id>', methods=['GET', 'POST'])
-def document_add(location_id: int):
-    """Renders form for adding a new document
-
-    Args:
-        location_id: ID of the location the document belongs to
-    """
-    location = Location.get_by_id(location_id)
-    if not location:
-        abort(404)
-
-    form = DocumentForm()
-    if form.validate_on_submit():
-        Upload.create(
-            file=form.file.data,
-            subfolder=f'location/{ location.id }/files',
-            name=form.name.data,
-            description=form.description.data,
-            type=form.type.data,
-            created_by=current_user,
-            object_uuid=location.uuid)
-
-        db.session.commit()
-        flash(_("New document added"), 'success')
-        return redirect_return()
-
-    return render_template('location/document.html', form=form,
-                           location=location)
-
-
-@blueprint.route('/document/remove/<int:document_id>')
-def document_remove(document_id: int):
-    """Removes document entry.
-
-    Args:
-        document_id: ID of the document to be removed
-    """
-    document = Upload.get_by_id(document_id)
-    if not document:
-        return abort(404)
-
-    document.delete()
-    db.session.commit()
-    return redirect_return()
-
-
-@blueprint.route('/document/edit/<int:document_id>', methods=['GET', 'POST'])
-def document_edit(document_id: int):
-    """Edits document entry.
-
-    Args:
-        document_id: ID of the document to be edited
-    """
-    document = Upload.get_by_id(document_id)
-    if not document:
-        return abort(404)
-
-    form = DocumentEditForm()
-    if request.method == 'GET':
-        form.name.data = document.name
-        form.description.data = document.description
-        form.type.data = document.type
-
-    elif form.validate_on_submit():
-        document.name = form.name.data
-        document.description = form.description.data
-        document.type = form.type.data
-        if form.file.data:
-            document.replace(form.file.data)
-        db.session.commit()
-        return redirect_return()
-
-    return render_template('location/document.html', form=form)
-
-
 @blueprint.route('/link/add/<int:location_id>', methods=['GET', 'POST'])
 def link_add(location_id: int):
     """Renders form for adding a new link
@@ -753,6 +605,11 @@ def browse_map(type_str: Optional[str] = None):
 @blueprint.route('/api')
 @blueprint.route('/api/<string:type_str>')
 def api(type_str: Optional[str] = None):
+    """Gets locations in json.
+
+    Args:
+        type_str: type of the location (urbex, underground,...)
+    """
     loc_type = _get_loc_type(type_str)
     locations = Location.get(loc_type).all()
     results = []

@@ -5,6 +5,7 @@ from sqlalchemy.orm import Query
 from flask_babel import lazy_gettext as _
 from app.database import DBItem, db, UUID
 from app.location import constants
+from app.upload.constants import UploadType
 
 
 category_association = db.Table(
@@ -69,3 +70,16 @@ class Category(DBItem):
         if isinstance(item, Category):
             return item
         return cls.get_by_id(item)
+
+    def has_documents(self) -> bool:
+        """Checks if the category has any documents to show."""
+        docs = filter(lambda x: x.type not in (
+            UploadType.PHOTO, UploadType.HISTORICAL_PHOTO), self.uploads)
+        return len(list(docs)) != 0
+
+    def has_photos(self) -> bool:
+        """Checks if the category has any photos to show."""
+        images = filter(lambda x: x.type in (
+            UploadType.PHOTO, UploadType.HISTORICAL_PHOTO)
+            and x != self.photo, self.uploads)
+        return len(list(images)) != 0

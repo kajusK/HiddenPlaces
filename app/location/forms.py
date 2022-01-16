@@ -3,7 +3,7 @@ from datetime import datetime
 from flask_babel import lazy_gettext as _
 from flask_login import current_user
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired
+from flask_wtf.file import FileField
 from wtforms import StringField, SelectField, TextAreaField, SubmitField, \
     RadioField, DateField, ValidationError
 from wtforms.validators import InputRequired, Length, URL
@@ -12,9 +12,8 @@ from app.location import constants
 from app.location.models import Bookmarks
 from app.location.constants import Country
 from app.category.models import Category
-from app.upload.constants import UploadType
 from app.utils.fields import MultipleFileField, CustomMultipleField
-from app.utils.validators import image_file, allowed_file, latitude, \
+from app.utils.validators import image_file, latitude, \
     longitude, date_in_past
 
 
@@ -41,43 +40,6 @@ class LocationForm(FlaskForm):
                                      choices=Category.choices)
     photo = FileField(_("Title photo"), [image_file()])
     submit = SubmitField(_("Save"))
-
-
-class DocumentEditForm(FlaskForm):
-    """Document edit form."""
-    name = StringField(
-        _("Name"),
-        [InputRequired(), Length(min=3, max=constants.MAX_NAME_LEN)])
-    description = StringField(
-        _("Description"), [Length(max=constants.MAX_DESCRIPTION_LEN)])
-    type = SelectField(_("Document type"), [InputRequired()],
-                       coerce=UploadType.coerce,
-                       choices=UploadType.choices([UploadType.PHOTO]))
-    # File not required by default when editing
-    file = FileField(_("Document"), [allowed_file()])
-    submit = SubmitField(_("Save"))
-
-
-class DocumentForm(DocumentEditForm):
-    """New document form."""
-    file = FileField(_("Document"), [FileRequired(), allowed_file()])
-
-
-class PhotoEditForm(FlaskForm):
-    """Photo edit form."""
-    name = StringField(
-        _("Name"),
-        [InputRequired(), Length(min=3, max=constants.MAX_NAME_LEN)])
-    description = StringField(
-        _("Description"), [Length(max=constants.MAX_DESCRIPTION_LEN)])
-    taken_on = DateField(_('Taken on:'), [InputRequired(), date_in_past()],
-                         default=datetime.utcnow)
-    submit = SubmitField(_('Save'))
-
-
-class PhotoForm(PhotoEditForm):
-    """New photo form."""
-    file = FileField(_('Photo'), [FileRequired(), image_file()])
 
 
 class LinkForm(FlaskForm):

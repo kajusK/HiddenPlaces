@@ -50,8 +50,8 @@
                 </ul>
             </div>
             {{ link_button(_('Edit'), Url.for_return('location.edit', location_id=location.id), 'pencil', 'outline-success') }}
-            {{ link_button(_('Document'), Url.for_return('location.document_add', location_id=location.id), 'file-earmark-plus', 'outline-success') }}
-            {{ link_button(_('Photo'), Url.for_return('location.photo_add', location_id=location.id), 'camera-fill', 'outline-success') }}
+            {{ link_button(_('Document'), Url.for_return('upload.document_add', object_type='location', object_id=location.id), 'file-earmark-plus', 'outline-success') }}
+            {{ link_button(_('Photo'), Url.for_return('upload.photo_add', object_type='location', object_id=location.id), 'camera-fill', 'outline-success') }}
             {{ link_button(_('Link'), Url.for_return('location.link_add', location_id=location.id), 'link', 'outline-success') }}
             {{ link_button(_('POI'), Url.for_return('location.poi_add', location_id=location.id), 'geo-alt', 'outline-success') }}
         </div>
@@ -78,7 +78,8 @@
         </div>
 
         <div class="d-none d-md-inline">
-            {% include 'location/_gallery.html' %}
+            {% set object=location %}
+            {% include 'upload/_gallery.html' %}
             {% include 'location/_visits.html' %}
         </div>
     </div>
@@ -137,8 +138,8 @@
                     {% if item.type.name not in ('PHOTO', 'HISTORICAL_PHOTO') %}
                     <div class="list-group-item list-group-item-action position-relative control-hover">
                         <div class="position-absolute top-0 end-0 foreground-item control-hide">
-                            {{ link_button('', Url.for_return('location.document_edit', document_id=item.id), 'pencil', 'warning', class='btn-sm') }}
-                            {{ link_button('', Url.for_return('location.document_remove', document_id=item.id), 'trash', 'danger', class='btn-sm') }}
+                            {{ link_button('', Url.for_return('upload.document_edit', document_id=item.id), 'pencil', 'warning', class='btn-sm') }}
+                            {{ link_button('', Url.for_return('upload.remove', upload_id=item.id), 'trash', 'danger', class='btn-sm') }}
                         </div>
                         <strong>{{ item.name }}</strong>
                         <p class="mb-0 text-muted">{{ item.description }}</p>
@@ -170,7 +171,7 @@
 
         <!-- TODO nasty solution, is there any way except javascript how to reorder this better?-->
         <div class="d-inline d-md-none">
-            {% include 'location/_gallery.html' %}
+            {% include 'upload/_gallery.html' %}
             {% include 'location/_visits.html' %}
         </div>
     </div>
