@@ -5,7 +5,21 @@
 {% endif %}
 
 {% extends "_private.html" %}
-{% from '_helpers.html' import render_field, render_label, link_button, markdown_description  %}
+{% from '_helpers.html' import render_field, render_label, link_button, markdown_description, map_modal  %}
+
+{% set js_scripts = [
+    'leaflet/leaflet.js',
+    'leaflet/plugins/markercluster/leaflet.markercluster.js',
+    'js/map.js',
+    ]
+%}
+
+{% set stylesheets = [
+    'leaflet/leaflet.css',
+    'leaflet/plugins/markercluster/MarkerCluster.css',
+    'leaflet/plugins/markercluster/MarkerCluster.Default.css',
+    ]
+%}
 
 {% block content %}
 
@@ -48,6 +62,7 @@
 
                 <div class="text-center mt-2 id">
                     {{ link_button(_('Current location'), 'javascript:getLocation()', None, 'secondary btn-sm')}}
+                    {{ link_button(_('Select from map'), 'javascript:mapSelect()', None, 'secondary btn-sm')}}
                 </div>
 
                 {{ render_field(form.categories, 'bookmarks', field_class="dselect", required=False) }}
@@ -83,28 +98,10 @@
     </div>
 </form>
 
+{{ map_modal(_("Select from map"), style="cursor: crosshair")}}
 
-<script>
-    const latitude = document.getElementById("latitude");
-    const longitude = document.getElementById("longitude");
+{% endblock %}
 
-    function getLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                console.log(position)
-                if (position.coords.latitude > 0) {
-                    latitude.value = position.coords.latitude + 'N'
-                } else {
-                    latitude.value = position.coords.latitude + 'S'
-                }
-                if (position.coords.longitude > 0) {
-                    longitude.value = position.coords.longitude + 'E'
-                } else {
-                    longitude.value = position.coords.longitude + 'W'
-                }
-            })
-        }
-    }
-</script>
-
+{% block scripts %}
+{% include 'location/_from_map.html' %}
 {% endblock %}

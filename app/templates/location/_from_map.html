@@ -1,0 +1,40 @@
+<script>
+    const latitude = document.getElementById("latitude");
+    const longitude = document.getElementById("longitude");
+    const mapModal = new bootstrap.Modal(document.getElementById('mapModal'))
+    var mymap = new MyMap('map')
+
+    document.getElementById('mapModal').addEventListener(
+        'shown.bs.modal', () => mymap.redraw())
+
+    function setLocation(coords) {
+        if (coords.latitude > 0) {
+            latitude.value = coords.latitude + 'N'
+        } else {
+            latitude.value = coords.latitude + 'S'
+        }
+        if (coords.longitude > 0) {
+            longitude.value = coords.longitude + 'E'
+        } else {
+            longitude.value = coords.longitude + 'W'
+        }
+    }
+
+    /* Get current location */
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                setLocation(position.coords)
+            })
+        }
+    }
+
+    /* Select position from map */
+    function mapSelect() {
+        mymap.map.on('click', e => {
+            mapModal.hide()
+            setLocation({'latitude': e.latlng.lat, 'longitude': e.latlng.lng})
+        })
+        mapModal.show()
+    }
+</script>

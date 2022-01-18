@@ -60,5 +60,7 @@
         <script src="{{ Url.get('static', filename=script) }}"></script>
     {% endfor %}
     <script src="{{ Url.get('static', filename='js/custom.js') }}"></script>
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>
