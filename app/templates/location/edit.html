@@ -4,25 +4,11 @@
     {% set title=_('Add a new location') %}
 {% endif %}
 
+{% set include_map=true %}
 {% extends "_private.html" %}
 {% from '_helpers.html' import render_field, render_label, link_button, markdown_description, map_modal  %}
 
-{% set js_scripts = [
-    'leaflet/leaflet.js',
-    'leaflet/plugins/markercluster/leaflet.markercluster.js',
-    'js/map.js',
-    ]
-%}
-
-{% set stylesheets = [
-    'leaflet/leaflet.css',
-    'leaflet/plugins/markercluster/MarkerCluster.css',
-    'leaflet/plugins/markercluster/MarkerCluster.Default.css',
-    ]
-%}
-
 {% block content %}
-
 <h2>
     {{ title }}
 </h2>

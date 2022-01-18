@@ -18,6 +18,18 @@ class MyMap {
             maxWidth: 200
         }).addTo(this.map);
 
+        L.control.locate({
+            follow: true,
+            locateOptions: {maxZoom: 14},
+            icon: 'bi bi-geo-alt',
+            enableHighAccuracy: true,
+            maximumAge: 10000,
+            timeout: 15000,
+            strings: {
+                title: "GPS"
+            }
+        }).addTo(this.map);
+
         this.markers = L.markerClusterGroup();
         this.map.addLayer(this.markers);
     }
@@ -59,20 +71,6 @@ class MyMap {
 
         request.open("GET", url)
         request.send();
-    }
-
-    /**
-     * Shows current user location (must enable localization in browser)
-     */
-    showLocation(zoom=false) {
-        /* TODO set icon */
-        this.map.on('locationfound', (e) => {
-            let radius = e.accuracy
-
-            L.marker(e.latlng).addTo(this.map)
-            L.circle(e.latlng, radius).addTo(this.map)
-        })
-        this.map.locate({setView: zoom, maxZoom: 14});
     }
 
     /**

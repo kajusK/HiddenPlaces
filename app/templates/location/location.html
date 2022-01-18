@@ -1,20 +1,8 @@
 {% set title=location.name %}
+{% set include_map=true %}
+
 {% extends "_private.html" %}
 {% from '_helpers.html' import link_button, render_field, map_modal %}
-
-{% set js_scripts = [
-    'leaflet/leaflet.js',
-    'leaflet/plugins/markercluster/leaflet.markercluster.js',
-    'js/map.js',
-    ]
-%}
-
-{% set stylesheets = [
-    'leaflet/leaflet.css',
-    'leaflet/plugins/markercluster/MarkerCluster.css',
-    'leaflet/plugins/markercluster/MarkerCluster.Default.css',
-    ]
-%}
 
 {% block content %}
 <div class="row justify-content-between">
