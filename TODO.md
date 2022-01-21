@@ -1,8 +1,5 @@
 ### Minor tasks
 * Logout user when banned (when remember me is set, user can be banned and still have access to the site for a long time)
-* Show locations on map (openstreetmap)
-* When adding location, allow selecting position by clicking on map
-* When adding location, set current location as default value
 * Nice URLs (user id, location id, etc. replaces by string in URL)
 * Increase tests coverage (functional, unit)
 * Add 'send message to all/group' to admin interface
@@ -10,9 +7,7 @@
 * Add filtering to location browsing (by area, type,...)
 * Add location privacy levels and update access controll per role accordingly
 * Add locations export to GPX
-* Translate to Czech
 * Add export tool for trip planning (select locations and export these to a pdf)
-* Implement locations hiearchy - Zlate Hory location for area, Barborka for location child,...
 * Add settings to user accound (send emails settings, how many locations to show, default page after login...)
 * Disable login after 3 unsuccessful attemps within minute for a while
 * Add ability to transform location ownership (both sides must agree)
