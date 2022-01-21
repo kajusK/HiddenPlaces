@@ -20,8 +20,7 @@ blueprint = Blueprint('category', __name__, url_prefix='/category')
 
 
 @blueprint.route('/<int:category_id>')
-@blueprint.route('/<int:category_id>-<string:name>', methods=['GET', 'POST'])
-def show(category_id: int, name: str = None):
+def show(category_id: int):
     """Renders category record.
 
     Args:
@@ -31,9 +30,6 @@ def show(category_id: int, name: str = None):
     category = Category.get_by_id(category_id)
     if not category:
         abort(404)
-    if name != category.name:
-        return redirect(url_for('category.show', category_id=category_id,
-                                name=category.name))
     return render_template('category/category.html', category=category)
 
 

@@ -49,8 +49,7 @@ def _get_loc_type(type_string: Optional[str]) -> LocationType:
 
 
 @blueprint.route('/<int:location_id>', methods=['GET', 'POST'])
-@blueprint.route('/<int:location_id>-<string:name>', methods=['GET', 'POST'])
-def show(location_id: int, name: str = None):
+def show(location_id: int):
     """Renders location record.
 
     Args:
@@ -60,9 +59,6 @@ def show(location_id: int, name: str = None):
     location = Location.get_by_id(location_id)
     if not location:
         abort(404)
-    if name != location.name:
-        return redirect(url_for('location.show', location_id=location.id,
-                                name=location.name))
 
     form = VisitForm()
     bookmark_form = BookmarkForm()
@@ -89,8 +85,7 @@ def show(location_id: int, name: str = None):
             db.session.commit()
 
         flash(_("Your visit was saved"), 'success')
-        return redirect(url_for('location.show', location_id=location.id,
-                                name=location.name))
+        return redirect(url_for('location.show', location_id=location.id))
 
     return render_template('location/location.html', location=location,
                            form=form, bookmark_form=bookmark_form)
