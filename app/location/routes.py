@@ -277,7 +277,8 @@ def by_user(user_id: int, page: int = 1):
     if not user:
         abort(404)
 
-    query = Location.get_by_owner(LocationType.ALL, user).paginate(
+    query = Location.get_by_owner(LocationType.ALL, user)
+    query = Location.filter_private(query, current_user).paginate(
         page, app.config['LOCATIONS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'location.by_user',
                             user_id=user_id)
@@ -318,7 +319,8 @@ def visited_by_user(user_id: int, page: int = 1):
     if not user:
         abort(404)
 
-    query = Location.get_unique_visits(LocationType.ALL, user).paginate(
+    query = Location.get_unique_visits(LocationType.ALL, user)
+    query = Location.filter_private(query, current_user).paginate(
         page, app.config['LOCATIONS_PER_PAGE'], True)
     pagination = Pagination(page, query.pages, 'location.visited_by_user',
                             user_id=user_id)
@@ -361,11 +363,11 @@ def browse(type_str: Optional[str] = None, page: int = 1):
         page: Page number for results pagination
     """
     loc_type = _get_loc_type(type_str)
-    query = Location.get(loc_type).paginate(
-        page, app.config['LOCATIONS_PER_PAGE'], True)
+    query = Location.filter_private(Location.get(loc_type), current_user)
+    query = query.paginate(page, app.config['LOCATIONS_PER_PAGE'], True)
+
     pagination = Pagination(page, query.pages, 'location.browse',
                             type_str=type_str)
-
     return render_template('location/browse.html', locations=query.items,
                            pagination=pagination)
 
@@ -606,7 +608,8 @@ def api(type_str: Optional[str] = None):
         type_str: type of the location (urbex, underground,...)
     """
     loc_type = _get_loc_type(type_str)
-    locations = Location.get(loc_type).all()
+    query = Location.get(loc_type)
+    locations = Location.filter_private(query, current_user).all()
     results = []
 
     for location in locations:

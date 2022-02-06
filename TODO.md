@@ -11,10 +11,9 @@
 * Add settings to user accound (send emails settings, how many locations to show, default page after login...)
 * Disable login after 3 unsuccessful attemps within minute for a while
 * Add ability to transform location ownership (both sides must agree)
-* Only location owner can see it when it's not published.
-* Change card background color for locations that are not published in listing
 * Download files with reasonable filenames instead of the UUIDs
 * Take upload photo date from exif
+* Show nearby objects
 
 ### Complex features
 * `povrchovka` - select location you will be visiting, set time of expected return and list of contacts to send email/sms/... when you don't confirm you made it out alive

@@ -1,7 +1,7 @@
 """Models for locations module."""
 import uuid
 from datetime import datetime
-from sqlalchemy import CheckConstraint
+from sqlalchemy import CheckConstraint, or_
 from sqlalchemy.orm import Query
 
 from app.database import DBItem, db, Latitude, Longitude, UUID, IntEnum
@@ -81,6 +81,18 @@ class Location(DBItem):
         if loc_type == LocationType.UNDERGROUND:
             return query.filter(cls.underground_id.isnot(None))
         return query.filter(cls.urbex_id.isnot(None))
+
+    @classmethod
+    def filter_private(cls, query: Query, user: User) -> Query:
+        """Filters out the private locations from query
+
+        Args:
+            query: SQL query to be filtered
+            user: User viewing the data (his private locations will be shown)
+        Returns:
+            Filtered query
+        """
+        return query.filter(or_(cls.published, cls.owner == user))
 
     @classmethod
     def get(cls, loc_type: LocationType) -> Query:
