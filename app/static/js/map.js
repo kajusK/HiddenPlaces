@@ -5,13 +5,44 @@ class MyMap {
      * @param {str} divId   ID of the div to draw map to
      */
     constructor(divId) {
-        this.map = L.map(divId).setView([49.8, 15.5], 8);
+        const opacity = 0.8
 
-        L.tileLayer('https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}', {
+        const tourist = L.tileLayer('https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}', {
             attribution: '&copy; <a href="https://www.mapy.cz">Mapy.cz</a>',
             minZoom: 3,
             maxZoom: 19
-        }).addTo(this.map);
+        })
+
+        const baseMaps = {
+            "Tourists": tourist,
+            "Aerial": L.esri.dynamicMapLayer({
+                url: 'https://ags.cuzk.cz/arcgis/rest/services/ortofoto/MapServer',
+            }),
+            "None":  L.tileLayer('')
+        }
+
+        const overlays = {
+            "Relief": L.esri.imageMapLayer({
+                    url: 'https://ags.cuzk.cz/arcgis/rest/services/3D/dmr5g_wm/ImageServer',
+                    opacity: opacity
+                }),
+            "History": L.layerGroup([
+                L.esri.tiledMapLayer({
+                    url: 'https://gis.msk.cz/arcgis/rest/services/podklad/podklad_cis_otisky_wm/MapServer',
+                }),
+                L.esri.dynamicMapLayer({
+                    url: 'https://gis.kraj-jihocesky.gov.cz/arcgis/rest/services/podkladove/Cisarske_otisky/MapServer',
+                    opacity: opacity
+                }),
+            ])
+        }
+
+        this.map = L.map(divId, {
+            center: [49.8, 15.5],
+            zoom: 8,
+            layers: [tourist]
+        })
+        L.control.layers(baseMaps, overlays).addTo(this.map);
 
         L.control.scale({
             imperial: false,
