@@ -39,6 +39,10 @@ class MyMap {
             "Mines": L.esri.dynamicMapLayer({
                 url: 'https://mapy.geology.cz/arcgis/rest/services/Dulni_Dila/dulni_dila/MapServer'
             }),
+            "Undermined": L.esri.dynamicMapLayer({
+                url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/pozustatky_po_tezbe/MapServer',
+                layers: [2]
+            }),
             "Quarries": L.esri.dynamicMapLayer({
                 url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/dekoracni_kameny/MapServer',
                 layers: [0]
