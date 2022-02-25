@@ -111,6 +111,20 @@ def test_latlon_conversion(subtests):
                 LatLon.from_str(item)
 
 
+def test_latlon_to_decimal_str(subtests):
+    """Tests conversion of LatLon object to decimal string."""
+    items = [
+        (LatLon(12.654, True), '12.654000N'),
+        (LatLon(-12.654, True), '12.654000S'),
+        (LatLon(123.456, False), '123.456000E'),
+        (LatLon(-123.456, False), '123.456000W'),
+    ]
+
+    for item in items:
+        with subtests.test(expected=item[1]):
+            assert item[0].toDecimalStr() == item[1]
+
+
 def test_latlon_str(subtests):
     """Tests conversion of LatLon object to string."""
     items = [

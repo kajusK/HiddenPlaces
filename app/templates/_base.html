@@ -33,6 +33,7 @@
         <link rel="stylesheet" href="{{ Url.get('static', filename=stylesheet) }}">
     {% endfor %}
     <link rel="stylesheet" href="{{ Url.get('static', filename='css/custom.css') }}">
+    <link rel="stylesheet" href="{{ Url.get('static', filename='css/toast.css') }}">
     <link rel="shortcut icon" type="image/jpg" href="{{ Url.get('static', filename='images/favicon.ico') }}"/>
 
     <!--
@@ -55,6 +56,10 @@
 
             {% block wrapper %}
             {% endblock %}
+
+            <div id='toast'>
+
+            </div>
         </div>
     </div>
     <script src="{{ Url.get('static', filename='bootstrap/bootstrap.bundle.min.js') }}"></script>

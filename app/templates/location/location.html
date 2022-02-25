@@ -161,7 +161,10 @@
             <div class="list-group list-group-flush">
                 {% for poi in location.pois %}
                 <div class="list-group-item list-group-item-action position-relative control-hover">
-                    {{ link_button('', Url.for_return('location.poi_remove', poi_id=poi.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0 foreground-item control-hide') }}
+                    <div class="position-absolute top-0 end-0 foreground-item control-hide">
+                        {{ link_button('', 'javascript:copyToClipboard("%s %s")' % (location.latitude.toDecimalStr(), location.longitude.toDecimalStr()), 'share', 'warning', class='btn-sm') }}
+                        {{ link_button('', Url.for_return('location.poi_remove', poi_id=poi.id), 'trash', 'danger', class='btn-sm') }}
+                    </div>
                     <strong>{{ poi.name }}</strong>
                     <p class="mb-0 text-muted">{{ poi.description }}</p>
                     <a href="javascript:showMap({{ poi.latitude.value }}, {{ poi.longitude.value }}, '{{ poi.name }}')" class="stretched-link"></a>

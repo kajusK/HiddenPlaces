@@ -94,6 +94,14 @@ class LatLon:
         is_latitude = direction in ('N', 'S')
         return cls(value, is_latitude)
 
+    def toDecimalStr(self) -> str:
+        """Converts the object to decimal string, e.g. 12.123E"""
+        if self.is_latitude:
+            direction = 'N' if self.value >= 0 else 'S'
+        else:
+            direction = 'E' if self.value >= 0 else 'W'
+        return f'{abs(self.value):.6f}{direction}'
+
     def _check_bounds(self):
         """Checks bounds of the value according to latitude/longitude. """
         if self.is_latitude and abs(self.value) > 90:
