@@ -193,10 +193,13 @@
     document.getElementById('mapModal').addEventListener(
         'shown.bs.modal', () => mymap.redraw())
 
+    {% for poi in location.pois %}
+    mymap.addMarker(L.latLng({{ poi.latitude.value }}, {{ poi.longitude.value }}), "{{ poi.name }}", true)
+    {% endfor %}
+    mymap.addMarker(L.latLng({{ location.latitude.value }}, {{ location.longitude.value }}), "{{ location.name }}")
+
     function showMap(latitude, longitude, name="") {
         let pos = L.latLng(latitude, longitude)
-        mymap.clearMarkers()
-        mymap.addMarker(pos, name)
         mymap.zoomPosition(pos)
         mapModal.show()
     }

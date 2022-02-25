@@ -96,6 +96,7 @@ class MyMap {
                         </p>
                     </div>
                 `);
+                marker.bindTooltip(location.name)
                 markers.addLayer(marker);
             })
         }
@@ -110,8 +111,10 @@ class MyMap {
      * @param {latlng} latlng       Position of marker
      * @param {str} title           Title of the marker
      */
-    addMarker(latlng, title="") {
-        L.marker(latlng, {title: title}).addTo(this.markers)
+    addMarker(latlng, title="", tooltip=false) {
+        const marker = L.marker(latlng, {title: title})
+        marker.bindTooltip(title, { permanent: tooltip })
+        marker.addTo(this.markers)
     }
 
     /**
