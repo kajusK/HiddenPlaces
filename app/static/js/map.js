@@ -29,6 +29,7 @@ class MyMap {
             "History": L.layerGroup([
                 L.esri.tiledMapLayer({
                     url: 'https://gis.msk.cz/arcgis/rest/services/podklad/podklad_cis_otisky_wm/MapServer',
+                    opacity: opacity
                 }),
                 L.esri.dynamicMapLayer({
                     url: 'https://gis.kraj-jihocesky.gov.cz/arcgis/rest/services/podkladove/Cisarske_otisky/MapServer',
@@ -37,7 +38,15 @@ class MyMap {
             ]),
             "Mines": L.esri.dynamicMapLayer({
                 url: 'https://mapy.geology.cz/arcgis/rest/services/Dulni_Dila/dulni_dila/MapServer'
-            })
+            }),
+            "Quarries": L.esri.dynamicMapLayer({
+                url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/dekoracni_kameny/MapServer',
+                layers: [0]
+            }),
+            "Geology": L.esri.tiledMapLayer({
+                url: 'https://mapy.geology.cz/arcgis/rest/services/Geologie/GEOCR50_mobil/MapServer',
+                opacity: opacity
+            }),
         }
 
         this.map = L.map(divId, {
@@ -63,6 +72,8 @@ class MyMap {
                 title: "GPS"
             }
         }).addTo(this.map);
+
+        L.control.ruler().addTo(this.map);
 
         this.markers = L.markerClusterGroup();
         this.map.addLayer(this.markers);

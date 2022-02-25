@@ -28,6 +28,7 @@
         <link rel="stylesheet" href="{{ Url.get('static', filename='leaflet/plugins/markercluster/MarkerCluster.css') }}">
         <link rel="stylesheet" href="{{ Url.get('static', filename='leaflet/plugins/markercluster/MarkerCluster.Default.css') }}">
         <link rel="stylesheet" href="{{ Url.get('static', filename='leaflet/plugins/locatecontrole/L.Control.Locate.min.css') }}">
+        <link rel="stylesheet" href="{{ Url.get('static', filename='leaflet/plugins/ruler/leaflet-ruler.css') }}">
     {% endif %}
     {% for stylesheet in stylesheets %}
         <link rel="stylesheet" href="{{ Url.get('static', filename=stylesheet) }}">
@@ -73,6 +74,7 @@
         <script src="{{ Url.get('static', filename='leaflet/plugins/locatecontrol/L.Control.Locate.min.js') }}"></script>
         <script src="{{ Url.get('static', filename='leaflet/plugins/esri/esri-leaflet.js') }}"></script>
         <script src="{{ Url.get('static', filename='leaflet/plugins/esri/esri-leaflet-vector.js') }}"></script>
+        <script src="{{ Url.get('static', filename='leaflet/plugins/ruler/leaflet-ruler.js') }}"></script>
         <script src="{{ Url.get('static', filename='js/map.js') }}"></script>
     {% endif %}
     {% for script in js_scripts %}
