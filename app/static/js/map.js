@@ -34,7 +34,10 @@ class MyMap {
                     url: 'https://gis.kraj-jihocesky.gov.cz/arcgis/rest/services/podkladove/Cisarske_otisky/MapServer',
                     opacity: opacity
                 }),
-            ])
+            ]),
+            "Mines": L.esri.dynamicMapLayer({
+                url: 'https://mapy.geology.cz/arcgis/rest/services/Dulni_Dila/dulni_dila/MapServer'
+            })
         }
 
         this.map = L.map(divId, {
