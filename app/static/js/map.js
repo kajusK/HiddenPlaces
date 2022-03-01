@@ -96,13 +96,25 @@ class MyMap {
      * @param {str} url    URL of the endpoint to fetch data from
      */
     fetchLocations(url) {
-        let request = new XMLHttpRequest();
-        let markers = this.markers
+        const request = new XMLHttpRequest();
+        const markers = this.markers
+        const map = this.map
 
         request.onload = function() {
-            let data = JSON.parse(this.responseText);
+            const types = new Set()
+            const states = new Set()
+            const accessibility = new Set()
+            const data = JSON.parse(this.responseText);
+
             data.locations.forEach(location => {
-                let marker = L.marker([location.latitude, location.longitude], {title: location.name});
+                let marker = L.marker([location.latitude, location.longitude], {
+                    title: location.name,
+                    tags: [location.type, location.state, location.accessibility]
+                });
+                types.add(location.type)
+                states.add(location.state)
+                accessibility.add(location.accessibility)
+
                 marker.bindPopup(`
                     <div style="min-width: 200px">
                         <img src="${location.image}" style="width: 100%">
@@ -116,7 +128,49 @@ class MyMap {
                 `);
                 marker.bindTooltip(location.name)
                 markers.addLayer(marker);
+
             })
+
+            /* Add filter buttons with types/states received */
+            const clearText = "Reset"
+            const typeFilter = L.control.tagFilterButton({
+                data: [...types],
+                icon: '<i class="bi bi-house-door">',
+                filterOnEveryClick: true,
+                clearText: clearText
+            });
+            const stateFilter = L.control.tagFilterButton({
+                data: [...states],
+                icon: '<i class="bi bi-wrench">',
+                filterOnEveryClick: true,
+                clearText: clearText
+            });
+            const accessibilityFilter = L.control.tagFilterButton({
+                data: [...accessibility],
+                icon: '<i class="bi bi-door-closed">',
+                filterOnEveryClick: true,
+                clearText: clearText
+            });
+            typeFilter.addTo(map)
+            typeFilter.enableMCG(markers)
+            stateFilter.addTo(map)
+            stateFilter.enableMCG(markers)
+            accessibilityFilter.addTo(map)
+            accessibilityFilter.enableMCG(markers)
+
+            /* Close filter for when other button is clicked */
+            const elements = Array.from(document.getElementsByClassName("easy-button-button"))
+            elements.forEach(button => {
+                button.addEventListener("click", (event) => {
+                    const containers = Array.from(document.getElementsByClassName("tag-filter-tags-container"))
+                    containers.forEach(container => {
+                        if (container.parentElement != event.currentTarget.parentElement) {
+                            container.style.display = "none"
+                        }
+                    })
+                })
+            })
+
         }
 
         request.open("GET", url)

@@ -607,8 +607,7 @@ def api(type_str: Optional[str] = None):
     Args:
         type_str: type of the location (urbex, underground,...)
     """
-    loc_type = _get_loc_type(type_str)
-    query = Location.get(loc_type)
+    query = Location.get(_get_loc_type(type_str))
     locations = Location.filter_private(query, current_user).all()
     results = []
 
@@ -617,6 +616,16 @@ def api(type_str: Optional[str] = None):
             image_url = Url.get('upload.get', path=location.photo.thumbnail)
         else:
             image_url = Url.get('static', filename='images/favicon.ico')
+
+        if location.underground:
+            loc_type = location.underground.type
+            loc_state = location.underground.state
+            loc_accessibility = location.underground.accessibility
+        else:
+            loc_type = location.urbex.type
+            loc_state = location.urbex.state
+            loc_accessibility = location.urbex.accessibility
+
         results.append({
             'id': location.id,
             'name': location.name,
@@ -624,6 +633,9 @@ def api(type_str: Optional[str] = None):
             'description': location.description,
             'latitude': location.latitude.value,
             'longitude': location.longitude.value,
+            'type': str(loc_type),
+            'state': str(loc_state),
+            'accessibility': str(loc_accessibility),
         })
 
     return json.dumps({'locations': results})

@@ -78,4 +78,12 @@ div.dropdown>.btn.show+.dropdown-menu {
       opacity: 1;
       transform: rotateX(0deg);
     }
-  }
+}
+
+.easy-button-button {
+  display: block !important;
+}
+
+.tag-filter-tags-container {
+    left: 30px;
+}
