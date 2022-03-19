@@ -21,7 +21,7 @@ app contains a several layers of permissions based on users reputation.
 
 ## Environmental variables
 ### Required
-* **DATABASE_URL** Database connection as `dialect://username:password@host:port/database`, e.g. `sqlite:////tmp/database.sqlite` or `mysql://username:password@server/database`
+* **DATABASE_URL** Database connection as `dialect://username:password@host:port/database`, e.g. `sqlite:////tmp/database.sqlite` or `mysql+pymysql://username:password@server/database?charset=utf8mb4`
 * **SECRET_KEY** Random long string, it's used to encrypt sessions, tokens,...
 
 ## Optional
@@ -47,6 +47,10 @@ app contains a several layers of permissions based on users reputation.
 * Initialize database `flask db upgrade`
 * Create a new admin user `flask user add-root foo@bar.org John Wick`
 * Run the app `flask run`
+
+Optionally start mysql container and config the .env accordingly:
+
+`docker run --name hidden_places_sql -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=hiddenplaces -e MYSQL_USER=places -e MYSQL_PASSWORD=places -p 3306:3306 mysql`
 
 ## Database migrations
 * The initial database migration table is set by `flask db init` and `flask db migrate`

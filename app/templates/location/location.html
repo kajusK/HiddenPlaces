@@ -21,7 +21,17 @@
             {%- endfor -%})
         </h2>
         {% endif %}
-        <h3>{{ location.underground.type or location.urbex.type }}, {{ location.underground.accessibility or location.urbex.accessibility }}</h3>
+
+        <h3>
+        {% if location.underground %}
+            {{ location.underground.type }}, {{ location.underground.accessibility }}
+        {% elif location.urbex %}
+            {{ location.urbex.type }}, {{ location.urbex.accessibility }}
+        {% elif location.hiking %}
+            {{ location.hiking.features | map(attribute='type') | join(', ') }}
+        {% endif %}
+        </h3>
+
         <small clas="text-muted">
             <i class="bi bi-geo-alt"></i>
             <a href="javascript:showMap({{ location.latitude.value }}, {{ location.longitude.value }})">{{ location.latitude }} {{ location.longitude }}</a>

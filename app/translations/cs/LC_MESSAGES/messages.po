@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-01-16 21:38+0100\n"
+"POT-Creation-Date: 2022-03-19 21:06+0100\n"
 "PO-Revision-Date: 2022-01-03 20:04+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: cs\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
-#: app/admin/constants.py:8 app/location/constants.py:24
-#: app/location/underground/constants.py:11
+#: app/admin/constants.py:8 app/location/constants.py:25
+#: app/location/hiking/constants.py:8 app/location/underground/constants.py:11
 #: app/location/underground/constants.py:50 app/location/urbex/constants.py:8
 #: app/upload/constants.py:13
 msgid "Other"
@@ -69,7 +69,7 @@ msgstr "Podzemní lokace"
 msgid "Private locations"
 msgstr "Soukromé lokace"
 
-#: app/admin/routes.py:85 app/templates/_menu.html:46
+#: app/admin/routes.py:85 app/templates/_menu.html:55
 #: app/templates/admin/users.html:6
 msgid "Users"
 msgstr "Uživatelé"
@@ -86,7 +86,7 @@ msgstr "Moderátoři"
 msgid "Banned users"
 msgstr "Bany"
 
-#: app/admin/routes.py:126 app/templates/_menu.html:47
+#: app/admin/routes.py:126 app/templates/_menu.html:56
 msgid "Invitations"
 msgstr "Pozvánky"
 
@@ -106,7 +106,7 @@ msgstr "Zamítnuté pozvánky"
 msgid "Registered users"
 msgstr "Registrovaní uživatelé"
 
-#: app/admin/routes.py:171 app/templates/_menu.html:48
+#: app/admin/routes.py:171 app/templates/_menu.html:57
 msgid "Logins"
 msgstr "Přihlášení"
 
@@ -133,15 +133,15 @@ msgid "Description"
 msgstr "Popis"
 
 #: app/category/forms.py:19 app/location/forms.py:28 app/page/constants.py:9
-#: app/templates/_menu.html:57 app/templates/category/category.html:25
-#: app/templates/location/location.html:65 app/templates/user/profile.html:68
+#: app/templates/_menu.html:66 app/templates/category/category.html:25
+#: app/templates/location/location.html:77 app/templates/user/profile.html:68
 #: app/user/forms.py:123
 msgid "About"
 msgstr "Popis"
 
-#: app/category/forms.py:20 app/category/routes.py:59
-#: app/category/routes.py:117 app/location/forms.py:41
-#: app/location/routes.py:137 app/location/routes.py:216
+#: app/category/forms.py:20 app/category/routes.py:55
+#: app/category/routes.py:113 app/location/forms.py:41
+#: app/location/routes.py:139 app/location/routes.py:221
 msgid "Title photo"
 msgstr "Titulní fotka"
 
@@ -152,39 +152,39 @@ msgid "Save"
 msgstr "Uložit"
 
 #: app/category/models.py:53 app/location/forms.py:39
-#: app/templates/_menu.html:42
+#: app/templates/_menu.html:51
 msgid "Categories"
 msgstr "Kategorie"
 
-#: app/category/routes.py:65
+#: app/category/routes.py:61
 msgid "New category created"
 msgstr "Nová kategorie byla vytvořena"
 
-#: app/category/routes.py:86
+#: app/category/routes.py:82
 msgid "Category was deleted"
 msgstr "Kategorie byla smazána"
 
-#: app/category/routes.py:126
+#: app/category/routes.py:122
 msgid "Category saved"
 msgstr "Kategorie byla uložena"
 
-#: app/location/constants.py:25
+#: app/location/constants.py:26
 msgid "Czechia"
 msgstr "Česká Republika"
 
-#: app/location/constants.py:26
+#: app/location/constants.py:27
 msgid "Slovakia"
 msgstr "Slovensko"
 
-#: app/location/constants.py:27
+#: app/location/constants.py:28
 msgid "Poland"
 msgstr "Polsko"
 
-#: app/location/constants.py:28
+#: app/location/constants.py:29
 msgid "Germany"
 msgstr "Německo"
 
-#: app/location/constants.py:29
+#: app/location/constants.py:30
 msgid "Austria"
 msgstr "Rakousko"
 
@@ -236,7 +236,7 @@ msgstr "Přidat"
 msgid "Name already used"
 msgstr "Jméno již existuje"
 
-#: app/location/routes.py:84 app/location/routes.py:401
+#: app/location/routes.py:84 app/location/routes.py:408
 msgid "Visit photo"
 msgstr "Foto z návštěvy"
 
@@ -244,53 +244,115 @@ msgstr "Foto z návštěvy"
 msgid "Your visit was saved"
 msgstr "Vaše návštěva byla uložena"
 
-#: app/location/routes.py:143
+#: app/location/routes.py:145
 msgid "New location created"
 msgstr "Lokace byla vytvořena"
 
-#: app/location/routes.py:164
+#: app/location/routes.py:166
 msgid "Location was deleted"
 msgstr "Lokace byla smazána"
 
-#: app/location/routes.py:225
+#: app/location/routes.py:230
 msgid "Location saved"
 msgstr "Lokace byla uložena"
 
-#: app/location/routes.py:408
+#: app/location/routes.py:415
 msgid "Visit was saved"
 msgstr "Návštěva byla uložena"
 
-#: app/location/routes.py:428
+#: app/location/routes.py:435
 msgid "Visit was deleted"
 msgstr "Návštěva byla odstraněna"
 
-#: app/location/routes.py:452
+#: app/location/routes.py:459
 msgid "New link added"
 msgstr "Odkaz byl přidán"
 
-#: app/location/routes.py:496
+#: app/location/routes.py:503
 msgid "New POI added"
 msgstr "Nové POI přidáno"
 
-#: app/location/routes.py:540
+#: app/location/routes.py:547
 #, python-format
 msgid "The bookmark list %(name)s created"
 msgstr "Seznam záložek %(name)s byl vytvořen"
 
-#: app/location/routes.py:545
+#: app/location/routes.py:552
 #, python-format
 msgid "Adding bookmark list failed: %(error)s"
 msgstr "Přidání seznamu záložek selhalo: %(error)s"
 
-#: app/location/routes.py:567
+#: app/location/routes.py:574
 #, python-format
 msgid "Added to bookmark list: %(name)s"
 msgstr "Přidáno do seznamu záložek: %(name)s"
 
-#: app/location/routes.py:589
+#: app/location/routes.py:596
 #, python-format
 msgid "Removed from bookmark list: %(name)s"
 msgstr "Odstraněno ze seznamu záložek: %(name)s"
+
+#: app/location/routes.py:640 app/location/routes.py:641
+msgid "Undefined"
+msgstr "Nedefinováno"
+
+#: app/location/hiking/constants.py:9
+msgid "Natural swimming"
+msgstr "Přírodní koupání"
+
+#: app/location/hiking/constants.py:10
+msgid "Sleeping place"
+msgstr "Místo ke spaní"
+
+#: app/location/hiking/constants.py:11
+msgid "Camp"
+msgstr "Trampský kemp"
+
+#: app/location/hiking/constants.py:12
+msgid "Shed"
+msgstr "Chata"
+
+#: app/location/hiking/constants.py:17
+msgid "Water"
+msgstr "Zdroj vody"
+
+#: app/location/hiking/constants.py:18
+msgid "Potable water"
+msgstr "Pitná voda"
+
+#: app/location/hiking/constants.py:19
+msgid "Fireplace"
+msgstr "Ohniště"
+
+#: app/location/hiking/constants.py:20
+msgid "Furnace"
+msgstr "Kamna"
+
+#: app/location/hiking/constants.py:21
+msgid "Seats"
+msgstr "Posezení"
+
+#: app/location/hiking/constants.py:22
+msgid "Weather shelter"
+msgstr "Úkryt před deštěm"
+
+#: app/location/hiking/forms.py:13 app/location/underground/forms.py:16
+#: app/location/urbex/forms.py:14 app/templates/admin/locations.html:24
+msgid "Type"
+msgstr "Typ"
+
+#: app/location/hiking/forms.py:15 app/location/underground/forms.py:18
+#: app/location/urbex/forms.py:16
+msgid "Location type"
+msgstr "Typ lokace"
+
+#: app/location/hiking/forms.py:18
+msgid "Features"
+msgstr "Vlastnosti"
+
+#: app/location/hiking/forms.py:20
+msgid "Select features"
+msgstr "Vyber vlastnosti"
 
 #: app/location/underground/constants.py:13
 msgid "Mine"
@@ -339,7 +401,7 @@ msgstr "Železniční tunel"
 #: app/location/underground/constants.py:28 app/location/urbex/constants.py:21
 #: app/templates/location/_metadata.html:20
 #: app/templates/location/_metadata.html:24
-#: app/templates/location/_metadata.html:34
+#: app/templates/location/_metadata.html:36
 msgid "Unknown"
 msgstr "Neznámý"
 
@@ -456,19 +518,11 @@ msgstr "Fluorit"
 msgid "Feldspar"
 msgstr "Živec"
 
-#: app/location/underground/forms.py:16 app/location/urbex/forms.py:14
-#: app/templates/admin/locations.html:24
-msgid "Type"
-msgstr "Typ"
-
-#: app/location/underground/forms.py:18 app/location/urbex/forms.py:16
-msgid "Location type"
-msgstr "Typ lokace"
-
 #: app/location/underground/forms.py:20 app/location/urbex/forms.py:18
 #: app/templates/admin/invitations.html:22
 #: app/templates/admin/locations.html:23 app/templates/admin/users.html:25
-#: app/templates/location/_metadata.html:17
+#: app/templates/location/_metadata.html:19
+#: app/templates/location/_metadata.html:35
 msgid "State"
 msgstr "Stav"
 
@@ -591,7 +645,7 @@ msgstr "Odpovědět"
 msgid "Message sent"
 msgstr "Zpráva odeslána"
 
-#: app/page/constants.py:10 app/templates/_menu.html:56
+#: app/page/constants.py:10 app/templates/_menu.html:65
 msgid "Rules"
 msgstr "Pravidla"
 
@@ -661,7 +715,7 @@ msgstr "Hidden places"
 msgid "Database of underground and abandoned places"
 msgstr "Databáze opuštěných míst"
 
-#: app/templates/_helpers.html:168
+#: app/templates/_helpers.html:184
 msgid ""
 "Supports markdown formatting, check the <a "
 "href=\"https://www.markdownguide.org/basic-syntax/\">syntax</a>"
@@ -674,7 +728,7 @@ msgid "Search"
 msgstr "Hledat"
 
 #: app/templates/_menu.html:10 app/templates/_menu.html:15
-#: app/templates/_menu.html:24
+#: app/templates/_menu.html:24 app/templates/_menu.html:33
 msgid "Browse"
 msgstr "Procházet"
 
@@ -688,19 +742,22 @@ msgid "Underground"
 msgstr "Podzemí"
 
 #: app/templates/_menu.html:14 app/templates/_menu.html:23
-#: app/templates/_menu.html:38
+#: app/templates/_menu.html:32 app/templates/_menu.html:47
 msgid "Create new"
 msgstr "Vytvořit"
 
 #: app/templates/_menu.html:16 app/templates/_menu.html:25
+#: app/templates/_menu.html:34
 msgid "Show on map"
 msgstr "Zobrazit na mapě"
 
 #: app/templates/_menu.html:17 app/templates/_menu.html:26
+#: app/templates/_menu.html:35
 msgid "My locations"
 msgstr "Moje lokace"
 
 #: app/templates/_menu.html:18 app/templates/_menu.html:27
+#: app/templates/_menu.html:36
 msgid "Visited"
 msgstr "Navštíveno"
 
@@ -708,32 +765,36 @@ msgstr "Navštíveno"
 msgid "Urbex"
 msgstr "Urbex"
 
-#: app/templates/_menu.html:35
+#: app/templates/_menu.html:31
+msgid "Hiking"
+msgstr "Hiking"
+
+#: app/templates/_menu.html:44
 msgid "Bookmarks"
 msgstr "Záložky"
 
-#: app/templates/_menu.html:44 app/user/constants.py:35
+#: app/templates/_menu.html:53 app/user/constants.py:35
 msgid "Admin"
 msgstr "Admin"
 
-#: app/templates/_menu.html:45 app/templates/location/browse.html:1
+#: app/templates/_menu.html:54 app/templates/location/browse.html:1
 #: app/templates/user/profile.html:34
 msgid "Locations"
 msgstr "Lokace"
 
-#: app/templates/_menu.html:49
+#: app/templates/_menu.html:58
 msgid "Events"
 msgstr "Události"
 
-#: app/templates/_menu.html:53
+#: app/templates/_menu.html:62
 msgid "Page"
 msgstr "Web"
 
-#: app/templates/_menu.html:54 app/templates/page/contact.html:1
+#: app/templates/_menu.html:63 app/templates/page/contact.html:1
 msgid "Contact admins"
 msgstr "Kontaktovat adminy"
 
-#: app/templates/_menu.html:55
+#: app/templates/_menu.html:64
 msgid "Support"
 msgstr "Podpořit"
 
@@ -909,19 +970,19 @@ msgid "Category: "
 msgstr "Kategorie: "
 
 #: app/templates/category/category.html:14
-#: app/templates/location/location.html:52 app/templates/page/page.html:8
+#: app/templates/location/location.html:64 app/templates/page/page.html:8
 #: app/templates/user/profile.html:10
 msgid "Edit"
 msgstr "Editovat"
 
 #: app/templates/category/category.html:15
-#: app/templates/location/location.html:53 app/upload/constants.py:19
+#: app/templates/location/location.html:65 app/upload/constants.py:19
 #: app/upload/forms.py:30 app/upload/forms.py:35
 msgid "Document"
 msgstr "Dokument"
 
 #: app/templates/category/category.html:16
-#: app/templates/location/location.html:54 app/upload/constants.py:14
+#: app/templates/location/location.html:66 app/upload/constants.py:14
 #: app/upload/forms.py:42 app/upload/forms.py:47
 msgid "Photo"
 msgstr "Fotka"
@@ -942,7 +1003,7 @@ msgid "Maintainer"
 msgstr "Správce"
 
 #: app/templates/category/category.html:66
-#: app/templates/location/location.html:134
+#: app/templates/location/location.html:146
 msgid "Documents"
 msgstr "Dokumenty"
 
@@ -968,7 +1029,7 @@ msgid "Category description, history,..."
 msgstr "Popis kategorie, historie,..."
 
 #: app/templates/category/edit.html:28 app/templates/location/edit.html:31
-#: app/templates/location/link.html:18 app/templates/location/poi.html:22
+#: app/templates/location/link.html:18 app/templates/location/poi.html:27
 #: app/templates/message/write.html:15 app/templates/page/edit.html:13
 #: app/templates/upload/document.html:26 app/templates/upload/photo.html:27
 #: app/templates/user/ban.html:28 app/templates/user/edit.html:17
@@ -985,7 +1046,7 @@ msgid "Tools required"
 msgstr "Nástroje"
 
 #: app/templates/location/_metadata.html:24
-#: app/templates/location/_metadata.html:34
+#: app/templates/location/_metadata.html:36
 msgid "Abandoned"
 msgstr "Opuštěno"
 
@@ -1030,9 +1091,14 @@ msgstr "50.1234N"
 msgid "14.4567E"
 msgstr "14.4567E"
 
-#: app/templates/location/edit.html:50
+#: app/templates/location/edit.html:50 app/templates/location/poi.html:22
 msgid "Current location"
 msgstr "Aktuální pozice"
+
+#: app/templates/location/edit.html:51 app/templates/location/edit.html:90
+#: app/templates/location/poi.html:23 app/templates/location/poi.html:34
+msgid "Select from map"
+msgstr "Vyber z mapy"
 
 #: app/templates/location/link.html:1
 msgid "Add link"
@@ -1051,32 +1117,32 @@ msgstr "URL webu"
 msgid "Description of the linked page"
 msgstr "Popis odkazované stránky"
 
-#: app/templates/location/location.html:11
+#: app/templates/location/location.html:13
 msgid "Not published"
 msgstr "Nepublikováno"
 
-#: app/templates/location/location.html:55
+#: app/templates/location/location.html:67
 msgid "Link"
 msgstr "Odkaz"
 
-#: app/templates/location/location.html:56
-#: app/templates/location/location.html:157
+#: app/templates/location/location.html:68
+#: app/templates/location/location.html:169
 msgid "POI"
 msgstr "POI"
 
-#: app/templates/location/location.html:92
+#: app/templates/location/location.html:104
 msgid "Related places"
 msgstr "Příbuzná místa"
 
-#: app/templates/location/location.html:108
+#: app/templates/location/location.html:120
 msgid "Links"
 msgstr "Odkazy"
 
-#: app/templates/location/location.html:113
+#: app/templates/location/location.html:125
 msgid "Geofond - photos"
 msgstr "Geofond - fotky"
 
-#: app/templates/location/location.html:116
+#: app/templates/location/location.html:128
 msgid "Geofond - info"
 msgstr "Geofond - info"
 

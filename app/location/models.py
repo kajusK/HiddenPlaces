@@ -23,7 +23,9 @@ class Location(DBItem):
     """Location description."""
     __table_args__ = (
         CheckConstraint(
-            'NOT(urbex_id IS NOT NULL AND underground_id IS NOT NULL)'),
+            'NOT(urbex_id IS NOT NULL ' +
+            'AND underground_id IS NOT NULL ' +
+            'AND hiking_id is not NULL)'),
     )
 
     uuid = db.Column(UUID(), default=uuid.uuid4, unique=True)
@@ -49,9 +51,12 @@ class Location(DBItem):
     urbex_id = db.Column(db.Integer(), db.ForeignKey('urbex.id'), unique=True)
     underground_id = db.Column(db.Integer(), db.ForeignKey('underground.id'),
                                unique=True)
+    hiking_id = db.Column(db.Integer(), db.ForeignKey('hiking.id'),
+                          unique=True)
 
     underground = db.relationship('Underground')
     urbex = db.relationship('Urbex')
+    hiking = db.relationship('Hiking')
 
     owner = db.relationship('User')
     photo = db.relationship('Upload', post_update=True, foreign_keys=photo_id)
@@ -78,9 +83,14 @@ class Location(DBItem):
         """
         if loc_type == LocationType.ALL:
             return query
-        if loc_type == LocationType.UNDERGROUND:
+        elif loc_type == LocationType.UNDERGROUND:
             return query.filter(cls.underground_id.isnot(None))
-        return query.filter(cls.urbex_id.isnot(None))
+        elif loc_type == LocationType.URBEX:
+            return query.filter(cls.urbex_id.isnot(None))
+        elif loc_type == LocationType.HIKING:
+            return query.filter(cls.hiking_id.isnot(None))
+
+        raise ValueError(f'Invalid location type: {loc_type}')
 
     @classmethod
     def filter_private(cls, query: Query, user: User) -> Query:

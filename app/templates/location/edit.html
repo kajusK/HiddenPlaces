@@ -63,11 +63,14 @@
                     {{ render_field(form.abandoned, 'watch') }}
                     {{ render_field(form.geofond_id, 'globe2') }}
                     {{ render_field(form.tools, 'wrench') }}
-                {% else %}
+                {% elif 'urbex' in request.url or (location and location.urbex) %}
                     {{ render_field(form.type, 'house-door', field_class="dselect", required=False) }}
                     {{ render_field(form.state, 'wrench', field_class="dselect", required=False) }}
                     {{ render_field(form.accessibility, 'door-closed', field_class="dselect", required=False) }}
                     {{ render_field(form.abandoned, 'watch') }}
+                {% else %}
+                    {{ render_field(form.type, 'house-door', field_class="dselect", required=False) }}
+                    {{ render_field(form.features, 'card-checklist', field_class="dselect", required=False) }}
                 {% endif %}
 
                 <div class="form-group">

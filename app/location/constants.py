@@ -16,6 +16,7 @@ class LocationType(Enum):
     """Type of the saved location."""
     UNDERGROUND = auto()
     URBEX = auto()
+    HIKING = auto()
     ALL = auto()
 
 

@@ -20,6 +20,8 @@ from app.location.underground.forms import UndergroundForm
 from app.location.underground.utils import UndergroundUtil
 from app.location.urbex.forms import UrbexForm
 from app.location.urbex.utils import UrbexUtil
+from app.location.hiking.forms import HikingForm
+from app.location.hiking.utils import HikingUtil
 from app.upload.models import Upload
 from app.upload.constants import UploadType
 from app.admin import events
@@ -44,6 +46,8 @@ def _get_loc_type(type_string: Optional[str]) -> LocationType:
         return LocationType.UNDERGROUND
     if type_string == "urbex":
         return LocationType.URBEX
+    if type_string == "hiking":
+        return LocationType.HIKING
     abort(404)
     return LocationType.ALL
 
@@ -106,6 +110,9 @@ def add(type_str: str):
     elif loc_type == LocationType.URBEX:
         form = UrbexForm()
         util = UrbexUtil()
+    elif loc_type == LocationType.HIKING:
+        form = HikingForm()
+        util = HikingUtil()
     else:
         abort(404)
 
@@ -178,6 +185,9 @@ def edit(location_id: int):
     elif location.urbex_id is not None:
         form = UrbexForm()
         util = UrbexUtil()
+    elif location.hiking_id is not None:
+        form = HikingForm()
+        util = HikingUtil()
     else:
         abort(404)
 
@@ -621,10 +631,14 @@ def api(type_str: Optional[str] = None):
             loc_type = location.underground.type
             loc_state = location.underground.state
             loc_accessibility = location.underground.accessibility
-        else:
+        elif location.urbex:
             loc_type = location.urbex.type
             loc_state = location.urbex.state
             loc_accessibility = location.urbex.accessibility
+        elif location.hiking:
+            loc_type = location.hiking.type
+            loc_state = _('Undefined')
+            loc_accessibility = _('Undefined')
 
         results.append({
             'id': location.id,

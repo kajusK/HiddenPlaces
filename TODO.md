@@ -14,6 +14,7 @@
 * Download files with reasonable filenames instead of the UUIDs
 * Take upload photo date from exif
 * Show nearby objects
+* Increase size of the photo and map modals to fit the whole screen
 
 ### Complex features
 * `povrchovka` - select location you will be visiting, set time of expected return and list of contacts to send email/sms/... when you don't confirm you made it out alive
@@ -24,3 +25,4 @@
 * Keep history of location changes, allow reverting
 * Find corresponding geofond ID when creating object by GPS (nearby mines) and suggest it.
 * Add importer from other sites - Geofond, podzemi.org, archiv.dolovani.cz
+* Allow changing order of photos, POIs, documents,... by user

@@ -28,6 +28,15 @@
         ], show=('urbex' in request.url))
     }}
 
+    {{ menu_block(_("Hiking"), "brightness-alt-high-fill", [
+        menu_item(_("Create new"), "plus-lg", Url.get('location.add', type_str='hiking')),
+        menu_item(_("Browse"), "book", Url.get('location.browse', type_str='hiking')),
+        menu_item(_("Show on map"), "map", Url.get('location.browse_map', type_str='hiking')),
+        menu_item(_("My locations"), "geo", Url.get('location.owned', type_str='hiking')),
+        menu_item(_("Visited"), "pin", Url.get('location.visited', type_str='hiking')),
+        ], show=('hiking' in request.url))
+    }}
+
     {% set bookmark_items = [] %}
     {% for bookmark in user_bookmarks %}
         {{ bookmark_items.append(menu_item(bookmark.name, "", Url.get('location.bookmark_show', name=bookmark.name))) or "" }}
