@@ -31,7 +31,7 @@ class HikingUtil(LocationUtil):
             form: Form to load data to
         """
         form.type.data = location.hiking.type
-        form.materials.data = [f.type for f in location.hiking.features]
+        form.features.data = [f.type for f in location.hiking.features]
 
     @staticmethod
     def edit(location: Location, form: HikingForm) -> None:
