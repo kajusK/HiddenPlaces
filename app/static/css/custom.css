@@ -87,3 +87,9 @@ div.dropdown>.btn.show+.dropdown-menu {
 .tag-filter-tags-container {
     left: 30px;
 }
+
+@media (min-width: 992px) {
+    .map-modal {
+        height: 80%;
+    }
+}

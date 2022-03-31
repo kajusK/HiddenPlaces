@@ -145,13 +145,13 @@
 
 {%- macro map_modal(title, style=None) -%}
 <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalTitle">
-    <div class="modal-dialog modal-dialog-centered modal-xl" style="height: 90%">
-        <div class="modal-content" style="height: 90%">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-lg-down map-modal">
+        <div class="modal-content h-100">
             <div class="modal-header">
                 <h2 class="modal-title" id="mapModalTitle">{{ title }}</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body container fill">
+            <div class="modal-body fill p-0">
                 <div id="map" class="h-100" {% if style %}style="{{ style }}"{% endif %}></div>
             </div>
         </div>
