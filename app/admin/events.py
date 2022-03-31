@@ -23,20 +23,6 @@ class Event(ABC):
 #
 
 
-class LogInEvent(Event):
-    def __init__(self):
-        self.severity = EventSeverity.LOW
-        self.type = EventType.OTHER
-        self.text = "Logged in"
-
-
-class LogOutEvent(Event):
-    def __init__(self):
-        self.severity = EventSeverity.LOW
-        self.type = EventType.OTHER
-        self.text = "Logged out"
-
-
 class InviteEvent(Event):
     def __init__(self, invitation: Invitation):
         self.severity = EventSeverity.HIGH

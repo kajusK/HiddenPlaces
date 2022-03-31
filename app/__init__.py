@@ -125,7 +125,8 @@ def register_template_context(app: Flask) -> None:
             invite = Invitation.get_by_state(InvitationState.WAITING).count()
             loc = Location.get_since(
                 current_user.location_check_ts).count()
-            login = LoginLog.get_since(current_user.login_check_ts).count()
+            login = LoginLog.get_failed_since(
+                current_user.login_check_ts).count()
             event = EventLog.get_since(current_user.event_check_ts).count()
         return dict(msg_alerts=msg, invite_alerts=invite,
                     location_alerts=loc, login_alerts=login,

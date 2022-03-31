@@ -286,13 +286,13 @@ class LoginLog(DBItem):
             cls.timestamp >= datetime.utcnow() - timedelta(days=30))
 
     @classmethod
-    def get_since(cls, since: datetime) -> Query:
-        """Query logs added since date
+    def get_failed_since(cls, since: datetime) -> Query:
+        """Query failed logs added since date
 
         Args:
             since: Start date to filter from
         """
-        return cls.get().filter(cls.timestamp > since)
+        return cls.get_failed().filter(cls.timestamp > since)
 
     @classmethod
     def create(cls, email: str, result: LoginResult,  # type:ignore

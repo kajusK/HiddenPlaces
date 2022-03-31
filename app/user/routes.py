@@ -42,7 +42,6 @@ def login():
     if form.validate_on_submit():
         login_user(form.user, remember=form.remember_me.data)
         LoginLog.create(form.email.data, form.result, form.user)
-        EventLog.log(current_user, events.LogInEvent())
         db.session.commit()
 
         flash(_("You were logged in"), 'success')
@@ -132,7 +131,6 @@ def reset_password(token: str):
 @blueprint.route('/logout')
 def logout():
     """Logout user and redirect to login page again."""
-    EventLog.log(current_user, events.LogOutEvent())
     db.session.commit()
     logout_user()
     flash(_("You were logged out."), 'info')

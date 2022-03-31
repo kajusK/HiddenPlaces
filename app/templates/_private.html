@@ -31,7 +31,7 @@
                 {{ dropdown_link(_("Latest changes"), 'journal-check', Url.get('admin.events'), event_alerts) }}
                 {{ dropdown_link(_("New locations"), 'geo-alt', Url.get('admin.locations'), location_alerts) }}
                 {{ dropdown_link(_("Invitations pending"), 'person', Url.get('admin.invitations'), invite_alerts) }}
-                {{ dropdown_link(_("Failed logins"), 'exclamation-octagon', Url.get('admin.logins'), login_alerts) }}
+                {{ dropdown_link(_("Failed logins"), 'exclamation-octagon', Url.get('admin.logins', login_type='failed'), login_alerts) }}
             </div>
         </div>
 
