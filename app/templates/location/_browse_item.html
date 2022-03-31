@@ -6,7 +6,7 @@
         {% if location.photo %}
             {% set image_url = Url.get('upload.get', path=location.photo.thumbnail) %}
         {% endif %}
-        <img src="{{ image_url }}" class="card-img-top" alt="Location title image">
+        <img src="{{ image_url }}" class="card-img-top" alt="Location title image", style='height: 300px; object-fit: cover;'>
         <div class="card-body">
             <h4 class="card-title">
                 <a href="{{ Url.get('location.show', location_id=location.id) }}" class="text-decoration-none link-dark"></a>{{ location.name }}</a>

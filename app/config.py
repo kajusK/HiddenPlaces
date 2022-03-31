@@ -50,7 +50,7 @@ class Config:
     # amount of items to show on single page
     ITEMS_PER_PAGE = 20
     # amount of locations to show on single page
-    LOCATIONS_PER_PAGE = 8
+    LOCATIONS_PER_PAGE = 16
 
     # EMail configuration (gmail)
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'localhost')
