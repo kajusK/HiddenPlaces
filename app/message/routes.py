@@ -10,7 +10,9 @@ from app.utils.pagination import Pagination
 from app.utils import utils
 from app.user.models import User
 from app.message.forms import WriteForm, ReplyForm
-from app.message.models import Message, Thread
+from app.message.models import Thread
+from app.message import message
+
 
 blueprint = Blueprint('message', __name__, url_prefix="/message")
 
@@ -39,17 +41,7 @@ def write(user_id: int):
 
     form = WriteForm()
     if form.validate_on_submit():
-        thread = Thread.create(
-            subject=form.subject.data,
-            sender=current_user,
-            recipient=user
-        )
-        Message.create(
-            message=form.message.data,
-            user=current_user,
-            thread=thread,
-        )
-        db.session.commit()
+        message.send(user, form.subject.data, form.message.data)
         flash(_("Message sent"), 'success')
         return utils.redirect_return()
     return render_template('message/write.html', form=form, user=user)
@@ -73,11 +65,6 @@ def show(thread_id: int):
         thread.mark_seen(current_user)
         db.session.commit()
     elif form.validate_on_submit():
-        Message.create(
-            message=form.message.data,
-            user=current_user,
-            thread=thread,
-        )
-        db.session.commit()
+        message.reply(thread, form.message.data)
         return redirect(url_for('message.show', thread_id=thread_id))
     return render_template('message/show.html', form=form, thread=thread)

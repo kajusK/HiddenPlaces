@@ -1,0 +1,21 @@
+{% set title=_('Send message to all users') %}
+{% extends '_private.html' %}
+{% from "_helpers.html" import render_field, render_submit %}
+
+{% block content %}
+<div class="card content-card">
+    <h2 class="card-header">{{ title }}</h2>
+    <div class="card-body">
+        <form method="POST" action="" role="form" method="POST">
+            {{ form.hidden_tag() }}
+
+            {{ render_field(form.subject, 'card-text', placeholder=_('Subject')) }}
+            {{ render_field(form.text, 'pencil', placeholder=_('Your message')) }}
+            {{ render_field(form.email, 'envelope') }}
+            <div class='text-end mt-2'>
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

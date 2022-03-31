@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-03-19 21:06+0100\n"
+"POT-Creation-Date: 2022-03-31 19:24+0200\n"
 "PO-Revision-Date: 2022-01-03 20:04+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: cs\n"
@@ -53,70 +53,98 @@ msgstr "Vysoká"
 msgid "Critical"
 msgstr "Kritická"
 
-#: app/admin/routes.py:39
+#: app/admin/forms.py:10 app/message/forms.py:12 app/page/forms.py:10
+#: app/templates/admin/message.html:12 app/templates/message/browse.html:16
+#: app/templates/message/write.html:11 app/templates/page/contact.html:12
+msgid "Subject"
+msgstr "Předmět"
+
+#: app/admin/forms.py:11 app/page/forms.py:11
+#: app/templates/admin/message.html:13 app/templates/message/write.html:12
+#: app/templates/page/contact.html:13
+msgid "Your message"
+msgstr "Vaše zpráva"
+
+#: app/admin/forms.py:12
+msgid "Send as email"
+msgstr "Odeslat jako email"
+
+#: app/admin/forms.py:13 app/message/forms.py:16 app/page/forms.py:12
+msgid "Send"
+msgstr "Odeslat"
+
+#: app/admin/routes.py:42
 msgid "All locations"
 msgstr "Všechny lokace"
 
-#: app/admin/routes.py:42
+#: app/admin/routes.py:45
 msgid "Urbex locations"
 msgstr "Urbexové lokace"
 
-#: app/admin/routes.py:45
+#: app/admin/routes.py:48
 msgid "Underground locations"
 msgstr "Podzemní lokace"
 
-#: app/admin/routes.py:48
+#: app/admin/routes.py:51
 msgid "Private locations"
 msgstr "Soukromé lokace"
 
-#: app/admin/routes.py:85 app/templates/_menu.html:55
+#: app/admin/routes.py:88 app/templates/_menu.html:55
 #: app/templates/admin/users.html:6
 msgid "Users"
 msgstr "Uživatelé"
 
-#: app/admin/routes.py:88 app/templates/admin/users.html:7
+#: app/admin/routes.py:91 app/templates/admin/users.html:7
 msgid "Admins"
 msgstr "Admini"
 
-#: app/admin/routes.py:91 app/templates/admin/users.html:8
+#: app/admin/routes.py:94 app/templates/admin/users.html:8
 msgid "Moderators"
 msgstr "Moderátoři"
 
-#: app/admin/routes.py:94
+#: app/admin/routes.py:97
 msgid "Banned users"
 msgstr "Bany"
 
-#: app/admin/routes.py:126 app/templates/_menu.html:56
+#: app/admin/routes.py:129 app/templates/_menu.html:56
 msgid "Invitations"
 msgstr "Pozvánky"
 
-#: app/admin/routes.py:129 app/user/constants.py:25
+#: app/admin/routes.py:132 app/user/constants.py:25
 msgid "Waiting for approval"
 msgstr "Čeká na schválení"
 
-#: app/admin/routes.py:132
+#: app/admin/routes.py:135
 msgid "Approved invitations"
 msgstr "Schválené pozvánky"
 
-#: app/admin/routes.py:135
+#: app/admin/routes.py:138
 msgid "Denied invitations"
 msgstr "Zamítnuté pozvánky"
 
-#: app/admin/routes.py:138
+#: app/admin/routes.py:141
 msgid "Registered users"
 msgstr "Registrovaní uživatelé"
 
-#: app/admin/routes.py:171 app/templates/_menu.html:57
+#: app/admin/routes.py:174 app/templates/_menu.html:57
 msgid "Logins"
 msgstr "Přihlášení"
 
-#: app/admin/routes.py:174 app/templates/admin/logins.html:8
+#: app/admin/routes.py:177 app/templates/admin/logins.html:8
 msgid "Unique IPs"
 msgstr "Unikátní IP"
 
-#: app/admin/routes.py:177 app/templates/_private.html:34
+#: app/admin/routes.py:180 app/templates/_private.html:34
 msgid "Failed logins"
 msgstr "Chybná přihlášení"
+
+#: app/admin/routes.py:276
+msgid "Email to all users was sent"
+msgstr "Email odeslán všem uživatelům"
+
+#: app/admin/routes.py:281
+msgid "Message to all users was sent"
+msgstr "Zpráva odeslána všem uživatelům"
 
 #: app/category/forms.py:14 app/location/forms.py:23 app/location/forms.py:49
 #: app/location/forms.py:57 app/location/forms.py:79
@@ -133,7 +161,7 @@ msgid "Description"
 msgstr "Popis"
 
 #: app/category/forms.py:19 app/location/forms.py:28 app/page/constants.py:9
-#: app/templates/_menu.html:66 app/templates/category/category.html:25
+#: app/templates/_menu.html:67 app/templates/category/category.html:25
 #: app/templates/location/location.html:77 app/templates/user/profile.html:68
 #: app/user/forms.py:123
 msgid "About"
@@ -623,29 +651,19 @@ msgstr "Zrekonstruováno"
 msgid "Monitored"
 msgstr "Hlídáno"
 
-#: app/message/forms.py:12 app/page/forms.py:10
-#: app/templates/message/browse.html:16 app/templates/message/write.html:11
-#: app/templates/page/contact.html:12
-msgid "Subject"
-msgstr "Předmět"
-
 #: app/message/forms.py:15 app/message/forms.py:21
 msgid "Message"
 msgstr "Zpráva"
-
-#: app/message/forms.py:16 app/page/forms.py:12
-msgid "Send"
-msgstr "Odeslat"
 
 #: app/message/forms.py:22
 msgid "Reply"
 msgstr "Odpovědět"
 
-#: app/message/routes.py:53
+#: app/message/routes.py:45
 msgid "Message sent"
 msgstr "Zpráva odeslána"
 
-#: app/page/constants.py:10 app/templates/_menu.html:65
+#: app/page/constants.py:10 app/templates/_menu.html:66
 msgid "Rules"
 msgstr "Pravidla"
 
@@ -663,11 +681,6 @@ msgstr ""
 "Uživatel %(user)s (%(url)s) vám poslal zprávu:\n"
 "\n"
 "%(msg)s"
-
-#: app/page/forms.py:11 app/templates/message/write.html:12
-#: app/templates/page/contact.html:13
-msgid "Your message"
-msgstr "Vaše zpráva"
 
 #: app/page/forms.py:17 app/templates/page/edit.html:10
 msgid "Page content"
@@ -786,15 +799,19 @@ msgstr "Lokace"
 msgid "Events"
 msgstr "Události"
 
-#: app/templates/_menu.html:62
+#: app/templates/_menu.html:59
+msgid "Global message"
+msgstr "Globální zpráva"
+
+#: app/templates/_menu.html:63
 msgid "Page"
 msgstr "Web"
 
-#: app/templates/_menu.html:63 app/templates/page/contact.html:1
+#: app/templates/_menu.html:64 app/templates/page/contact.html:1
 msgid "Contact admins"
 msgstr "Kontaktovat adminy"
 
-#: app/templates/_menu.html:64
+#: app/templates/_menu.html:65
 msgid "Support"
 msgstr "Podpořit"
 
@@ -930,6 +947,10 @@ msgstr "Email"
 #: app/templates/admin/logins.html:26
 msgid "Result"
 msgstr "Výsledek"
+
+#: app/templates/admin/message.html:1
+msgid "Send message to all users"
+msgstr "Odeslat zprávu všem uživatelům"
 
 #: app/templates/admin/users.html:9
 msgid "Bans"
@@ -1511,69 +1532,69 @@ msgstr "Nastavit roli"
 msgid "User does not exist."
 msgstr "Uživatel neexistuje"
 
-#: app/user/routes.py:48
+#: app/user/routes.py:47
 msgid "You were logged in"
 msgstr "Přihlášení bylo úspěšné"
 
-#: app/user/routes.py:71
+#: app/user/routes.py:70
 msgid "The invitation is no longer valid."
 msgstr "Pozvánka už není platná"
 
-#: app/user/routes.py:86
+#: app/user/routes.py:85
 msgid "You were registered, you may now log-in"
 msgstr "Byl jste zaregistrován, teď se můžete přihlásit"
 
-#: app/user/routes.py:103
+#: app/user/routes.py:102
 msgid "Password reset request was requested, check your email"
 msgstr "Změna hesla byla vyžádána, zkontrolujte si email"
 
-#: app/user/routes.py:119
+#: app/user/routes.py:118
 msgid "The password reset request is no longer valid."
 msgstr "Žádost o změnu hesla vypršela."
 
-#: app/user/routes.py:127
+#: app/user/routes.py:126
 msgid "Your password was changed, you may now log in"
 msgstr "Heslo bylo změněno, můžete se přihlásit"
 
-#: app/user/routes.py:138
+#: app/user/routes.py:136
 msgid "You were logged out."
 msgstr "Byl jste odhlášen"
 
-#: app/user/routes.py:175
+#: app/user/routes.py:173
 msgid "Your profile changes were saved"
 msgstr "Změny profilu uloženy"
 
-#: app/user/routes.py:188
+#: app/user/routes.py:186
 msgid "Your password was changed"
 msgstr "Heslo bylo změněno"
 
-#: app/user/routes.py:205
+#: app/user/routes.py:203
 msgid "Superuser cannot be banned"
 msgstr "Superuser nemůže dostat ban"
 
-#: app/user/routes.py:219
+#: app/user/routes.py:217
 #, python-format
 msgid "User %(user)s was banned"
 msgstr "Uživatel %(user)s dostal ban"
 
-#: app/user/routes.py:245
+#: app/user/routes.py:243
 #, python-format
 msgid "%(name)s invited"
 msgstr "%(name)s pozván"
 
-#: app/user/routes.py:247
+#: app/user/routes.py:245
 msgid "Invitation created, waiting for approval by admins"
 msgstr "Pozvánka vytvořena, čeká na schválení adminem"
 
-#: app/user/routes.py:265
+#: app/user/routes.py:263
 msgid "You can't change root's role!"
 msgstr "Nemůžete změnit roli roota"
 
-#: app/user/routes.py:268
+#: app/user/routes.py:266
 msgid "You can't change your own role!"
 msgstr "Nemůžete změnit svoji vlastní roli"
 
-#: app/user/routes.py:279
+#: app/user/routes.py:277
 #, python-format
 msgid "Changed role of %(user)s to %(role)s"
 msgstr "Role uživatele %(user)s změněna na %(role)s"

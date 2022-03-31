@@ -1,7 +1,7 @@
 """Admin interface."""
 from datetime import datetime
 from typing import Optional
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, flash, url_for, redirect
 from flask import current_app as app
 from flask_login import current_user
 from flask_babel import _
@@ -15,7 +15,10 @@ from app.location.constants import LocationType
 from app.user import email
 from app.user.models import User, Invitation, LoginLog
 from app.user.constants import InvitationState
+from app.message.message import send as send_message
 from app.admin.events import ApproveInviteEvent, DenyInviteEvent
+from app.admin.forms import MessageForm
+from app.admin.email import send_mail_to_all
 from app.admin.models import EventLog
 
 
@@ -257,3 +260,25 @@ def events(page: int = 1):
 
     return render_template('admin/events.html', events=query.items,
                            pagination=pagination)
+
+
+@blueprint.route('/message', methods=['GET', 'POST'])
+@admin
+def message():
+    """Render form to send email/message to all users"""
+    form = MessageForm()
+    if form.validate_on_submit():
+        subject = form.subject.data
+        message = form.text.data
+
+        if form.email.data:
+            send_mail_to_all(subject, message)
+            flash(_("Email to all users was sent"), 'success')
+        else:
+            users = User.get()
+            for user in users:
+                send_message(user, subject, message)
+            flash(_("Message to all users was sent"), 'success')
+        return redirect(url_for('page.index'))
+
+    return render_template('admin/message.html', form=form)

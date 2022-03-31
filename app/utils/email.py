@@ -7,15 +7,24 @@ from flask_mail import Message
 from app.extensions import mail
 
 
-def _send_email_async(current_app: Flask, msg: Message):
+def _send_email_async(current_app: Flask, recipients: List[str], subject: str,
+                      text_body: str, html_body: Optional[str] = None) -> None:
     """Takes message and sends it over flask-mail.
 
     Args:
         current_app: Flask app context
-        msg: Message to be sent
+        recipients: list of recipients for the email
+        subject: Subject of the email
+        text_body: Text to be sent
+        html_body: HTML variant of the message
     """
     with current_app.app_context():
-        mail.send(msg)
+        with mail.connect() as conn:
+            for recipient in recipients:
+                msg = Message(subject, recipients=[recipient])
+                msg.body = text_body
+                msg.html = html_body
+                conn.send(msg)
 
 
 def send_email(recipients: List[str], subject: str, text_body: str,
@@ -28,10 +37,9 @@ def send_email(recipients: List[str], subject: str, text_body: str,
         text_body: Text to be sent
         html_body: HTML variant of the message
     """
-    msg = Message(f'[HiddenPlaces] {subject}', recipients=recipients)
-    msg.body = text_body
-    msg.html = html_body
+    subject = f'[HiddenPlaces] {subject}'
     # Send email from thread for faster response
     # pylint: disable=protected-access
     Thread(target=_send_email_async,
-           args=(app._get_current_object(), msg)).start()  # type:ignore
+           args=(app._get_current_object(), recipients, subject,  # type:ignore
+                 text_body, html_body)).start()
