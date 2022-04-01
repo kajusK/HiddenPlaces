@@ -2,7 +2,6 @@
 * Logout user when banned (when remember me is set, user can be banned and still have access to the site for a long time)
 * Nice URLs (user id, location id, etc. replaces by string in URL)
 * Increase tests coverage (functional, unit)
-* Add 'send message to all/group' to admin interface
 * Add owner based access (profile edit, location change,...) - buttons should be hidden automatically when no access is available
 * Add filtering to location browsing (by area, type,...)
 * Add location privacy levels and update access controll per role accordingly
@@ -14,7 +13,6 @@
 * Download files with reasonable filenames instead of the UUIDs
 * Take upload photo date from exif
 * Show nearby objects
-* Increase size of the photo and map modals to fit the whole screen
 
 ### Complex features
 * `povrchovka` - select location you will be visiting, set time of expected return and list of contacts to send email/sms/... when you don't confirm you made it out alive
