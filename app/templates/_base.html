@@ -37,6 +37,7 @@
     {% endfor %}
     <link rel="stylesheet" href="{{ Url.get('static', filename='css/custom.css') }}">
     <link rel="stylesheet" href="{{ Url.get('static', filename='css/toast.css') }}">
+    <link rel="stylesheet" href="{{ Url.get('static', filename='baguettebox/baguetteBox.min.css') }}">
     <link rel="shortcut icon" type="image/jpg" href="{{ Url.get('static', filename='images/favicon.ico') }}"/>
 
     <!--
@@ -66,8 +67,8 @@
         </div>
     </div>
     <script src="{{ Url.get('static', filename='bootstrap/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ Url.get('static', filename='baguettebox/baguetteBox.min.js') }}"></script>
     <script src="{{ Url.get('static', filename='dselect/dselect.min.js') }}"></script>
-    <script src="{{ Url.get('static', filename='js/bs5-lightbox.min.js') }}"></script>
     {{ moment.include_moment() }}
     {{ moment.lang(g.locale) }}
     {% if include_map %}

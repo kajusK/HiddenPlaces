@@ -29,13 +29,12 @@
             </div>
 
             {% if visit.photos %}
-            <div class="row">
+            <div class="row gallery">
                 {% for image in visit.photos %}
                 <div class="col-sm-3">
                     <div class="position-relative control-hover">
                         {{ link_button('', Url.for_return('upload.remove', upload_id=image.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0 control-hide') }}
-                        <a href="{{ Url.get('upload.get', path=image.path) }}"
-                            data-toggle="lightbox" data-gallery="{{ visit.id }}">
+                        <a href="{{ Url.get('upload.get', path=image.path) }}">
                             <img src="{{ Url.get('upload.get', path=image.thumbnail) }}" class="img-fluid">
                         </a>
                     </div>

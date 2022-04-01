@@ -1,5 +1,8 @@
-/* Apply dselect handling to corresponding class */
-document.querySelectorAll('.dselect').forEach(el => dselect(el))
+window.addEventListener('load', function() {
+    /* Apply dselect handling to corresponding class */
+    document.querySelectorAll('.dselect').forEach(el => dselect(el))
+    baguetteBox.run('.gallery');
+});
 
 /**
  * Show android like toast

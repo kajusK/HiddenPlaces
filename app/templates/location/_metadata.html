@@ -3,7 +3,7 @@
         {{ _('Metadata') }}
     </div>
     {% if location.photo %}
-    <a href="{{ Url.get('upload.get', path=location.photo.path) }}" data-toggle="lightbox" data-gallery="title">
+    <a href="{{ Url.get('upload.get', path=location.photo.path) }}" class="gallery">
         <img class="card-img-top" src="{{ Url.get('upload.get', path=location.photo.thumbnail) }}" alt="Location title image">
     </a>
     {% else %}

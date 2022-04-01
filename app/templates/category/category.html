@@ -46,7 +46,7 @@
                 {{ _('Metadata') }}
             </div>
             {% if category.photo %}
-            <a href="{{ Url.get('upload.get', path=category.photo.path) }}" data-toggle="lightbox" data-gallery="title">
+            <a href="{{ Url.get('upload.get', path=category.photo.path) }}" class="gallery">
                 <img class="card-img-top" src="{{ Url.get('upload.get', path=category.photo.thumbnail) }}" alt="Category title image">
             </a>
             {% else %}
