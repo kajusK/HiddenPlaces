@@ -36,9 +36,14 @@ class MyMap {
                     opacity: opacity
                 }),
             ]),
-            "Mines": L.esri.dynamicMapLayer({
-                url: 'https://mapy.geology.cz/arcgis/rest/services/Dulni_Dila/dulni_dila/MapServer'
-            }),
+            "Mines": L.layerGroup([
+                L.esri.dynamicMapLayer({
+                    url: 'https://mapy.geology.cz/arcgis/rest/services/Dulni_Dila/dulni_dila/MapServer'
+                }),
+                L.esri.dynamicMapLayer({
+                    url: 'https://ags.geology.sk/arcgis/rest/services/Geofond/sbd_vect/MapServer'
+                }),
+            ]),
             "Undermined": L.esri.dynamicMapLayer({
                 url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/pozustatky_po_tezbe/MapServer',
                 layers: [2]
