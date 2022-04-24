@@ -1,6 +1,6 @@
 """Helpers for testing."""
 from datetime import datetime, timedelta
-from app.user.constants import UserRole, InvitationState
+from app.models.user import UserRole, InvitationState
 
 users = dict(
     root={'first_name': 'Root',

@@ -6,8 +6,7 @@ import os
 import click
 from flask.cli import AppGroup
 
-from app.user.models import User
-from app.user.constants import UserRole
+from app.models.user import User, UserRole
 from app.database import db
 from app.utils.utils import random_string
 

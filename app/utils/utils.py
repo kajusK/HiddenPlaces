@@ -2,10 +2,8 @@
 import random
 from typing import Optional, Any
 from flask import request, redirect, session, url_for
-
 from flask import current_app as app
 from flask_login import current_user
-from app.user.constants import UserRole
 
 
 def get_visitor_ip() -> Optional[str]:
@@ -57,9 +55,9 @@ class Url:
                             'auth_moderator', False)
 
         url.have_access = True
-        if admin and current_user.role > UserRole.ADMIN:
+        if admin and not current_user.has_admin_rights():
             url.have_access = False
-        if moderator and current_user.role > UserRole.MODERATOR:
+        if moderator and not current_user.has_moderator_rights():
             url.have_access = False
 
         return url

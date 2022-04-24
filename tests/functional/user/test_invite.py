@@ -1,8 +1,7 @@
 """Functional test for user invitation functionality."""
 import re
 from html5validate import validate as validate_html
-from app.user.models import Invitation, User
-from app.user.constants import InvitationState
+from app.models.user import Invitation, User, InvitationState
 import tests.helpers as helpers
 
 

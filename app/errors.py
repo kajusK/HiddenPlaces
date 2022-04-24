@@ -4,8 +4,7 @@ from flask import current_app as app
 from flask_login import current_user
 
 from app.database import db
-from app.admin.models import EventLog
-from app.admin.events import UnauthorizedEvent
+from app.models.event import EventLog, UnauthorizedEvent
 
 
 def error_403(error: Exception):

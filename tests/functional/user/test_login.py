@@ -1,8 +1,7 @@
 """Functional test for user login/logout functionality."""
 from flask import request
 from html5validate import validate as validate_html
-from app.user.models import LoginLog
-from app.user.constants import LoginResult
+from app.models.user import LoginLog, LoginResult
 import tests.helpers as helpers
 
 

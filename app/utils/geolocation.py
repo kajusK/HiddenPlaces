@@ -94,7 +94,7 @@ class LatLon:
         is_latitude = direction in ('N', 'S')
         return cls(value, is_latitude)
 
-    def toDecimalStr(self) -> str:
+    def to_decimal_str(self) -> str:
         """Converts the object to decimal string, e.g. 12.123E"""
         if self.is_latitude:
             direction = 'N' if self.value >= 0 else 'S'

@@ -172,7 +172,7 @@
                 {% for poi in location.pois %}
                 <div class="list-group-item list-group-item-action position-relative control-hover">
                     <div class="position-absolute top-0 end-0 foreground-item control-hide">
-                        {{ link_button('', 'javascript:copyToClipboard("%s %s")' % (poi.latitude.toDecimalStr(), poi.longitude.toDecimalStr()), 'share', 'warning', class='btn-sm') }}
+                        {{ link_button('', 'javascript:copyToClipboard("%s %s")' % (poi.latitude.to_decimal_str(), poi.longitude.to_decimal_str()), 'share', 'warning', class='btn-sm') }}
                         {{ link_button('', Url.for_return('location.poi_remove', poi_id=poi.id), 'trash', 'danger', class='btn-sm') }}
                     </div>
                     <strong>{{ poi.name }}</strong>

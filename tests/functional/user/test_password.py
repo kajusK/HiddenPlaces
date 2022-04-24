@@ -1,7 +1,7 @@
 """Functional test for user password changing."""
 import re
 from html5validate import validate as validate_html
-from app.user.models import User
+from app.models.user import User
 import tests.helpers as helpers
 
 

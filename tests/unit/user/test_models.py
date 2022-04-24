@@ -1,6 +1,5 @@
 """Test User module database models"""
-from app.user.models import User
-from app.user.constants import UserRole
+from app.models.user import User, UserRole
 from app.database import db
 
 

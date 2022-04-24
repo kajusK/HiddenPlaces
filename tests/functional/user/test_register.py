@@ -1,8 +1,7 @@
 """Functional test for user registration functionality."""
 from flask import request
 from html5validate import validate as validate_html
-from app.user.models import Invitation, User
-from app.user.constants import UserRole, InvitationState
+from app.models.user import Invitation, User, UserRole, InvitationState
 import tests.helpers as helpers
 
 

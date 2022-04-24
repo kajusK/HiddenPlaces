@@ -5,22 +5,20 @@ from flask import Flask, request, redirect, url_for, flash, current_app,\
     session, g
 from flask_login import current_user
 
-import app.user.routes as user
-import app.category.routes as category
-import app.location.routes as location
-import app.admin.routes as admin
-import app.page.routes as page
-import app.message.routes as message
-import app.upload.routes as upload
+from app.routes import user
+from app.routes import category
+from app.routes import location
+from app.routes import admin
+from app.routes import page
+from app.routes import message
+from app.routes import upload
 from app import errors
 from app.commands import user_cli, translate_cli
 from app.utils.utils import Url
-from app.user.models import User, Invitation, LoginLog
-from app.user.constants import InvitationState
-from app.location.models import Bookmarks, Location
-from app.category.models import Category
-from app.admin.models import EventLog
-from app.message.models import Thread
+from app.models.user import User, Invitation, LoginLog, InvitationState
+from app.models.location import Bookmarks, Location, Category
+from app.models.event import EventLog
+from app.models.message import Thread
 from app.extensions import db, migrate, login_manager, bcrypt, babel, misaka,\
     mail, moment
 

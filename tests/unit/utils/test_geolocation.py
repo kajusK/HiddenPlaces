@@ -122,7 +122,7 @@ def test_latlon_to_decimal_str(subtests):
 
     for item in items:
         with subtests.test(expected=item[1]):
-            assert item[0].toDecimalStr() == item[1]
+            assert item[0].to_decimal_str() == item[1]
 
 
 def test_latlon_str(subtests):

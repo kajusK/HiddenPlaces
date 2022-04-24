@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from app import create_app
 from app.database import db
 from app.extensions import mail
-from app.user.models import User, Invitation, Ban
+from app.models.user import User, Invitation, Ban
 
 Session = sessionmaker()
 

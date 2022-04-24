@@ -2,9 +2,6 @@
 from flask_login import current_user
 from html5validate import validate as validate_html
 
-from app.user.models import Invitation, User
-import tests.helpers as helpers
-
 
 def test_profile_our_page(client, login_root):
     """

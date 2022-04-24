@@ -2,7 +2,7 @@
 from functools import wraps
 from flask import abort
 from flask_login import current_user
-from app.user.constants import UserRole
+from app.models.user import UserRole
 
 
 def public(function):
