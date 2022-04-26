@@ -12,7 +12,7 @@ from app.database import db
 from app.utils.utils import redirect_return
 from app.models.location import Location, Category
 from app.forms.upload import PhotoForm, PhotoEditForm, DocumentForm, \
-     DocumentEditForm
+     DocumentEditForm, BookForm, BookEditForm
 from app.models.upload import Upload, UploadType
 
 
@@ -106,6 +106,50 @@ def photo_edit(photo_id: int):
         return redirect_return()
 
     return render_template('upload/photo.html', form=form)
+
+
+@blueprint.route('/book/add', methods=['GET', 'POST'])
+def book_add():
+    """Renders form for adding a new book"""
+    form = BookForm()
+    if form.validate_on_submit():
+        Upload.create(
+            file=form.file.data,
+            subfolder='books',
+            name=form.name.data,
+            description=form.description.data,
+            type=UploadType.BOOK,
+            created_by=current_user)
+        db.session.commit()
+        flash(_("New book added"), 'success')
+        return redirect_return()
+    return render_template('upload/book.html', form=form)
+
+
+@blueprint.route('/book/edit/<int:book_id>', methods=['GET', 'POST'])
+def book_edit(book_id: int):
+    """Edits book entry.
+
+    Args:
+        book_id: ID of the book to be edited
+    """
+    book = Upload.get_by_id(book_id)
+    if not book:
+        return abort(404)
+
+    form = BookEditForm()
+    if request.method == 'GET':
+        form.name.data = book.name
+        form.description.data = book.description
+    elif form.validate_on_submit():
+        book.name = form.name.data
+        book.description = form.description.data
+        if form.file.data:
+            book.replace(form.file.data)
+        db.session.commit()
+        return redirect_return()
+
+    return render_template('upload/book.html', form=form)
 
 
 @blueprint.route('/document/add/<string:object_type>/<int:object_id>',

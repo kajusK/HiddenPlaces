@@ -24,3 +24,4 @@
 * Find corresponding geofond ID when creating object by GPS (nearby mines) and suggest it.
 * Add importer from other sites - Geofond, podzemi.org, archiv.dolovani.cz
 * Allow changing order of photos, POIs, documents,... by user
+* Rework library feature - uploading books with authors, description,... Books can be viewed in table and referenced in locations or directly added through interface in location

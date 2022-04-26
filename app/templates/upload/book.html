@@ -1,0 +1,27 @@
+{% set title=_('Edit book') %}
+
+{% extends "_private.html" %}
+{% from '_helpers.html' import render_field, link_button %}
+
+{% block content %}
+
+<div class="card">
+    <h4 class="card-header">
+        {{ title }}
+    </h4>
+    <div class="card-body">
+        <form method="POST" action="" role="form" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            {{ render_field(form.name, 'pencil', placeholder=_('Book name')) }}
+            {{ render_field(form.description, 'card-text', placeholder=_('Short description of the book')) }}
+            {{ render_field(form.file, 'file-earmark-text') }}
+
+            <div class='text-end mt-2'>
+                {{ link_button(_('Cancel'), Url.get_return(), None, 'danger') }}
+                {{ form.submit(class="btn btn-success") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

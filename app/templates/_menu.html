@@ -9,6 +9,7 @@
 <ul class="list-unstyled">
     {{ menu_item(_("Browse"), 'book', Url.get('location.browse')) }}
     {{ menu_item(_("Map"), 'map', Url.get('location.browse_map')) }}
+    {{ menu_item(_("Library"), 'bookshelf', Url.get('library.browse')) }}
 
     {{ menu_block(_("Underground"), "minecart-loaded", [
         menu_item(_("Create new"), "plus-lg", Url.get('location.add', type_str='underground')),

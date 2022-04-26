@@ -12,6 +12,7 @@ from app.routes import admin
 from app.routes import page
 from app.routes import message
 from app.routes import upload
+from app.routes import library
 from app import errors
 from app.commands import user_cli, translate_cli
 from app.utils.utils import Url
@@ -61,6 +62,7 @@ def create_app(config_object: str = 'app.config.Config') -> Flask:
     app.register_blueprint(admin.blueprint)
     app.register_blueprint(page.blueprint)
     app.register_blueprint(message.blueprint)
+    app.register_blueprint(library.blueprint)
 
     # register error handlers
     app.register_error_handler(403, errors.error_403)

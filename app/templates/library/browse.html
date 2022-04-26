@@ -1,0 +1,47 @@
+{% extends '_private.html' %}
+{% from '_helpers.html' import render_pagination, card_count, link_button %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>{{ _('Library') }}</h3>
+    </div>
+    <div class="card-body pb-0">
+        {{ link_button('Add book', Url.for_return('upload.book_add'), 'plus', 'success mb-4') }}
+
+        {% if books | length %}
+        <table class="table">
+            <thead class="bg-light">
+                <tr>
+                    <th scope="col">{{ _('Name') }}</th>
+                    <th scope="col">{{ _('Description') }}</th>
+                    <th scope="col">{{ _('Uploaded by') }}</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody class="align-middle">
+            {% for book in books %}
+                <tr>
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.description }}</td>
+                    <td>
+                        <a href="{{ Url.get('user.profile', user_id=book.created_by.id) }}">
+                            {{ book.created_by }}
+                        </a>
+                    </td>
+                    <td class="text-end">
+                        {{ link_button('', Url.get('upload.get', path=book.path), 'eye', 'success btn-sm') }}
+                        {{ link_button('', Url.for_return('upload.book_edit', book_id=book.id), 'pencil', 'warning btn-sm') }}
+                        {{ link_button('', Url.for_return('upload.remove', upload_id=book.id), 'trash', 'danger btn-sm') }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        {{ render_pagination(pagination) }}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

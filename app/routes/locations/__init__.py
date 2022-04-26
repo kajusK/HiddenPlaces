@@ -1,3 +1,4 @@
+"""Helper class for locations."""
 from abc import ABC, abstractmethod
 from app.forms.location import LocationForm
 from app.models.location import Location

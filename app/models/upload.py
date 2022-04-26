@@ -101,6 +101,15 @@ class Upload(DBItem):
         obj._save_file(file, subfolder)
         return obj
 
+    @classmethod
+    def get(cls, upload_type: UploadType):
+        """Gets query for all uploads of givent type
+
+        Args:
+            upload_type: Type to query for
+        """
+        return cls.query.filter(cls.type == upload_type)
+
     @property
     def thumbnail(self):
         """Returns relative path to thumbnail"""

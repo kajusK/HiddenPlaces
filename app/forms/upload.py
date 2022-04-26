@@ -35,6 +35,17 @@ class DocumentForm(DocumentEditForm):
     file = FileField(_("Document"), [FileRequired(), allowed_file()])
 
 
+class BookEditForm(_UploadForm):
+    """Book edit form."""
+    # File not required by default when editing
+    file = FileField(_("Book"), [allowed_file()])
+
+
+class BookForm(BookEditForm):
+    """Book form."""
+    file = FileField(_("Book"), [FileRequired(), allowed_file()])
+
+
 class PhotoEditForm(_UploadForm):
     """Photo edit form."""
     taken_on = DateField(_('Taken on:'), [InputRequired(), date_in_past()],
