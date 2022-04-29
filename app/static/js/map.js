@@ -14,8 +14,8 @@ class MyMap {
         })
 
         const baseMaps = {
-            "Tourists": tourist,
-            "Aerial": L.esri.dynamicMapLayer({
+            "Turistická": tourist,
+            "Letecká": L.esri.dynamicMapLayer({
                 url: 'https://ags.cuzk.cz/arcgis/rest/services/ortofoto/MapServer',
             }),
             "None":  L.tileLayer('')
@@ -26,7 +26,11 @@ class MyMap {
                     url: 'https://ags.cuzk.cz/arcgis/rest/services/3D/dmr5g_wm/ImageServer',
                     opacity: opacity
                 }),
-            "History": L.layerGroup([
+            "Geologická": L.esri.tiledMapLayer({
+                url: 'https://mapy.geology.cz/arcgis/rest/services/Geologie/GEOCR50_mobil/MapServer',
+                opacity: opacity
+            }),
+            "Císařské otisky": L.layerGroup([
                 L.esri.tiledMapLayer({
                     url: 'https://gis.msk.cz/arcgis/rest/services/podklad/podklad_cis_otisky_wm/MapServer',
                     opacity: opacity
@@ -36,7 +40,18 @@ class MyMap {
                     opacity: opacity
                 }),
             ]),
-            "Mines": L.layerGroup([
+            "II. vojenské mapování": L.esri.dynamicMapLayer({
+                url: 'http://ns.cenia.cz/arcgis/rest/services/CENIA/cenia_rt_II_vojenske_mapovani/MapServer'
+            }),
+            "III. vojenské mapování": L.esri.dynamicMapLayer({
+                url: 'http://ns.cenia.cz/arcgis/rest/services/CENIA/cenia_rt_III_vojenske_mapovani/MapServer'
+            }),
+            "Katastr": L.tileLayer.wms('http://services.cuzk.cz/wms.asp', {
+                layers: 'RST_KN,RST_KMD,dalsi_p_mapy,hranice_parcel,obrazy_parcel,parcelni_cisla',
+                format: 'image/png',
+                transparent: true
+            }),
+            "Doly": L.layerGroup([
                 L.esri.dynamicMapLayer({
                     url: 'https://mapy.geology.cz/arcgis/rest/services/Dulni_Dila/dulni_dila/MapServer'
                 }),
@@ -44,17 +59,13 @@ class MyMap {
                     url: 'https://ags.geology.sk/arcgis/rest/services/Geofond/sbd_vect/MapServer'
                 }),
             ]),
-            "Undermined": L.esri.dynamicMapLayer({
+            "Poddolovaná území": L.esri.dynamicMapLayer({
                 url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/pozustatky_po_tezbe/MapServer',
                 layers: [2]
             }),
-            "Quarries": L.esri.dynamicMapLayer({
+            "Lomy": L.esri.dynamicMapLayer({
                 url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/dekoracni_kameny/MapServer',
                 layers: [0]
-            }),
-            "Geology": L.esri.tiledMapLayer({
-                url: 'https://mapy.geology.cz/arcgis/rest/services/Geologie/GEOCR50_mobil/MapServer',
-                opacity: opacity
             }),
         }
 
