@@ -21,6 +21,21 @@ class MyMap {
             "None":  L.tileLayer('')
         }
 
+        const czechMines = L.esri.dynamicMapLayer({
+            url: 'https://mapy.geology.cz/arcgis/rest/services/Dulni_Dila/dulni_dila/MapServer'
+        })
+        const slovakMines = L.esri.dynamicMapLayer({
+            url: 'https://ags.geology.sk/arcgis/rest/services/Geofond/sbd_vect/MapServer'
+        })
+        const underminedAreas = L.esri.dynamicMapLayer({
+            url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/pozustatky_po_tezbe/MapServer',
+            layers: [2]
+        })
+        const quaries = L.esri.dynamicMapLayer({
+            url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/dekoracni_kameny/MapServer',
+            layers: [0]
+        })
+
         const overlays = {
             "Relief": L.esri.imageMapLayer({
                     url: 'https://ags.cuzk.cz/arcgis/rest/services/3D/dmr5g_wm/ImageServer',
@@ -51,25 +66,13 @@ class MyMap {
                 format: 'image/png',
                 transparent: true
             }),
-            "Doly": L.layerGroup([
-                L.esri.dynamicMapLayer({
-                    url: 'https://mapy.geology.cz/arcgis/rest/services/Dulni_Dila/dulni_dila/MapServer'
-                }),
-                L.esri.dynamicMapLayer({
-                    url: 'https://ags.geology.sk/arcgis/rest/services/Geofond/sbd_vect/MapServer'
-                }),
-            ]),
-            "Poddolovaná území": L.esri.dynamicMapLayer({
-                url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/pozustatky_po_tezbe/MapServer',
-                layers: [2]
-            }),
-            "Lomy": L.esri.dynamicMapLayer({
-                url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/dekoracni_kameny/MapServer',
-                layers: [0]
-            }),
+            "Doly": L.layerGroup([czechMines, slovakMines]),
+            "Poddolovaná území": underminedAreas,
+            "Lomy": quaries,
         }
 
         this.map = L.map(divId, {
+            renderer: L.canvas({tolerance: 40}),
             center: [49.8, 15.5],
             zoom: 8,
             layers: [tourist]
@@ -97,6 +100,61 @@ class MyMap {
 
         this.markers = L.markerClusterGroup();
         this.map.addLayer(this.markers);
+
+        czechMines.bindPopup(this.showItemPopup)
+        slovakMines.bindPopup(this.showItemPopup)
+        underminedAreas.bindPopup(this.showItemPopup)
+        quaries.bindPopup(this.showItemPopup)
+    }
+
+    /**
+     * Show popup with item information
+     */
+    showItemPopup(error, collection) {
+        if (error || collection.features.length == false) {
+            return false
+        }
+
+        const feature = collection.features[0].properties
+        if ('Názov ložiska' in feature) {
+            return `
+                Název: ${feature['Názov ložiska']}</br>
+                Surovina: ${feature['Nerast']}</br>
+                `
+        } else if ('Prejav na povrchu' in feature) {
+            return `
+                Název: ${feature['Názov']}</br>
+                Typ: ${feature['Typ objektu']}</br>
+                Projev na povrchu: ${feature['Prejav na povrchu']}<br/>
+                Surovina: ${feature['Špecifikácia suroviny']}</br>
+                Sanace: ${feature['Sanácia']}</br>
+                Rozměr objektu: ${feature['Odhadovaný rozmer objektu']}</br>
+                `
+        } else if ('ID důlního díla' in feature) {
+            return `
+                Název: ${feature['Název']}</br>
+                ID: ${feature['ID důlního díla']}</br>
+                Typ: ${feature['Druh díla']}<br/>
+                Délka: ${feature['Hloubka / délka']}</br>
+                Profil díla: ${feature['Profil díla']}</br>
+                Rok ukončení provozu: ${feature['Rok ukončení provozu']}</br>
+                Surovina: ${feature['Surovina']}</br>
+                <a href="https://app.geology.cz/dud_foto/foto_dd.php?id_=${feature['ID důlního díla']}" target="_blank">Foto</a>
+                `
+        } else if ('Klíč' in feature) {
+            return `
+                Název: ${feature['Název']}</br>
+                Surovina: ${feature['Surovina']}</br>
+                Projevy: ${feature['Projevy']}<br/>
+                Stáří: ${feature['Stáří']}</br>
+                `
+        } else {
+            return `
+                Název: ${feature['Název']}</br>
+                Popis: ${feature['Popis']}</br>
+                Surovina: ${feature['Těžená surovina']}<br/>
+            `
+        }
     }
 
     /**
