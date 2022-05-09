@@ -1,5 +1,6 @@
 pylint
 pylint-flask-sqlalchemy
+types-requests
 flake8
 mypy
 pytest

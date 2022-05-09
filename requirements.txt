@@ -3,6 +3,8 @@ flask==2.0.1
 wtforms>=3.0.0
 flask-wtf==1.0.0
 flask-sqlalchemy
+requests
+requests-html
 pymysql
 flask-babel
 flask-login

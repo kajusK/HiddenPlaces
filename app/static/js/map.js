@@ -131,15 +131,17 @@ class MyMap {
                 Rozměr objektu: ${feature['Odhadovaný rozmer objektu']}</br>
                 `
         } else if ('ID důlního díla' in feature) {
+            MyMap.fetchGeofondPhotos(feature['ID důlního díla'])
             return `
                 Název: ${feature['Název']}</br>
-                ID: ${feature['ID důlního díla']}</br>
+                ID: <a href="https://app.geology.cz/dud_foto/foto_dd.php?id_=${feature['ID důlního díla']}" target="_blank">${feature['ID důlního díla']}</a><br/>
                 Typ: ${feature['Druh díla']}<br/>
                 Délka: ${feature['Hloubka / délka']}</br>
                 Profil díla: ${feature['Profil díla']}</br>
                 Rok ukončení provozu: ${feature['Rok ukončení provozu']}</br>
                 Surovina: ${feature['Surovina']}</br>
-                <a href="https://app.geology.cz/dud_foto/foto_dd.php?id_=${feature['ID důlního díla']}" target="_blank">Foto</a>
+                <div id='geofond_photos'>
+                </div>
                 `
         } else if ('Klíč' in feature) {
             return `
@@ -248,6 +250,44 @@ class MyMap {
         }
 
         request.open("GET", url)
+        request.send();
+    }
+
+    /**
+     * Fetches list of geofond photos from JSON endpoint
+     *
+     * @param {str} object_id    ID of the location object
+     */
+    static fetchGeofondPhotos(object_id) {
+        const request = new XMLHttpRequest();
+
+        request.onload = function() {
+            const data = JSON.parse(this.responseText);
+            const el = document.getElementById('geofond_photos')
+            let content = "<div class='row gallery'>"
+            data.photos.forEach(photo => {
+                content += `
+                    <div class="col-6 p-1">
+                        <div class="position-relative">
+                            <a href="${photo.url}" data-caption="${photo.title}">
+                                <div class="image-caption d-flex">
+                                    <span class="text-truncate">${photo.title}</span>
+                                </div>
+                                <img src="${photo.thumbnail}" alt="${photo.title}" style="width: 100%"/>
+                            </a>
+                        </div>
+                    </div>
+                `
+            })
+            content += '</div>'
+            el.innerHTML = content
+
+            /* Reload baguette box, change filter to match href from geofond */
+            baguetteBox.destroy()
+            baguetteBox.run('.gallery', { filter: /download_file.php/i })
+        }
+
+        request.open("GET", `/api/geofond_photos/${object_id}`)
         request.send();
     }
 
