@@ -7,7 +7,7 @@
         <img class="card-img-top" src="{{ Url.get('upload.get', path=location.photo.thumbnail) }}" alt="Location title image">
     </a>
     {% else %}
-    <img class="card-img-top" src="{{ Url.get('static', filename='images/favicon.ico') }}" alt="Location title image">
+    <img class="card-img-top" src="{{ Url.get('static', filename='images/location_placeholder.png') }}" alt="Location title image">
     {% endif %}
     <div class="card-body">
         {{ _('Created') }}: {{ location.created.date() }}<br>

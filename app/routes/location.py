@@ -625,7 +625,8 @@ def api(type_str: Optional[str] = None):
         if location.photo:
             image_url = Url.get('upload.get', path=location.photo.thumbnail)
         else:
-            image_url = Url.get('static', filename='images/favicon.ico')
+            image_url = Url.get(
+                'static', filename='images/location_placeholder.png')
 
         if location.underground:
             loc_type = location.underground.type
