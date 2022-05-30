@@ -35,6 +35,10 @@ class MyMap {
             url: 'https://mapy.geology.cz/arcgis/rest/services/Popularizace/dekoracni_kameny/MapServer',
             layers: [0]
         })
+        const caves = L.esri.dynamicMapLayer({
+            url: 'https://gis.nature.cz/arcgis/rest/services/JESO/JesoVerejnost/MapServer/',
+            layers: [1,2,4,11]
+        })
 
         const overlays = {
             "Relief": L.esri.imageMapLayer({
@@ -69,13 +73,14 @@ class MyMap {
             "Doly": L.layerGroup([czechMines, slovakMines]),
             "Poddolovaná území": underminedAreas,
             "Lomy": quaries,
+            "Jeskyně": caves,
         }
 
         this.map = L.map(divId, {
             renderer: L.canvas({tolerance: 40}),
             center: [49.8, 15.5],
             zoom: 8,
-            layers: [tourist]
+            layers: [tourist, overlays['Doly']]
         })
         L.control.layers(baseMaps, overlays).addTo(this.map);
 
@@ -105,6 +110,7 @@ class MyMap {
         slovakMines.bindPopup(this.showItemPopup)
         underminedAreas.bindPopup(this.showItemPopup)
         quaries.bindPopup(this.showItemPopup)
+        caves.bindPopup(this.showItemPopup)
     }
 
     /**
@@ -149,6 +155,14 @@ class MyMap {
                 Surovina: ${feature['Surovina']}</br>
                 Projevy: ${feature['Projevy']}<br/>
                 Stáří: ${feature['Stáří']}</br>
+                `
+        } else if ('KOD_JESO' in feature) {
+            console.log(feature)
+            return `
+                Kód JESO: <a href="https://jeso.nature.cz/?jeso=${feature['ID_JESO']}" target="_blank">${feature['KOD_JESO']}</a></br>
+                Název: ${feature['NAZEV_JEVU'] || feature['NAZEV']}</br>
+                Synonymum: ${feature['SYNONYMUM'] || feature['SYNONYMUM_JEVU']} </br>
+                Typ: ${feature['GENEZE'] || feature['GENEZE_JEVU'] || "Speleologický objekt"}</br>
                 `
         } else {
             return `
