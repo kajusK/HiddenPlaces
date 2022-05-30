@@ -20,7 +20,7 @@
 
             <div class="text-center mt-2 id">
                 {{ link_button(_('Current location'), 'javascript:getLocation()', None, 'secondary btn-sm')}}
-                {{ link_button(_('Select from map'), 'javascript:mapSelect()', None, 'secondary btn-sm')}}
+                {{ link_button(_('Select from map'), 'javascript:mapSelect('~location.latitude.value~', '~location.longitude.value~')', None, 'secondary btn-sm')}}
             </div>
 
             <div class='text-end mt-2'>

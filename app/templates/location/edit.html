@@ -48,7 +48,8 @@
 
                 <div class="text-center mt-2 id">
                     {{ link_button(_('Current location'), 'javascript:getLocation()', None, 'secondary btn-sm')}}
-                    {{ link_button(_('Select from map'), 'javascript:mapSelect()', None, 'secondary btn-sm')}}
+                    {% set select_arg = location.latitude.value~', '~location.longitude.value if location else '' %}
+                    {{ link_button(_('Select from map'), 'javascript:mapSelect('+select_arg+')', None, 'secondary btn-sm')}}
                 </div>
 
                 {{ render_field(form.categories, 'bookmarks', field_class="dselect", required=False) }}

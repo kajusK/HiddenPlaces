@@ -3,6 +3,7 @@
     const longitude = document.getElementById("longitude");
     const mapModal = new bootstrap.Modal(document.getElementById('mapModal'))
     var mymap = new MyMap('map')
+    var zoomedBefore = false
 
     document.getElementById('mapModal').addEventListener(
         'shown.bs.modal', () => mymap.redraw())
@@ -11,12 +12,12 @@
         if (coords.latitude > 0) {
             latitude.value = coords.latitude + 'N'
         } else {
-            latitude.value = coords.latitude + 'S'
+            latitude.value = -coords.latitude + 'S'
         }
         if (coords.longitude > 0) {
             longitude.value = coords.longitude + 'E'
         } else {
-            longitude.value = coords.longitude + 'W'
+            longitude.value = -coords.longitude + 'W'
         }
     }
 
@@ -30,7 +31,12 @@
     }
 
     /* Select position from map */
-    function mapSelect() {
+    function mapSelect(lat, lon) {
+        if (!!lat && !!lon && !zoomedBefore) {
+            const pos = L.latLng(lat, lon)
+            mymap.zoomPosition(pos)
+            zoomedBefore = true
+        }
         mymap.map.on('click', e => {
             mapModal.hide()
             setLocation({'latitude': e.latlng.lat, 'longitude': e.latlng.lng})
