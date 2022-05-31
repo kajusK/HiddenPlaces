@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-04-26 20:22+0200\n"
+"POT-Creation-Date: 2022-05-31 16:51+0200\n"
 "PO-Revision-Date: 2022-01-03 20:04+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: cs\n"
@@ -55,7 +55,7 @@ msgstr "Popis"
 #: app/forms/category.py:19 app/forms/location.py:26 app/forms/user.py:122
 #: app/models/page.py:10 app/templates/_menu.html:68
 #: app/templates/category/category.html:25
-#: app/templates/location/location.html:77 app/templates/user/profile.html:68
+#: app/templates/location/location.html:77 app/templates/user/profile.html:71
 msgid "About"
 msgstr "Popis"
 
@@ -281,7 +281,7 @@ msgid "This email was already invited"
 msgstr "Tento email byl již pozván"
 
 #: app/forms/user.py:166 app/templates/admin/users.html:24
-#: app/templates/admin/users.html:56 app/templates/user/profile.html:43
+#: app/templates/admin/users.html:56 app/templates/user/profile.html:45
 msgid "Role"
 msgstr "Role"
 
@@ -318,8 +318,8 @@ msgstr "Vyber vlastnosti"
 #: app/forms/locations/underground.py:19 app/forms/locations/urbex.py:18
 #: app/templates/admin/invitations.html:22
 #: app/templates/admin/locations.html:23 app/templates/admin/users.html:25
-#: app/templates/location/_metadata.html:19
-#: app/templates/location/_metadata.html:35
+#: app/templates/location/_metadata.html:22
+#: app/templates/location/_metadata.html:38
 msgid "State"
 msgstr "Stav"
 
@@ -336,7 +336,7 @@ msgid "Location accessibility"
 msgstr "Přístupnost lokace"
 
 #: app/forms/locations/underground.py:27
-#: app/templates/location/_metadata.html:27
+#: app/templates/location/_metadata.html:30
 msgid "Materials"
 msgstr "Materiály"
 
@@ -449,7 +449,7 @@ msgid "Not active"
 msgstr "Neaktivní"
 
 #: app/models/user.py:31 app/templates/admin/users.html:49
-#: app/templates/user/profile.html:39
+#: app/templates/user/profile.html:41
 msgid "Banned"
 msgstr "Zabanován"
 
@@ -587,9 +587,9 @@ msgid "Railway tunnel"
 msgstr "Železniční tunel"
 
 #: app/models/locations/underground.py:30 app/models/locations/urbex.py:23
-#: app/templates/location/_metadata.html:20
-#: app/templates/location/_metadata.html:24
-#: app/templates/location/_metadata.html:36
+#: app/templates/location/_metadata.html:23
+#: app/templates/location/_metadata.html:27
+#: app/templates/location/_metadata.html:39
 msgid "Unknown"
 msgstr "Neznámý"
 
@@ -705,6 +705,26 @@ msgstr "Fluorit"
 #: app/models/locations/underground.py:68
 msgid "Feldspar"
 msgstr "Živec"
+
+#: app/models/locations/underground.py:69
+msgid "Antimony"
+msgstr "Antimon"
+
+#: app/models/locations/underground.py:70
+msgid "Magnetite"
+msgstr "Magnetit"
+
+#: app/models/locations/underground.py:71
+msgid "Limestone"
+msgstr "Vápenec"
+
+#: app/models/locations/underground.py:72
+msgid "Polymetals"
+msgstr "Polymetal"
+
+#: app/models/locations/underground.py:73
+msgid "Siderite"
+msgstr "Siderit"
 
 #: app/models/locations/urbex.py:12
 msgid "House"
@@ -899,7 +919,7 @@ msgstr "Přidáno do seznamu záložek: %(name)s"
 msgid "Removed from bookmark list: %(name)s"
 msgstr "Odstraněno ze seznamu záložek: %(name)s"
 
-#: app/routes/location.py:640 app/routes/location.py:641
+#: app/routes/location.py:641 app/routes/location.py:642
 msgid "Undefined"
 msgstr "Nedefinováno"
 
@@ -1105,7 +1125,7 @@ msgid "Bookmarks"
 msgstr "Záložky"
 
 #: app/templates/_menu.html:55 app/templates/location/browse.html:1
-#: app/templates/user/profile.html:34
+#: app/templates/user/profile.html:37
 msgid "Locations"
 msgstr "Lokace"
 
@@ -1231,7 +1251,7 @@ msgstr "Systém"
 msgid "Browser"
 msgstr "Prohlížeč"
 
-#: app/templates/admin/logins.html:25 app/templates/user/profile.html:37
+#: app/templates/admin/logins.html:25 app/templates/user/profile.html:39
 msgid "Email"
 msgstr "Email"
 
@@ -1247,7 +1267,7 @@ msgstr "Odeslat zprávu všem uživatelům"
 msgid "Bans"
 msgstr "Bany"
 
-#: app/templates/admin/users.html:22 app/templates/user/profile.html:46
+#: app/templates/admin/users.html:22 app/templates/user/profile.html:48
 msgid "Invited by"
 msgstr "Pozván"
 
@@ -1255,11 +1275,11 @@ msgstr "Pozván"
 msgid "Seen"
 msgstr "Viděn"
 
-#: app/templates/admin/users.html:50 app/templates/user/profile.html:40
+#: app/templates/admin/users.html:50 app/templates/user/profile.html:42
 msgid "Inactive"
 msgstr "Neaktivní"
 
-#: app/templates/admin/users.html:51 app/templates/user/profile.html:41
+#: app/templates/admin/users.html:51 app/templates/user/profile.html:43
 msgid "Active"
 msgstr "Aktivní"
 
@@ -1288,7 +1308,7 @@ msgid "Last updated"
 msgstr "Poslední aktualizace"
 
 #: app/templates/category/category.html:59
-#: app/templates/location/_metadata.html:15
+#: app/templates/location/_metadata.html:17
 msgid "Maintainer"
 msgstr "Správce"
 
@@ -1331,16 +1351,16 @@ msgstr "Zrušit"
 msgid "Uploaded by"
 msgstr "Nahrál"
 
-#: app/templates/location/_metadata.html:20
+#: app/templates/location/_metadata.html:23
 msgid "Length"
 msgstr "Délka"
 
-#: app/templates/location/_metadata.html:22
+#: app/templates/location/_metadata.html:25
 msgid "Tools required"
 msgstr "Nástroje"
 
-#: app/templates/location/_metadata.html:24
-#: app/templates/location/_metadata.html:36
+#: app/templates/location/_metadata.html:27
+#: app/templates/location/_metadata.html:39
 msgid "Abandoned"
 msgstr "Opuštěno"
 
@@ -1348,7 +1368,7 @@ msgstr "Opuštěno"
 msgid "How was your visit?"
 msgstr "Podrobnosti o vaší návštěvě."
 
-#: app/templates/location/_visits.html:5 app/templates/user/profile.html:33
+#: app/templates/location/_visits.html:5 app/templates/user/profile.html:36
 msgid "Visits"
 msgstr "Návštěvy"
 
@@ -1389,7 +1409,7 @@ msgstr "14.4567E"
 msgid "Current location"
 msgstr "Aktuální pozice"
 
-#: app/templates/location/edit.html:51 app/templates/location/edit.html:90
+#: app/templates/location/edit.html:52 app/templates/location/edit.html:91
 #: app/templates/location/poi.html:23 app/templates/location/poi.html:34
 msgid "Select from map"
 msgstr "Vyber z mapy"
@@ -1580,15 +1600,15 @@ msgstr "Nastavit roli"
 msgid "Last seen"
 msgstr "Naposledy viděn"
 
-#: app/templates/user/profile.html:38
+#: app/templates/user/profile.html:40
 msgid "Status"
 msgstr "Stav"
 
-#: app/templates/user/profile.html:50
+#: app/templates/user/profile.html:52
 msgid "Invited"
 msgstr "Pozval"
 
-#: app/templates/user/profile.html:74
+#: app/templates/user/profile.html:77
 msgid "Write something about youself"
 msgstr "Napiš něco o sobě"
 

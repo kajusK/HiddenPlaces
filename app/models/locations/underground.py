@@ -66,6 +66,11 @@ class MaterialType(StringEnum):
     BARYTE = _("Baryte")
     FLUORITE = _("Fluorite")
     FELDSPAR = _("Feldspar")
+    ANTIMONY = _("Antimony")
+    MAGNETITE = _("Magnetite")
+    LIMESTONE = _("Limestone")
+    POLYMETALS = _("Polymetals")
+    SIDERITE = _("Siderite")
 
 
 class Underground(DBItem):
