@@ -1,11 +1,11 @@
-{% set title=_('Add link') %}
+{% set title = _('Add link for %(name)s', name=location.name) if location else _('Edit link') %}
 {% extends "_private.html" %}
 {% from '_helpers.html' import render_field, link_button %}
 
 {% block content %}
 <div class="card">
     <h4 class="card-header">
-        {{ _('Add link for %(name)s', name=location.name) }}
+        {{ title }}
     </h4>
     <div class="card-body">
         <form method="POST" action="" role="form">

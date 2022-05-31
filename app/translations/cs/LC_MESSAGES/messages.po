@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-05-31 16:51+0200\n"
+"POT-Creation-Date: 2022-05-31 18:06+0200\n"
 "PO-Revision-Date: 2022-01-03 20:04+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: cs\n"
@@ -895,31 +895,31 @@ msgstr "Návštěva byla odstraněna"
 msgid "New link added"
 msgstr "Odkaz byl přidán"
 
-#: app/routes/location.py:503
+#: app/routes/location.py:527
 msgid "New POI added"
 msgstr "Nové POI přidáno"
 
-#: app/routes/location.py:547
+#: app/routes/location.py:599
 #, python-format
 msgid "The bookmark list %(name)s created"
 msgstr "Seznam záložek %(name)s byl vytvořen"
 
-#: app/routes/location.py:552
+#: app/routes/location.py:604
 #, python-format
 msgid "Adding bookmark list failed: %(error)s"
 msgstr "Přidání seznamu záložek selhalo: %(error)s"
 
-#: app/routes/location.py:574
+#: app/routes/location.py:626
 #, python-format
 msgid "Added to bookmark list: %(name)s"
 msgstr "Přidáno do seznamu záložek: %(name)s"
 
-#: app/routes/location.py:596
+#: app/routes/location.py:648
 #, python-format
 msgid "Removed from bookmark list: %(name)s"
 msgstr "Odstraněno ze seznamu záložek: %(name)s"
 
-#: app/routes/location.py:641 app/routes/location.py:642
+#: app/routes/location.py:693 app/routes/location.py:694
 msgid "Undefined"
 msgstr "Nedefinováno"
 
@@ -1313,7 +1313,7 @@ msgid "Maintainer"
 msgstr "Správce"
 
 #: app/templates/category/category.html:66
-#: app/templates/location/location.html:146
+#: app/templates/location/location.html:149
 msgid "Documents"
 msgstr "Dokumenty"
 
@@ -1339,7 +1339,7 @@ msgid "Category description, history,..."
 msgstr "Popis kategorie, historie,..."
 
 #: app/templates/category/edit.html:28 app/templates/location/edit.html:31
-#: app/templates/location/link.html:18 app/templates/location/poi.html:27
+#: app/templates/location/link.html:18 app/templates/location/poi.html:28
 #: app/templates/message/write.html:15 app/templates/page/edit.html:13
 #: app/templates/upload/book.html:21 app/templates/upload/document.html:26
 #: app/templates/upload/photo.html:27 app/templates/user/ban.html:28
@@ -1410,18 +1410,18 @@ msgid "Current location"
 msgstr "Aktuální pozice"
 
 #: app/templates/location/edit.html:52 app/templates/location/edit.html:91
-#: app/templates/location/poi.html:23 app/templates/location/poi.html:34
+#: app/templates/location/poi.html:24 app/templates/location/poi.html:35
 msgid "Select from map"
 msgstr "Vyber z mapy"
 
 #: app/templates/location/link.html:1
-msgid "Add link"
-msgstr "Přidat odkaz"
-
-#: app/templates/location/link.html:8
 #, python-format
 msgid "Add link for %(name)s"
 msgstr "Přidat odkaz pro %(name)s"
+
+#: app/templates/location/link.html:1
+msgid "Edit link"
+msgstr "Editace odkazu"
 
 #: app/templates/location/link.html:14
 msgid "Page URL"
@@ -1440,7 +1440,7 @@ msgid "Link"
 msgstr "Odkaz"
 
 #: app/templates/location/location.html:68
-#: app/templates/location/location.html:169
+#: app/templates/location/location.html:172
 msgid "POI"
 msgstr "POI"
 
@@ -1464,6 +1464,10 @@ msgstr "Geofond - info"
 #, python-format
 msgid "Add POI for %(name)s"
 msgstr "Přidat POI pro %(name)s"
+
+#: app/templates/location/poi.html:1
+msgid "Edit POI"
+msgstr "Editace POI"
 
 #: app/templates/location/poi.html:17
 msgid "Short description of the place"
@@ -1520,7 +1524,7 @@ msgstr "Přidat nový dokument"
 
 #: app/templates/upload/document.html:4
 msgid "Edit document"
-msgstr "Editace dokumenti"
+msgstr "Editace dokumentu"
 
 #: app/templates/upload/document.html:20
 msgid "Document name"

@@ -462,6 +462,30 @@ def link_add(location_id: int):
     return render_template('location/link.html', form=form, location=location)
 
 
+@blueprint.route('/link/edit/<int:link_id>', methods=['GET', 'POST'])
+def link_edit(link_id: int):
+    """Renders form for editing an existing link
+
+    Args:
+        link_id: ID of the link
+    """
+    link = Link.get_by_id(link_id)
+    if not link:
+        abort(404)
+
+    form = LinkForm()
+    if request.method == 'GET':
+        form.url.data = link.url
+        form.name.data = link.name
+    elif form.validate_on_submit():
+        link.url = form.url.data
+        link.name = form.name.data
+        db.session.commit()
+        return redirect_return()
+
+    return render_template('location/link.html', form=form)
+
+
 @blueprint.route('/link/remove/<int:link_id>')
 def link_remove(link_id: int):
     """Removes link record
@@ -504,6 +528,34 @@ def poi_add(location_id: int):
         return redirect_return()
 
     return render_template('location/poi.html', form=form, location=location)
+
+
+@blueprint.route('/poi/edit/<int:poi_id>', methods=['GET', 'POST'])
+def poi_edit(poi_id: int):
+    """Renders form for editing an existing POI
+
+    Args:
+        poi_id: ID of the POI
+    """
+    poi = POI.get_by_id(poi_id)
+    if not poi:
+        abort(404)
+
+    form = POIForm()
+    if request.method == 'GET':
+        form.name.data = poi.name
+        form.description.data = poi.description
+        form.latitude.data = poi.latitude
+        form.longitude.data = poi.longitude
+    elif form.validate_on_submit():
+        poi.name = form.name.data,
+        poi.description = form.description.data
+        poi.latitude = form.latitude.data
+        poi.longitude = form.longitude.data
+        db.session.commit()
+        return redirect_return()
+
+    return render_template('location/poi.html', form=form, poi=poi)
 
 
 @blueprint.route('/poi/remove/<int:poi_id>')

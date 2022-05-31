@@ -1,4 +1,4 @@
-{% set title=_('Add POI for %(name)s', name=location.name) %}
+{% set title = _('Add POI for %(name)s', name=location.name) if location else _('Edit POI') %}
 {% set include_map=true %}
 
 {% extends "_private.html" %}
@@ -20,7 +20,8 @@
 
             <div class="text-center mt-2 id">
                 {{ link_button(_('Current location'), 'javascript:getLocation()', None, 'secondary btn-sm')}}
-                {{ link_button(_('Select from map'), 'javascript:mapSelect('~location.latitude.value~', '~location.longitude.value~')', None, 'secondary btn-sm')}}
+                {% set pos_obj = location if location else poi %}
+                {{ link_button(_('Select from map'), 'javascript:mapSelect('~pos_obj.latitude.value~', '~pos_obj.longitude.value~')', None, 'secondary btn-sm')}}
             </div>
 
             <div class='text-end mt-2'>

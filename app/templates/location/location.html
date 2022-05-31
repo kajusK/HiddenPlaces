@@ -130,7 +130,10 @@
                 {% endif %}
                 {% for link in location.links %}
                 <div class="list-group-item list-group-item-action position-relative control-hover">
-                    {{ link_button('', Url.for_return('location.link_remove', link_id=link.id), 'trash', 'danger', class='btn-sm position-absolute top-0 end-0 foreground-item control-hide') }}
+                    <div class="position-absolute top-0 end-0 foreground-item control-hide">
+                        {{ link_button('', Url.for_return('location.link_edit', link_id=link.id), 'pencil', 'warning', class='btn-sm') }}
+                        {{ link_button('', Url.for_return('location.link_remove', link_id=link.id), 'trash', 'danger', class='btn-sm') }}
+                    </div>
                     <strong>{{ link.name }}</strong>
                     <p class="mb-0 text-muted text-truncate">{{ link.url }}</p>
                     <a href="{{ link.url }}" class="stretched-link"></a>
@@ -172,7 +175,8 @@
                 {% for poi in location.pois %}
                 <div class="list-group-item list-group-item-action position-relative control-hover">
                     <div class="position-absolute top-0 end-0 foreground-item control-hide">
-                        {{ link_button('', 'javascript:copyToClipboard("%s %s")' % (poi.latitude.to_decimal_str(), poi.longitude.to_decimal_str()), 'share', 'warning', class='btn-sm') }}
+                        {{ link_button('', 'javascript:copyToClipboard("%s %s")' % (poi.latitude.to_decimal_str(), poi.longitude.to_decimal_str()), 'share', 'info', class='btn-sm') }}
+                        {{ link_button('', Url.for_return('location.poi_edit', poi_id=poi.id), 'pencil', 'warning', class='btn-sm') }}
                         {{ link_button('', Url.for_return('location.poi_remove', poi_id=poi.id), 'trash', 'danger', class='btn-sm') }}
                     </div>
                     <strong>{{ poi.name }}</strong>
