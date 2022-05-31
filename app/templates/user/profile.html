@@ -30,33 +30,36 @@
                     {{ _('Last seen') }}: {{ user.last_seen.date() }}<br>
 
                     <!-- Todo images -->
-                    {{ _('Visits') }}: <a href="{{ Url.get('location.visited_by_user', user_id=user.id) }}" class="badge bg-success">{{ visits }}</a><br>
-                    {{ _('Locations') }}: <a href="{{ Url.get('location.by_user', user_id=user.id) }}" class="badge bg-success">{{ locations }}</a><br>
 
                     <!-- Admin section -->
-                    {{ _('Email') }}: {{ user.email }}<br>
-                    {{ _('Status') }}:
-                        {% if user.banned %} <span class="badge bg-danger">{{ _("Banned") }}</span>
-                        {% elif not user.active %} <span class="badge bg-warning">{{ _("Inactive") }}</span>
-                        {% else %} <span class="badge bg-success">{{ _("Active") }}</span>
-                        {% endif %}<br>
-                    {{ _('Role') }}: <span class="badge bg-secondary">{{ user.role }}</span><br>
+                    {% if current_user.has_moderator_rights() %}
+                        {{ _('Visits') }}: <a href="{{ Url.get('location.visited_by_user', user_id=user.id) }}" class="badge bg-success">{{ visits }}</a><br>
+                        {{ _('Locations') }}: <a href="{{ Url.get('location.by_user', user_id=user.id) }}" class="badge bg-success">{{ locations }}</a><br>
 
-                    {% if user.invitation %}
-                    {{ _('Invited by' )}}: <a href="{{ Url.get('user.profile', user_id=user.invitation.invited_by_id) }}">{{ user.invitation.invited_by }}</a><br>
-                    {% endif %}
+                        {{ _('Email') }}: {{ user.email }}<br>
+                        {{ _('Status') }}:
+                            {% if user.banned %} <span class="badge bg-danger">{{ _("Banned") }}</span>
+                            {% elif not user.active %} <span class="badge bg-warning">{{ _("Inactive") }}</span>
+                            {% else %} <span class="badge bg-success">{{ _("Active") }}</span>
+                            {% endif %}<br>
+                        {{ _('Role') }}: <span class="badge bg-secondary">{{ user.role }}</span><br>
 
-                    {% if user.invited | length %}
-                    {{ _('Invited') }}:
-                    <ul>
-                    {% for invite in user.invited %}
-                        {% if invite.user_id %}
-                        <li>
-                            <a href="{{ Url.get('user.profile', user_id=invite.user_id) }}">{{ invite.user }}</a>
-                        </li>
+                        {% if user.invitation %}
+                        {{ _('Invited by' )}}: <a href="{{ Url.get('user.profile', user_id=user.invitation.invited_by_id) }}">{{ user.invitation.invited_by }}</a><br>
                         {% endif %}
-                    {% endfor %}
-                    </ul>
+
+                        {% if user.invited | length %}
+                            {{ _('Invited') }}:
+                            <ul>
+                            {% for invite in user.invited %}
+                                {% if invite.user_id %}
+                                <li>
+                                    <a href="{{ Url.get('user.profile', user_id=invite.user_id) }}">{{ invite.user }}</a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

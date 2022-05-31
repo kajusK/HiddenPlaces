@@ -16,7 +16,7 @@
                     </div>
 
                     <a href="{{ Url.get('upload.get', path=image.path) }}"
-                       data-caption="<b>{{ image.created_by }}: {{ image.name }}</b>{% if image.description %}<br>{{ image.description }}{% endif %}" >
+                        data-caption="<b>{{ image.name }}</b>{% if image.description %}<br>{{ image.description }}{% endif %}" >
                         <img src="{{ Url.get('upload.get', path=image.thumbnail) }}" alt="{{ image.name }}" style="width: 100%; height: 200px; object-fit: cover;">
                         <div class="image-caption d-flex justify-content-between">
                             <span class="text-truncate">{{ image.name }}</span>
