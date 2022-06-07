@@ -71,6 +71,7 @@ class MaterialType(StringEnum):
     LIMESTONE = _("Limestone")
     POLYMETALS = _("Polymetals")
     SIDERITE = _("Siderite")
+    GYPSUM = _("Gypsum")
 
 
 class Underground(DBItem):
