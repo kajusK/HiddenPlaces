@@ -1,5 +1,5 @@
 pylint
-pylint-flask-sqlalchemy
+pylint-flask-sqlalchemy==0.2.0
 types-requests
 flake8
 mypy
@@ -7,6 +7,6 @@ pytest
 pytest-subtests
 coverage
 pytest-cov
-pytest-flask-sqlalchemy
+pytest-flask-sqlalchemy==1.0.2
 html5lib
 html5validate
