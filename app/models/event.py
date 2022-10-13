@@ -75,6 +75,20 @@ class PasswordResetRequestEvent(Event):
         self.text = "Requested password reset"
 
 
+class EmailChangeRequestEvent(Event):
+    def __init__(self, email: str):
+        self.severity = EventSeverity.NORMAL
+        self.type = EventType.OTHER
+        self.text = f"Requested email change to {email}"
+
+
+class EmailChangedEvent(Event):
+    def __init__(self, email: str):
+        self.severity = EventSeverity.HIGH
+        self.type = EventType.MODIFY
+        self.text = f"Changed email to {email}"
+
+
 class PasswordResetEvent(Event):
     def __init__(self):
         self.severity = EventSeverity.CRITICAL

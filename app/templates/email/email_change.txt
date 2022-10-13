@@ -1,0 +1,8 @@
+Dear {{ user }},
+
+To change your account to email {{ email }} click on the following link:
+
+{{ Url.get('user.change_email_token', token=token, _external=True) }}
+
+Sincerely,
+The HiddenPlaces Team

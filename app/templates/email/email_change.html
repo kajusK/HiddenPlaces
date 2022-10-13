@@ -1,0 +1,13 @@
+<p>Dear {{ user }},</p>
+<p>
+    To change your account to email <b>{{ email }}</b>
+    <a href="{{ Url.get('user.change_email_token', token=token, _external=True) }}">
+        click here
+    </a>.
+</p>
+
+<p>Alternatively, you can paste the following link in your browser's address bar:</p>
+<p>{{ Url.get('user.change_email_token', token=token, _external=True) }}</p>
+
+<p>Sincerely,</p>
+<p>The HiddenPlaces Team</p>

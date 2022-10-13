@@ -1,0 +1,7 @@
+Dear {{ user }},
+
+You have requested account email change to {{ email }}. Once this is confirmed,
+your account won't be accessible over the current email address.
+
+Sincerely,
+The HiddenPlaces Team

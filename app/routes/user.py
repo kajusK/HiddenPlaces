@@ -20,7 +20,7 @@ from app.models.user import User, Invitation, LoginLog, Ban, InvitationState, \
     UserRole
 from app.forms.user import LoginForm, RegisterForm, ChangePasswordForm, \
     EditProfileForm, InviteForm, BanForm, ResetPasswordForm, RoleForm, \
-    ForgottenPasswordForm
+    ForgottenPasswordForm, ChangeEmailForm
 
 
 blueprint = Blueprint('user', __name__, url_prefix="/user")
@@ -38,6 +38,27 @@ def _send_password_reset(user: User) -> None:
                                          token=token, user=user),
                html_body=render_template('email/password_reset.html',
                                          token=token, user=user))
+
+
+def _send_email_change(user: User, email: str) -> None:
+    """Sends email with email change link.
+
+    Args:
+        user: User that requested the email change
+        email: The new email user requested
+    """
+    token = user.get_email_change_token(email)
+    send_email([email], _("Email change requested"),
+               text_body=render_template('email/email_change.txt',
+                                         token=token, user=user, email=email),
+               html_body=render_template('email/email_change.html',
+                                         token=token, user=user, email=email))
+
+    send_email([user.email], _("Email change requested"),
+               text_body=render_template('email/email_change_warning.txt',
+                                         token=token, user=user, email=email),
+               html_body=render_template('email/email_change_warning.html',
+                                         token=token, user=user, email=email))
 
 
 def send_invitation(invitation: Invitation) -> None:
@@ -155,6 +176,30 @@ def reset_password(token: str):
     return render_template('user/reset_password.html', form=form)
 
 
+@blueprint.route('/change_email/<string:token>', methods=['GET', 'POST'])
+@public
+def change_email_token(token: str):
+    """Renders user email changed confirmation
+
+    Args:
+        token: Token tied to email change request
+    """
+    result = User.check_email_token(token)
+    if not result:
+        flash(_("The email change request is no longer valid."), 'danger')
+        return redirect(url_for('user.login'))
+
+    user, email = result
+
+    user.email = email
+    EventLog.log(user, event.EmailChangedEvent(email))
+    db.session.commit()
+    logout_user()
+
+    flash(_("Your email was changed, you need to log in again."), 'warning')
+    return redirect(url_for('user.login'))
+
+
 @blueprint.route('/logout')
 def logout():
     """Logout user and redirect to login page again."""
@@ -213,6 +258,21 @@ def change_password():
         flash(_("Your password was changed"), 'warning')
         return redirect_return()
     return render_template('user/password.html', form=form)
+
+
+@blueprint.route('/change_email', methods=['GET', 'POST'])
+def change_email():
+    """Change user email (by himself)."""
+    form = ChangeEmailForm()
+    if form.validate_on_submit():
+        user = current_user
+        email = form.email.data
+        EventLog.log(user, event.EmailChangeRequestEvent(email))
+        db.session.commit()
+        _send_email_change(user, email)
+        flash(_("Check you new email for confirmation link"), 'warning')
+        return redirect_return()
+    return render_template('user/email.html', form=form)
 
 
 @blueprint.route('/ban/<int:user_id>', methods=['GET', 'POST'])

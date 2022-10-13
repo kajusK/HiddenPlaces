@@ -1,0 +1,21 @@
+{% set title=_('Change email') %}
+{% extends '_private.html' %}
+{% from "_helpers.html" import render_floating_field %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="card">
+        <h4 class="card-header text-center">
+            {{ _('Change email address for %(user)s', user=current_user) }}<br>
+        </h4>
+        <div class="card-body">
+            <form method="POST" action="" role="form">
+                {{ form.hidden_tag() }}
+
+                {{ render_floating_field(form.email, placeholder=form.email.label.text) }}
+                {{ form.submit(class_="btn btn-primary mt-3 w-100 btn-lg") }}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

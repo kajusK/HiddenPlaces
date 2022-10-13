@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-06-07 16:35+0200\n"
+"POT-Creation-Date: 2022-10-13 21:21+0200\n"
 "PO-Revision-Date: 2022-01-03 20:04+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: cs\n"
@@ -52,10 +52,10 @@ msgstr "Jméno"
 msgid "Description"
 msgstr "Popis"
 
-#: app/forms/category.py:19 app/forms/location.py:26 app/forms/user.py:122
+#: app/forms/category.py:19 app/forms/location.py:26 app/forms/user.py:136
 #: app/models/page.py:10 app/templates/_menu.html:68
 #: app/templates/category/category.html:25
-#: app/templates/location/location.html:77 app/templates/user/profile.html:71
+#: app/templates/location/location.html:77 app/templates/user/profile.html:75
 msgid "About"
 msgstr "Popis"
 
@@ -67,7 +67,7 @@ msgstr "Titulní fotka"
 
 #: app/forms/category.py:21 app/forms/location.py:40 app/forms/location.py:49
 #: app/forms/location.py:61 app/forms/page.py:18 app/forms/upload.py:20
-#: app/forms/user.py:126
+#: app/forms/user.py:140
 msgid "Save"
 msgstr "Uložit"
 
@@ -83,11 +83,11 @@ msgstr "Zeměpisná délka"
 msgid "Published"
 msgstr "Publikováno"
 
-#: app/forms/location.py:32 app/forms/user.py:138
+#: app/forms/location.py:32 app/forms/user.py:152
 msgid "No"
 msgstr "Ne"
 
-#: app/forms/location.py:32 app/forms/user.py:138
+#: app/forms/location.py:32 app/forms/user.py:152
 msgid "Yes"
 msgstr "Ano"
 
@@ -160,8 +160,8 @@ msgstr "Pořízeno dne:"
 msgid "Photo"
 msgstr "Fotka"
 
-#: app/forms/user.py:25 app/forms/user.py:79 app/forms/user.py:148
-#: app/forms/user.py:174
+#: app/forms/user.py:25 app/forms/user.py:79 app/forms/user.py:162
+#: app/forms/user.py:188
 msgid "Email address"
 msgstr "Emailová adresa"
 
@@ -207,7 +207,7 @@ msgstr "Příjmení"
 msgid "Repeat password"
 msgstr "Heslo znovu"
 
-#: app/forms/user.py:87 app/forms/user.py:111 app/forms/user.py:190
+#: app/forms/user.py:87 app/forms/user.py:111 app/forms/user.py:204
 msgid "Passwords must match"
 msgstr "Hesla musí být stejná"
 
@@ -215,7 +215,7 @@ msgstr "Hesla musí být stejná"
 msgid "Register"
 msgstr "Zaregistrovat"
 
-#: app/forms/user.py:95 app/forms/user.py:159
+#: app/forms/user.py:95 app/forms/user.py:131 app/forms/user.py:173
 msgid "Email already used by existing user"
 msgstr "Tento email je již používán jiným uživatelem"
 
@@ -227,16 +227,16 @@ msgstr "Musíš souhlasit s pravidly webu"
 msgid "Current password"
 msgstr "Aktuální heslo"
 
-#: app/forms/user.py:106 app/forms/user.py:185
+#: app/forms/user.py:106 app/forms/user.py:199
 msgid "New password"
 msgstr "Nové heslo"
 
-#: app/forms/user.py:108 app/forms/user.py:187
+#: app/forms/user.py:108 app/forms/user.py:201
 msgid "Repeat new password"
 msgstr "Nové heslo znovu"
 
-#: app/forms/user.py:112 app/forms/user.py:191 app/templates/_private.html:52
-#: app/templates/user/password.html:1 app/templates/user/profile.html:11
+#: app/forms/user.py:112 app/forms/user.py:205 app/templates/_private.html:52
+#: app/templates/user/password.html:1 app/templates/user/profile.html:12
 msgid "Change password"
 msgstr "Změnit heslo"
 
@@ -244,56 +244,64 @@ msgstr "Změnit heslo"
 msgid "Invalid password"
 msgstr "Špatné heslo"
 
+#: app/forms/user.py:122
+msgid "New email address"
+msgstr "Nová emailová adresa"
+
 #: app/forms/user.py:125
+msgid "Confirm"
+msgstr "Potvrdit"
+
+#: app/forms/user.py:139
 msgid "Profile photo"
 msgstr "Profilová fotka"
 
-#: app/forms/user.py:131
+#: app/forms/user.py:145
 msgid "Ban reason"
 msgstr "Důvod banu"
 
-#: app/forms/user.py:134
+#: app/forms/user.py:148
 msgid "Ban length [days]"
 msgstr "Délka banu [dny]"
 
-#: app/forms/user.py:137
+#: app/forms/user.py:151
 msgid "Ban permanently"
 msgstr "Trvalý ban"
 
-#: app/forms/user.py:139
+#: app/forms/user.py:153
 msgid "Ban!"
 msgstr "Ban!"
 
-#: app/forms/user.py:144
+#: app/forms/user.py:158
 msgid "Name of the person"
 msgstr "Jméno osoby"
 
-#: app/forms/user.py:151
+#: app/forms/user.py:165
 msgid "Invitation reason"
 msgstr "Důvod pozvánky"
 
-#: app/forms/user.py:154
+#: app/forms/user.py:168
 msgid "Send Invitation"
 msgstr "Odeslat pozvánky"
 
-#: app/forms/user.py:161
+#: app/forms/user.py:175
 msgid "This email was already invited"
 msgstr "Tento email byl již pozván"
 
-#: app/forms/user.py:166 app/templates/admin/users.html:24
-#: app/templates/admin/users.html:56 app/templates/user/profile.html:45
+#: app/forms/user.py:180 app/templates/admin/users.html:24
+#: app/templates/admin/users.html:56 app/templates/user/profile.html:49
 msgid "Role"
 msgstr "Role"
 
-#: app/forms/user.py:169
+#: app/forms/user.py:183
 msgid "Set Role"
 msgstr "Nastavit roli"
 
-#: app/forms/user.py:175 app/templates/user/forgotten_password.html:1
+#: app/forms/user.py:189 app/templates/user/forgotten_password.html:1
 msgid "Request password reset"
 msgstr "Vyžádat reset hesla"
 
-#: app/forms/user.py:180
+#: app/forms/user.py:194
 msgid "User does not exist."
 msgstr "Uživatel neexistuje"
 
@@ -449,7 +457,7 @@ msgid "Not active"
 msgstr "Neaktivní"
 
 #: app/models/user.py:31 app/templates/admin/users.html:49
-#: app/templates/user/profile.html:41
+#: app/templates/user/profile.html:45
 msgid "Banned"
 msgstr "Zabanován"
 
@@ -784,7 +792,7 @@ msgstr "Zrekonstruováno"
 
 #: app/models/locations/urbex.py:39
 msgid "Monitored"
-msgstr "Hlídáno"
+msgstr "Monitorováno"
 
 #: app/routes/admin.py:55
 msgid "All locations"
@@ -966,73 +974,89 @@ msgstr "Dokument byl přidán"
 msgid "Password reset requested"
 msgstr "Reset hesla byl vyžádán"
 
-#: app/routes/user.py:50
+#: app/routes/user.py:51 app/routes/user.py:57
+msgid "Email change requested"
+msgstr "Vyžádána změna emailu"
+
+#: app/routes/user.py:71
 msgid "You were invited to join us"
 msgstr "Byl jsi pozván, aby ses k nám připojil"
 
-#: app/routes/user.py:74
+#: app/routes/user.py:95
 msgid "You were logged in"
 msgstr "Přihlášení bylo úspěšné"
 
-#: app/routes/user.py:97
+#: app/routes/user.py:118
 msgid "The invitation is no longer valid."
 msgstr "Pozvánka už není platná"
 
-#: app/routes/user.py:112
+#: app/routes/user.py:133
 msgid "You were registered, you may now log-in"
 msgstr "Byl jste zaregistrován, teď se můžete přihlásit"
 
-#: app/routes/user.py:129
+#: app/routes/user.py:150
 msgid "Password reset request was requested, check your email"
 msgstr "Změna hesla byla vyžádána, zkontrolujte si email"
 
-#: app/routes/user.py:145
+#: app/routes/user.py:166
 msgid "The password reset request is no longer valid."
 msgstr "Žádost o změnu hesla vypršela."
 
-#: app/routes/user.py:153
+#: app/routes/user.py:174
 msgid "Your password was changed, you may now log in"
 msgstr "Heslo bylo změněno, můžete se přihlásit"
 
-#: app/routes/user.py:163
+#: app/routes/user.py:189
+msgid "The email change request is no longer valid."
+msgstr "Žádost o změnu emailu vypršela."
+
+#: app/routes/user.py:199
+msgid "Your email was changed, you need to log in again."
+msgstr "Email byl změněn, znovu se přihlašte"
+
+#: app/routes/user.py:208
 msgid "You were logged out."
 msgstr "Byl jste odhlášen"
 
-#: app/routes/user.py:200
+#: app/routes/user.py:245
 msgid "Your profile changes were saved"
 msgstr "Změny profilu uloženy"
 
-#: app/routes/user.py:213
+#: app/routes/user.py:258
 msgid "Your password was changed"
 msgstr "Heslo bylo změněno"
 
-#: app/routes/user.py:230
+#: app/routes/user.py:273
+msgid "Check you new email for confirmation link"
+msgstr "Zkontrolujte si nový email, byl vám zaslán odkaz pro potvrzení změny"
+
+#: app/routes/user.py:290
 msgid "Superuser cannot be banned"
 msgstr "Superuser nemůže dostat ban"
 
-#: app/routes/user.py:244
+#: app/routes/user.py:304
 #, python-format
 msgid "User %(user)s was banned"
 msgstr "Uživatel %(user)s dostal ban"
 
-#: app/routes/user.py:270
+#: app/routes/user.py:330
 #, python-format
 msgid "%(name)s invited"
 msgstr "%(name)s pozván"
 
-#: app/routes/user.py:272
+#: app/routes/user.py:332
 msgid "Invitation created, waiting for approval by admins"
 msgstr "Pozvánka vytvořena, čeká na schválení adminem"
 
-#: app/routes/user.py:290
+#: app/routes/user.py:350
 msgid "You can't change root's role!"
 msgstr "Nemůžete změnit roli roota"
 
-#: app/routes/user.py:293
+#: app/routes/user.py:353
 msgid "You can't change your own role!"
 msgstr "Nemůžete změnit svoji vlastní roli"
 
-#: app/routes/user.py:304
+#: app/routes/user.py:364
 #, python-format
 msgid "Changed role of %(user)s to %(role)s"
 msgstr "Role uživatele %(user)s změněna na %(role)s"
@@ -1129,7 +1153,7 @@ msgid "Bookmarks"
 msgstr "Záložky"
 
 #: app/templates/_menu.html:55 app/templates/location/browse.html:1
-#: app/templates/user/profile.html:37
+#: app/templates/user/profile.html:41
 msgid "Locations"
 msgstr "Lokace"
 
@@ -1227,7 +1251,7 @@ msgstr "Vlastník"
 
 #: app/templates/admin/locations.html:22 app/templates/admin/users.html:20
 #: app/templates/category/category.html:57
-#: app/templates/location/_metadata.html:13 app/templates/user/profile.html:29
+#: app/templates/location/_metadata.html:13 app/templates/user/profile.html:33
 msgid "Created"
 msgstr "Vytvořeno"
 
@@ -1255,7 +1279,7 @@ msgstr "Systém"
 msgid "Browser"
 msgstr "Prohlížeč"
 
-#: app/templates/admin/logins.html:25 app/templates/user/profile.html:39
+#: app/templates/admin/logins.html:25 app/templates/user/profile.html:43
 msgid "Email"
 msgstr "Email"
 
@@ -1271,7 +1295,7 @@ msgstr "Odeslat zprávu všem uživatelům"
 msgid "Bans"
 msgstr "Bany"
 
-#: app/templates/admin/users.html:22 app/templates/user/profile.html:48
+#: app/templates/admin/users.html:22 app/templates/user/profile.html:52
 msgid "Invited by"
 msgstr "Pozván"
 
@@ -1279,15 +1303,15 @@ msgstr "Pozván"
 msgid "Seen"
 msgstr "Viděn"
 
-#: app/templates/admin/users.html:50 app/templates/user/profile.html:42
+#: app/templates/admin/users.html:50 app/templates/user/profile.html:46
 msgid "Inactive"
 msgstr "Neaktivní"
 
-#: app/templates/admin/users.html:51 app/templates/user/profile.html:43
+#: app/templates/admin/users.html:51 app/templates/user/profile.html:47
 msgid "Active"
 msgstr "Aktivní"
 
-#: app/templates/admin/users.html:57 app/templates/user/profile.html:13
+#: app/templates/admin/users.html:57 app/templates/user/profile.html:17
 msgid "Ban"
 msgstr "Ban"
 
@@ -1372,7 +1396,7 @@ msgstr "Opuštěno"
 msgid "How was your visit?"
 msgstr "Podrobnosti o vaší návštěvě."
 
-#: app/templates/location/_visits.html:5 app/templates/user/profile.html:36
+#: app/templates/location/_visits.html:5 app/templates/user/profile.html:40
 msgid "Visits"
 msgstr "Návštěvy"
 
@@ -1575,6 +1599,14 @@ msgstr "Editovat profil"
 msgid "Write something about yourself"
 msgstr "Napiš něco o sobě"
 
+#: app/templates/user/email.html:1 app/templates/user/profile.html:11
+msgid "Change email"
+msgstr "Změnit email"
+
+#: app/templates/user/email.html:9
+msgid "Change email address for %(user)s"
+msgstr "Změna emailu pro %(user)s"
+
 #: app/templates/user/invite.html:13
 msgid "Real name of the person invited"
 msgstr "Reálné jméno zvané osoby"
@@ -1596,27 +1628,27 @@ msgstr "Zapomenuté heslo?"
 msgid "Change password for %(user)s"
 msgstr "Změnit heslo pro %(user)s"
 
-#: app/templates/user/profile.html:9
+#: app/templates/user/profile.html:14
 msgid "Send message"
 msgstr "Odeslat zprávu"
 
-#: app/templates/user/profile.html:14
+#: app/templates/user/profile.html:18
 msgid "Set role"
 msgstr "Nastavit roli"
 
-#: app/templates/user/profile.html:30
+#: app/templates/user/profile.html:34
 msgid "Last seen"
 msgstr "Naposledy viděn"
 
-#: app/templates/user/profile.html:40
+#: app/templates/user/profile.html:44
 msgid "Status"
 msgstr "Stav"
 
-#: app/templates/user/profile.html:52
+#: app/templates/user/profile.html:56
 msgid "Invited"
 msgstr "Pozval"
 
-#: app/templates/user/profile.html:77
+#: app/templates/user/profile.html:81
 msgid "Write something about youself"
 msgstr "Napiš něco o sobě"
 

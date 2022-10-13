@@ -129,6 +129,28 @@ class User(DBItem, UserMixin):
             return None
         return user
 
+    @classmethod
+    def check_email_token(cls, token: str):
+        """Verifies the token and if matches, changes the user email
+
+        Args:
+            token: JWT change email token
+        Returns:
+            User, email: User which requested the email reset and email
+            None: Token is invalid
+        """
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'],
+                              algorithms=['HS256'])
+        except (KeyError, jwt.exceptions.InvalidTokenError):
+            return None
+
+        user = cls.get_by_id(data['user_id'])
+        email = data['email']
+        if not user:
+            return None
+        return user, email
+
     @property
     def banned(self) -> bool:
         """Checks if the user is currently banned."""
@@ -190,6 +212,21 @@ class User(DBItem, UserMixin):
         """
         return jwt.encode(
             {'user_id': self.id, 'exp': time() + expire_minutes*60},
+            app.config['SECRET_KEY'], algorithm='HS256')
+
+    def get_email_change_token(self, email: str,
+                               expire_minutes: int = 60) -> str:
+        """Generates url token for email change
+
+        Args:
+            email: Email address to switch this account to
+            expire_minutes: Amount of minutes in which the token expires
+        """
+        return jwt.encode({
+                'user_id': self.id,
+                'email': email,
+                'exp': time() + expire_minutes*60
+            },
             app.config['SECRET_KEY'], algorithm='HS256')
 
 

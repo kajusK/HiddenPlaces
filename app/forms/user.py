@@ -117,6 +117,20 @@ class ChangePasswordForm(FlaskForm):
             raise ValidationError(_("Invalid password"))
 
 
+class ChangeEmailForm(FlaskForm):
+    """Change email form."""
+    email = EmailField(_("New email address"),
+                       [InputRequired(), Email(),
+                        Length(max=constants.MAX_EMAIL_LEN)])
+    submit = SubmitField(_("Confirm"))
+
+    def validate_email(self, field):
+        """Checks if the email is not in the user database yet."""
+        user = User.get_by_email(field.data)
+        if user:
+            raise ValidationError(_("Email already used by existing user"))
+
+
 class EditProfileForm(FlaskForm):
     """Edit profile form."""
     about = TextAreaField(_("About"),
