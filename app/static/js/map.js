@@ -7,11 +7,10 @@ class MyMap {
     constructor(divId) {
         const opacity = 0.8
 
-        const tourist = L.tileLayer('https://mapserver.mapy.cz/turist-m/{z}-{x}-{y}', {
-            attribution: '&copy; <a href="https://www.mapy.cz">Mapy.cz</a>',
-            minZoom: 3,
-            maxZoom: 19
-        })
+        const tourist = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+          })
 
         const baseMaps = {
             "Turistická": tourist,
